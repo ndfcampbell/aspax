@@ -1,5 +1,3 @@
-import sys
-import csv
 import os
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
@@ -17,111 +15,8 @@ import pandas as pd
 
 # from DataUtils import *
 
-def get_checked_text(button_list):
-    for button in button_list:
-        if button.isChecked:
-            text = button.text()
-    return text
 
 
-class distance_layout(QVBoxLayout):
-    def __init__(self,label='Edit',title='Distance'):
-        self.title = title
-        self.label = label
-        super(distance_layout, self).__init__()
-        self.font_header = QFont('Android Roboto', 15)
-        self.font_subheader = QFont('Android Roboto', 13)
-        self.font_text = QFont('Android Roboto', 10)
-        self.font_button = QFont('Android Roboto', 11)
-        self.init_rest_state(label=label,title=title)
-        # self.init_active_state()
-        self.active_state = False
-        # self.init_active_state()
-
-
-    def init_rest_state(self,label='Edit',title='Distance'):
-        # self.edit_layout = rest_state_layout(button_label='Edit',title='Distance')
-        # self.edit_button = self.edit_layout.edit_push_button
-        self.edit_widget = rest_state_widget(button_label=label,title=title)
-        self.edit_button = self.edit_widget.edit_push_button
-        self.edit_button.clicked.connect(self.cycle_states)
-        # self.edit_widget = QWidget()
-        # self.edit_widget.setLayout(self.edit_layout)
-        self.addWidget(self.edit_widget)
-
-
-    def init_active_state(self):
-        # self.menu_layout = active_state_layout()
-        self.edit_button.setStyleSheet("background-color: #16CCB1; color: black")
-        self.menu_widget = distance_menu_widget()
-        # self.menu_widget = QWidget()
-        # self.menu_widget.setLayout(self.menu_layout)
-        # self.menu_widget.setStyleSheet("background-color: #CCCCCC")
-        self.addWidget(self.menu_widget)
-
-
-    def cycle_states(self):
-        if self.active_state:
-            for i in reversed(range(self.count())):
-                self.takeAt(i).widget().setParent(None)
-                # self.itemAt(i).widget().deleteLater()
-            # self.update()
-            # self.addStretch(0)
-
-            self.init_rest_state(label=self.label,title=self.title)
-            print(self.active_state)
-            self.active_state = False
-        else:
-            self.init_active_state()
-            # self.update()
-            print(self.active_state)
-            self.active_state = True
-
-class area_layout(distance_layout):
-    def __init__(self):
-        super(area_layout,self).__init__(label='Edit',title='Area')
-
-    def init_active_state(self):
-        # self.menu_layout = active_state_layout()
-        self.edit_button.setStyleSheet("background-color: #16CCB1; color: black")
-        self.menu_widget = area_menu_widget()
-        self.addWidget(self.menu_widget)
-
-
-
-class score_layout(distance_layout):
-    def __init__(self):
-        super(score_layout,self).__init__(label='Edit',title='Score')
-
-    def init_active_state(self):
-        # self.menu_layout = active_state_layout()
-        self.edit_button.setStyleSheet("background-color: #16CCB1; color: black")
-        self.menu_widget = score_menu_widget()
-        self.addWidget(self.menu_widget)
-
-class label_layout(distance_layout):
-    def __init__(self):
-        super(label_layout,self).__init__(label='Edit',title='Extract & Label Patch')
-
-    def init_active_state(self):
-        # self.menu_layout = active_state_layout()
-        self.edit_button.setStyleSheet("background-color: #16CCB1; color: black")
-        self.menu_widget = label_extraction_menu_widget()
-        self.addWidget(self.menu_widget)
-
-
-class rest_state_widget(QWidget):
-    def __init__(self,title='Distance',button_label='Edit'):
-        super(rest_state_widget,self).__init__()
-        self.layout = QHBoxLayout()
-        self.label = QLabel(title)
-        self.layout.addWidget(self.label)
-        self.edit_push_button = QPushButton(button_label)
-        self.edit_push_button.setStyleSheet("background-color: #CCCCCC; color: black")
-        self.edit_push_button.setMaximumSize(70,30)
-        self.edit_push_button.setMinimumSize(70,30)
-        self.layout.addWidget(self.edit_push_button)
-        self.setLayout(self.layout)
 
 
 class distance_menu_widget(QWidget):
@@ -167,7 +62,7 @@ class distance_menu_widget(QWidget):
         self.output_button.setMinimumSize(130,30)
 
         self.output_box_layout.addWidget(self.output_button)
-        #self.box_distance_layout.addWidget(InspectXRays.box_distance, alignment=Qt.AlignLeft)
+
         self.output_box_widget = QWidget()
         self.output_box_widget.setLayout(self.output_box_layout)
         self.layout.addWidget(self.output_box_widget)
@@ -567,77 +462,6 @@ class score_sliders(QVBoxLayout):
 
         pass
 
-
-
-class InspectXRays(QMainWindow):
-    def __init__(self):
-        super(InspectXRays,self).__init__()
-        self._panels = []
-        self.initialise_left_panel()   #initialises self.menu_tabs and adds it to self._panels
-        self.initialise_right_panel()  #initialises self.image_scene and adds it to self._panels
-        self.initialise_filename()     #initialises the filename under which things are saved
-
-        self.merge_layouts()
-        self.setCentralWidget(self.main_widget)
-
-    def initialise_left_panel(self):
-        self.menu_tabs = QTabWidget()
-        self.widget_distance_menu = distance_menu_widget()
-        self.widget_area_menu     = area_menu_widget()
-        self.widget_score_menu    = score_menu_widget()
-        self.widget_label_menu    = label_extraction_menu_widget()
-        self.menu_tabs.addTab(self.widget_distance_menu,'Distance')
-        self.menu_tabs.addTab(self.widget_area_menu,'Area')
-        self.menu_tabs.addTab(self.widget_score_menu,'Score')
-        self.menu_tabs.addTab(self.widget_label_menu,'Label')
-        self._panels = self._panels+[self.menu_tabs]
-
-
-
-    def connect_sub_buttons(self,layout):
-        print('connected all the buttons in '+layout.title+' layout')
-
-    def merge_layouts(self):
-        self.main_layout = QHBoxLayout()
-        self.main_widget = QWidget()
-        self.main_layout.addWidget(self.menu_tabs)
-        for panel in self._panels:
-            self.main_layout.addWidget(panel)
-
-        self.main_widget.setLayout(self.main_layout)
-
-    def initialise_right_panel(self):
-
-        # Creating toolbar
-        self.right_layout = QVBoxLayout()  # Creating toolbar on the right hand side
-        # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
-        self.toolbar = QToolBar("Image Settings Toolbar")
-        self.toolbar.setStyleSheet("background-color: rgb(22,204,177);")
-        self.right_layout.addWidget(self.toolbar)  # Add toolbar to right layout
-        self.right_layout.setAlignment(Qt.AlignTop)
-
-        # Initialize and load x-ray image into right layout, right below toolbar (needs to stay here)
-        self.xray_image_view = ImageHandler()
-        # self.get_image_path_for_corresponding_score_id()
-        # self.xray_image_view.load_image(self.right_layout, self.current_image)
-        # global xray_image
-        # xray_image = self.xray_image_view.get_image()
-        # self.xray_image_scene = self.xray_image_view.get_image_scene()
-
-
-
-
-        # Create toolbar widgets, connect to actions and add to toolbar
-        # zoom_out_act = QAction(QIcon("zoom_out.png"),"Zoom out",self,enabled=True,triggered=self.xray_image_view.zoom_out)
-        # self.toolbar.addAction(zoom_out_act)
-        # zoom_in_act = QAction(QIcon("zoom_in.png"),"Zoom in",self,enabled=True,triggered=self.xray_image_view.zoom_in)
-        # self.toolbar.addAction(zoom_in_act)
-        # undo = QAction(QIcon("undo.png"),"Undo",self, enabled=True,triggered=self.undo)
-        # self.toolbar.addAction(undo)
-        # redo = QAction(QIcon("redo.png"),"Redo",self)
-        # self.toolbar.addAction(redo)
-        # other_settings = QAction(QIcon("other_settings.png"),"Change appearance of annotation dots",self)
-        # self.toolbar.addAction(other_settings)  # todo: make it stay pressed and open popup
 
 
 def make_buttons_from_list(titles=['L','R','N/A']):
@@ -1205,49 +1029,7 @@ class DataFrameModel(QAbstractTableModel):
 
 
 
-def main():
-    app = QApplication([])
-    window = QWidget()
-    layout_distance = distance_layout()
-    widget_distance = QWidget()
-    widget_distance.setLayout(layout_distance)
 
-    layout_score    = score_sliders()
-    widget_score    = QWidget()
-    button = QPushButton('print values')
-    button.clicked.connect(layout_score.print_slider_values)
-    layout_score.addWidget(button)
-    widget_score.setLayout(layout_score)
-    widget_score    = QWidget()
-    layout_score    = score_layout()
-    widget_score.setLayout(layout_score)
-
-    layout_area = area_layout()
-    widget_area     = QWidget()
-    widget_area.setLayout(layout_area)
-
-    layout_label = label_layout()
-    widget_label = QWidget()
-    widget_label.setLayout(layout_label)
-
-    widget_creation = XrayDataCreationOptions()
-
-    final_layout    = QVBoxLayout()
-    final_layout.addWidget(widget_distance)
-    final_layout.addWidget(widget_area)
-    final_layout.addWidget(widget_score)
-    final_layout.addWidget(widget_label)
-    final_layout.addWidget(widget_creation)
-
-    window.setLayout(final_layout)
-    # window = InspectXRays()
-    # screen = GroupBox()
-    # screen.show()
-    # layout.addWidget(QPushButton('1'))
-    # layout.addWidget(QPushButton('2'))
-    # layout.addWidget(QPushButton('3'))
-    window.show()
-    app.exec_()
 
 def print_slider_values(sliders):
     for slider in sliders:

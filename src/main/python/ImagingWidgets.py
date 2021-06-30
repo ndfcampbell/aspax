@@ -1,8 +1,8 @@
 
 import time
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction
 from PyQt5.QtGui import QColor,QPixmap
-from PyQt5.QtCore import *
+from PyQt5.QtCore import Qt
 from GraphicsItems import PolylineItem,RectItem
 from DataModels import Polyline, Rect
 import numpy as np

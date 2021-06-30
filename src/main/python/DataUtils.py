@@ -1,13 +1,13 @@
 
 import os
-from pandas import DataFrame
+# from pandas import DataFrame
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
     QPolygonF
 from PyQt5.QtCore import *
 
-import numpy as np
+# import numpy as np
 from math import sqrt
 from PIL import Image
 

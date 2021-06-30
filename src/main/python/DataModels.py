@@ -1,5 +1,5 @@
 
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 from PyQt5.QtCore import pyqtSignal, QObject
 from skimage import draw
 import json
