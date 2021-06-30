@@ -1,30 +1,14 @@
-import sys
-import csv
-import os
-from PyQt5 import QtWidgets
+
 import time
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
-    QPolygonF
+from PyQt5.QtGui import QColor,QPixmap
 from PyQt5.QtCore import *
-from GraphicsItems import InteractiveScene,PolylineItem,RectItem,CircleItem,SplineItem,RingItem,LayerItem
+from GraphicsItems import PolylineItem,RectItem
 from DataModels import Polyline, Rect
 import numpy as np
-from math import sqrt
-from PIL import Image
-from MenuWidgets import make_buttons_from_list
-# Global variables to flag what tab needs to be navigated back to after creating new scoring sheet
-review_scoring_sheet_flag = 0
-inspect_x_rays_flag = 0
-zoom_tracker = 1
-image_file_list = []
-distance_edit_flag = 0
-coordinate_count = 0
-xray_image = 0
-from Utils import _NP
-darkMode = True
-if darkMode: import qdarkstyle
 
+
+from Utils import _NP
 
 
 class MyView(QGraphicsView):
@@ -183,7 +167,7 @@ class MyScene(QGraphicsScene):
 # Class to handle the x-ray image - including zooming, contrasts, annotating etc.
 class ImageHandler(QWidget):
 
-    def __init__(self):
+    def __init__(self,icon_library):
         super().__init__()
         self.scaling_factor = 1.1
         self._empty = True
@@ -198,12 +182,12 @@ class ImageHandler(QWidget):
         # self.load_image('johncena.jpg')
         self.layout = QVBoxLayout()
         self.image_view.setScene(self.image_scene)
-        self.toolbar = ImagingToolbar()
+        self.toolbar = ImagingToolbar(icon_library)
         self.layout.addWidget(self.toolbar)
 
         self.layout.addWidget(self.image_view)
         self.setLayout(self.layout)
-
+        self.icons = icon_library
         self.activate_toolbar()
 
         #replace with a connect toolbar
@@ -285,41 +269,42 @@ class ImageHandler(QWidget):
 
 
 class ImagingToolbar(QToolBar):
-    def __init__(self):
+    def __init__(self,icon_lib):
         super(ImagingToolbar,self).__init__()
         self.setStyleSheet("background-color: rgb(22,204,177);")
-        action_icon_names   = [os.path.join("icons",f) for f in ["draw_poly.png","draw_rect.png","zoom_out.png",
-                                                            "zoom_in.png",
-                                                 "undo.png",
-                                      "redo.png",
-                               "clear-icon-3.png"]]
+        # action_icon_names   = [os.path.join("icons",f) for f in ["draw_poly.png","draw_rect.png","zoom_out.png",
+        #                                                     "zoom_in.png",
+        #                                          "undo.png",
+        #                               "redo.png",
+        #                        "clear-icon-3.png"]]
+        self.icons = icon_lib
         action_descriptions = ["Draw Polyline","Draw Rectangle","Zoom Out","Zoom In","Undo","Redo","Clear Label"]
-        self.load_buttons(action_icon_names,action_descriptions)
+        self.load_buttons()
 
 
-    def load_buttons(self,action_icon_names,descriptions):
-        assert len(action_icon_names)==len(descriptions)
+    def load_buttons(self):
+        # assert len(action_icon_names)==len(descriptions)
         self.buttons = {}
         # Create toolbar widgets, connect to actions and add to toolbar#
-        for icon, description in zip(action_icon_names,descriptions):
-            action_button = QAction(QIcon(icon),description,self)
+        for keys,val in self.icons.items():
+            action_button = QAction(val,keys,self)
             self.addAction(action_button)
-            self.buttons[description] = action_button
+            self.buttons[keys] = action_button
 
 
 
-def main():
-    app = QApplication([])
-    window = QMainWindow()
-
-    my_frame_widget = ImageHandler()
-    layout = QVBoxLayout()
-    layout.addWidget(my_frame_widget)
-    window.setCentralWidget(my_frame_widget)
-    # layout.addWidget(QPushButton('3'))
-    window.show()
-    app.exec_()
-
-
-if __name__=='__main__':
-    main()
+# def main():
+#     app = QApplication([])
+#     window = QMainWindow()
+#
+#     my_frame_widget = ImageHandler()
+#     layout = QVBoxLayout()
+#     layout.addWidget(my_frame_widget)
+#     window.setCentralWidget(my_frame_widget)
+#     # layout.addWidget(QPushButton('3'))
+#     window.show()
+#     app.exec_()
+#
+#
+# if __name__=='__main__':
+#     main()

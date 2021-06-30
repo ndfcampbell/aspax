@@ -1,21 +1,11 @@
-import shutil
-import sys
-import csv
-import os
 
 import pandas as pd
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
-    QPolygonF
-from PyQt5.QtCore import *
-# from pywidgets.qt5.GraphicsItems import InteractiveScene,PolylineItem,RectItem,CircleItem,SplineItem,RingItem,LayerItem
-# from pywidgets.qt5.DataModels import Polyline
-# from MyUI_MOD import ImageHandler
-# from MyUI_EX import MyView
+
+
 from Profiles import *
 import numpy as np
-from math import sqrt
-from PIL import Image
+
 
 # Global variables to flag what tab needs to be navigated back to after creating new scoring sheet
 review_scoring_sheet_flag = 0
@@ -26,17 +16,17 @@ distance_edit_flag = 0
 coordinate_count = 0
 xray_image = 0
 
-darkMode = True
-if darkMode: import qdarkstyle
 
-from MenuWidgets import distance_menu_widget,area_menu_widget,label_extraction_menu_widget,score_menu_widget, \
-    xray_selection_menu, XrayDataCreationDialog, XrayDataCreationOptions, XRayCreationWindow, XrayData, NameSignature,output_annotation_name
-from ImagingWidgets import MyView,MyScene,ImageHandler
+
+from MenuWidgets import area_menu_widget,score_menu_widget, \
+    xray_selection_menu, XrayDataCreationDialog,  XRayCreationWindow, XrayData, NameSignature,output_annotation_name
+from ImagingWidgets import ImageHandler
 
 
 class InspectXRays(QMainWindow):
-    def __init__(self):
+    def __init__(self,ctx):
         super(InspectXRays,self).__init__()
+        self.ctx = ctx
         self._panels = []
         self.initialise_left_panel()   #initialises self.menu_tabs and adds it to self._panels
         self.initialise_right_panel()  #initialises self.image_scene and adds it to self._panels
@@ -52,8 +42,8 @@ class InspectXRays(QMainWindow):
     def initialise_left_panel(self):
         layout = QVBoxLayout()
         self.xray_selection_menu = xray_selection_menu()
-        score_profiles = [f.split('.')[0] for f in os.listdir('score_profiles') if f.split('.')[-1]=='h5']
-
+        # score_profiles = [f.split('.')[0] for f in os.listdir(self.ctx.profiles) if f.split('.')[-1]=='h5']
+        score_profiles = [keys for keys,_ in self.ctx.score_profiles.items()]
         self.xray_selection_menu.score_selector.addItems(score_profiles)
 
 
@@ -63,7 +53,7 @@ class InspectXRays(QMainWindow):
         self.menu_tabs.setMinimumWidth(500)
         self.menu_tabs.setMaximumWidth(500)
         # self.widget_distance_menu = distance_menu_widget()
-        self.widget_area_menu     = area_menu_widget()
+        self.widget_area_menu     = area_menu_widget(self.ctx.joint_list)
 
         self.widget_score_menu    = score_menu_widget()
 
@@ -81,7 +71,8 @@ class InspectXRays(QMainWindow):
 
 
     def load_new_score_sheet(self):
-        profile_loc = os.path.join('score_profiles',str(self.xray_selection_menu.score_selector.currentText())+'.h5')
+        # profile_loc = os.path.join('score_profiles',str(self.xray_selection_menu.score_selector.currentText())+'.h5')
+        profile_loc = self.ctx.score_profiles[str(self.xray_selection_menu.score_selector.currentText())]
         profile = load_profile(profile_loc)
         profile['score_technique'] = str(self.xray_selection_menu.score_selector.currentText())
         self.menu_tabs.removeTab(1)
@@ -96,7 +87,7 @@ class InspectXRays(QMainWindow):
         # Creating toolbar
 
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
-        self.image_widget = ImageHandler()
+        self.image_widget = ImageHandler(self.ctx.image_handler_icons)
         self._panels = self._panels + [self.image_widget]
 
 
@@ -150,7 +141,7 @@ class InspectXRays(QMainWindow):
                 print(self.name_sig.year)
                 self.create_xray_window.xray_creation_options.save_button.clicked.connect(
                     lambda:self.add_xray_to_study(filenames[0]))
-                    #lambda:self.add_xray_to_study(filenames[0].split('/')[-1]))
+
 
                 self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
 
@@ -188,6 +179,7 @@ class InspectXRays(QMainWindow):
         # print(self.xray_record.save_loc)
         self.create_xray_window.close()
         self.xray_selection_menu.combobox_studyid.addItem(Xray_id)
+        self.xray_selection_menu.combobox_studyid.setCurrentIndex(self.xray_selection_menu.combobox_studyid.count() - 1)
 
 
     def add_xray_to_study(self,filename):
@@ -200,6 +192,8 @@ class InspectXRays(QMainWindow):
         shutil.copyfile(self.image_widget.image_filename,os.path.join(self.xray_record.save_loc,
                                                                   self.image_widget.image_filename.split(
             '/')[-1] ) )
+        self.xray_selection_menu.combobox_xrayid.addItem(acquisition_date)
+        self.xray_selection_menu.combobox_xrayid.setCurrentIndex(self.xray_selection_menu.combobox_xrayid.count() - 1)
         # print(self.xray_record.save_loc)
         self.create_xray_window.close()
 

@@ -1,6 +1,5 @@
-from PyQt5.QtCore import (QByteArray, QDataStream, QFile, QFileInfo,
-                          QIODevice, QPoint, QPointF, QRectF, Qt, QRect, QSize)
-from PyQt5.QtGui import (QColor, QBrush, QPixmap, QPainter, QBitmap, QIcon, QFont, QPen)
+from PyQt5.QtCore import (QPointF, Qt)
+from PyQt5.QtGui import (QColor,  QPixmap, QPainter)
 
 import numpy as np
 from os import listdir

@@ -1,8 +1,5 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
 
 from abc import ABCMeta, abstractmethod
-import numpy as np
 from PyQt5.QtCore import pyqtSignal, QObject
 from skimage import draw
 import json

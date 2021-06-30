@@ -1,5 +1,4 @@
-import sys
-import csv
+
 import os
 from pandas import DataFrame
 from PyQt5 import QtWidgets
@@ -7,10 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
     QPolygonF
 from PyQt5.QtCore import *
-from pywidgets.qt5.GraphicsItems import InteractiveScene,PolylineItem,RectItem,CircleItem,SplineItem,RingItem,LayerItem
-from pywidgets.qt5.DataModels import Polyline
-from MyUI_MOD import ImageHandler
-from MyUI_EX import MyView
+
 import numpy as np
 from math import sqrt
 from PIL import Image

@@ -6,26 +6,15 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
     QPolygonF
 from PyQt5.QtCore import *
-# from pywidgets.qt5.GraphicsItems import InteractiveScene,PolylineItem,RectItem,CircleItem,SplineItem,RingItem,LayerItem
-# from pywidgets.qt5.DataModels import Polyline
-# from MyUI_EX import MyView
-import numpy as np
-from math import sqrt
-from PIL import Image
-# from test_dialog import FileExplorerApp
-import pandas as pd
-# import seaborn as sns
-# Global variables to flag what tab needs to be navigated back to after creating new scoring sheet
-review_scoring_sheet_flag = 0
-inspect_x_rays_flag = 0
-zoom_tracker = 1
-image_file_list = []
-distance_edit_flag = 0
-coordinate_count = 0
-xray_image = 0
 
-darkMode = True
-if darkMode: import qdarkstyle
+import numpy as np
+
+
+import pandas as pd
+
+
+
+
 # from DataUtils import *
 
 def get_checked_text(button_list):
@@ -136,7 +125,7 @@ class rest_state_widget(QWidget):
 
 
 class distance_menu_widget(QWidget):
-    def __init__(self,name='Distance'):
+    def __init__(self,name='Distance',joint_list="config/joint_list.txt"):
         super(distance_menu_widget,self).__init__()
         self.name = name
         self.font_header = QFont('Android Roboto', 15)
@@ -144,7 +133,7 @@ class distance_menu_widget(QWidget):
         self.font_text = QFont('Android Roboto', 10)
         self.font_button = QFont('Android Roboto', 11)
         self.layout      = QVBoxLayout()
-        text_file = open("config/joint_list.txt","r")
+        text_file = open(joint_list,"r")
         lines = text_file.readline().split(',')
         text_file.close()
         self.bones_joints_list = lines
@@ -1017,10 +1006,22 @@ class XrayData(object):
 
     def add_xray(self,image_name,xray_id,acquisition_date,save_loc='saved_data',organ_name='hand'):
         # self.meta_table = {'acquisition_date':acquisition_date,'xray_id':xray_id,'organ':organ_name}
-        self.meta_table['acquisition_date'] += [acquisition_date]
-        self.meta_table['xray_id']          += [xray_id]
-        self.meta_table['organ']       += [organ_name]
-        self.meta_table['file_name']        += [image_name]
+        if type(self.meta_table) is pd.core.frame.DataFrame:
+            meta_table = {}
+            meta_table['acquisition_date'] = np.append(self.meta_table['acquisition_date'].to_numpy(),acquisition_date)
+            meta_table['xray_id'] = np.append(self.meta_table['xray_id'].to_numpy(),
+                                                            xray_id)
+            meta_table['organ'] = np.append(self.meta_table['organ'].to_numpy(),
+                                                            organ_name)
+            meta_table['file_name'] = np.append(self.meta_table['file_name'].to_numpy(),
+                                                            image_name)
+            self.meta_table = pd.DataFrame(meta_table)
+        elif type(self.meta_table) is dict:
+            self.meta_table['acquisition_date'].append(acquisition_date)
+            self.meta_table['xray_id'].append(xray_id)
+            self.meta_table['organ'].append(organ_name)
+            self.meta_table['file_name'].append(image_name)
+            self.meta_table = pd.DataFrame(self.meta_table)
         for id in ['scores','bone','joint']:
             temp_loc = os.path.join(self.save_loc,id)
             if not os.path.isdir(os.path.join(temp_loc,acquisition_date)): os.makedirs(
@@ -1063,7 +1064,7 @@ class XrayData(object):
         """
         self.save_loc = meta_loc
         self.meta_table = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
-
+        # self.meta_table = self.meta_table.to_dict()
 
 
 
