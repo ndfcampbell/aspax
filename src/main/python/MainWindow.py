@@ -1,5 +1,3 @@
-
-import pandas as pd
 from PyQt5.QtWidgets import *
 
 
@@ -19,7 +17,8 @@ xray_image = 0
 
 
 from MenuWidgets import area_menu_widget,score_menu_widget, \
-    xray_selection_menu, XrayDataCreationDialog,  XRayCreationWindow, XrayData, NameSignature,output_annotation_name
+    xray_selection_menu, XrayDataCreationDialog,  XRayCreationWindow, XrayData, NameSignature,output_annotation_name,\
+    save_csv, load_csv
 from ImagingWidgets import ImageHandler
 
 
@@ -340,7 +339,8 @@ class InspectXRays(QMainWindow):
     def display_xrays(self):
         study_name = self.xray_selection_menu.combobox_studyid.currentText()
         meta_loc   = os.path.join(self.output_loc,study_name)
-        meta_data  = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
+        # meta_data  = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
+        meta_data = load_csv(os.path.join(meta_loc,'metadata.csv'))
         dates      = meta_data['acquisition_date']
         self.xray_selection_menu.combobox_xrayid.clear()
         for it in dates:
