@@ -847,7 +847,7 @@ class XrayData(object):
             self.meta_table['xray_id'].append(xray_id)
             self.meta_table['organ'].append(organ_name)
             self.meta_table['file_name'].append(image_name)
-            self.meta_table = pd.DataFrame(self.meta_table)
+            # self.meta_table = pd.DataFrame(self.meta_table)
         for id in ['scores','bone','joint']:
             temp_loc = os.path.join(self.save_loc,id)
             if not os.path.isdir(os.path.join(temp_loc,acquisition_date)): os.makedirs(
@@ -1073,29 +1073,52 @@ def print_slider_values(sliders):
 
 
 def save_csv(mydict,fileName):
+    headers = []
+    vals    = []
+    for key,val in mydict.items():
+        headers += key
+        vals    += [val]
+
+    N = len(vals[0])
     with open(fileName,'w') as f:
         w = csv.writer(f)
         w.writerow(mydict.keys())
-        w.writerows(mydict.items())
+        for i in range(N):
+            row = [f[i] for f in vals]
+            w.writerow(row)
 
 
 def load_csv(fileName):
+    my_dict = {}
     with open(fileName,mode='r') as infile:
         reader = csv.reader(infile)
-        with open('coors_new.csv',mode='w') as outfile:
-            writer = csv.writer(outfile)
-            loaded_dict = {rows[0]:rows[1] for rows in reader}
-    return loaded_dict
+        row_count = 0
+        for row in reader:
+            if row_count==0:
+                keys = row
+
+            else:
+                for key,it in zip(keys,row):
+                    if row_count==1:
+                        my_dict[key] = [it]
+                    else:
+                        my_dict[key] += [it]
+            row_count+=1
+
+
+    return my_dict
 
 
 if __name__=='__main__':
     #main()
-    xray_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012',
-                           meta_loc='saved_data/165489')
-    # xray_record.add_xray(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012',
-    # save_loc='saved_data',
-    # organ_name='hand')
+    xray_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012')
+    xray_record.add_xray(image_name='CPSA0045h2019.png',xray_id='CPSA0045',acquisition_date='2019',
+     save_loc='saved_data',
+     organ_name='hand')
 
+
+    loaded_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012',
+                             meta_loc=xray_record.save_loc)
 
 
 
