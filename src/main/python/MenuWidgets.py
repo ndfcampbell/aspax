@@ -7,7 +7,7 @@ from PyQt5.QtCore import *
 
 import numpy as np
 
-
+import csv
 import pandas as pd
 
 
@@ -823,24 +823,26 @@ class XrayData(object):
 
 
     def save_metadata(self):
-        df = pd.DataFrame(self.meta_table)
-        df.to_csv(os.path.join(self.save_loc,'metadata.csv'),index=False)
+        fileName = os.path.join(self.save_loc,'metadata.csv')
+        save_csv(mydict=self.meta_table,fileName=fileName)
+        # df = pd.DataFrame(self.meta_table)
+        # df.to_csv(os.path.join(self.save_loc,'metadata.csv'),index=False)
 
 
 
     def add_xray(self,image_name,xray_id,acquisition_date,save_loc='saved_data',organ_name='hand'):
         # self.meta_table = {'acquisition_date':acquisition_date,'xray_id':xray_id,'organ':organ_name}
-        if type(self.meta_table) is pd.core.frame.DataFrame:
-            meta_table = {}
-            meta_table['acquisition_date'] = np.append(self.meta_table['acquisition_date'].to_numpy(),acquisition_date)
-            meta_table['xray_id'] = np.append(self.meta_table['xray_id'].to_numpy(),
-                                                            xray_id)
-            meta_table['organ'] = np.append(self.meta_table['organ'].to_numpy(),
-                                                            organ_name)
-            meta_table['file_name'] = np.append(self.meta_table['file_name'].to_numpy(),
-                                                            image_name)
-            self.meta_table = pd.DataFrame(meta_table)
-        elif type(self.meta_table) is dict:
+        # if type(self.meta_table) is pd.core.frame.DataFrame:
+        #     meta_table = {}
+        #     meta_table['acquisition_date'] = np.append(self.meta_table['acquisition_date'].to_numpy(),acquisition_date)
+        #     meta_table['xray_id'] = np.append(self.meta_table['xray_id'].to_numpy(),
+        #                                                     xray_id)
+        #     meta_table['organ'] = np.append(self.meta_table['organ'].to_numpy(),
+        #                                                     organ_name)
+        #     meta_table['file_name'] = np.append(self.meta_table['file_name'].to_numpy(),
+        #                                                     image_name)
+        #     self.meta_table = pd.DataFrame(meta_table)
+        if type(self.meta_table) is dict:
             self.meta_table['acquisition_date'].append(acquisition_date)
             self.meta_table['xray_id'].append(xray_id)
             self.meta_table['organ'].append(organ_name)
@@ -887,7 +889,8 @@ class XrayData(object):
         :return:
         """
         self.save_loc = meta_loc
-        self.meta_table = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
+        self.meta_table = load_csv(os.path.join(meta_loc,'metadata.csv'))
+        # self.meta_table = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
         # self.meta_table = self.meta_table.to_dict()
 
 
@@ -896,138 +899,170 @@ class XrayData(object):
 
 
 
-#class to create a dataframe that is viewable through qttableview
+# #class to create a dataframe that is viewable through qttableview
+#
+# class PandasModel(QAbstractTableModel):
+#     """
+#     https://stackoverflow.com/posts/44605011/revisions
+#     """
+#     def __init__(self, df = pd.DataFrame(), parent=None):
+#         QAbstractTableModel.__init__(self, parent=parent)
+#         self._df = df.copy()
+#
+#     def toDataFrame(self):
+#         return self._df.copy()
+#
+#     def headerData(self, section, orientation, role=Qt.DisplayRole):
+#         if role != Qt.DisplayRole:
+#             return QVariant()
+#
+#         if orientation == Qt.Horizontal:
+#             try:
+#                 return self._df.columns.tolist()[section]
+#             except (IndexError, ):
+#                 return QtCore.QVariant()
+#         elif orientation == Qt.Vertical:
+#             try:
+#                 # return self.df.index.tolist()
+#                 return self._df.index.tolist()[section]
+#             except (IndexError, ):
+#                 return QVariant()
+#
+#     def data(self, index, role=Qt.DisplayRole):
+#         if role != Qt.DisplayRole:
+#             return QVariant()
+#
+#         if not index.isValid():
+#             return QVariant()
+#
+#         return QVariant(str(self._df.ix[index.row(), index.column()]))
+#
+#     def setData(self, index, value, role):
+#         row = self._df.index[index.row()]
+#         col = self._df.columns[index.column()]
+#         if hasattr(value, 'toPyObject'):
+#             # PyQt4 gets a QVariant
+#             value = value.toPyObject()
+#         else:
+#             # PySide gets an unicode
+#             dtype = self._df[col].dtype
+#             if dtype != object:
+#                 value = None if value == '' else dtype.type(value)
+#         self._df.set_value(row, col, value)
+#         return True
+#
+#     def rowCount(self, parent=QModelIndex()):
+#         return len(self._df.index)
+#
+#     def columnCount(self, parent=QModelIndex()):
+#         return len(self._df.columns)
+#
+#     def sort(self, column, order):
+#         colname = self._df.columns.tolist()[column]
+#         self.layoutAboutToBeChanged.emit()
+#         self._df.sort_values(colname, ascending= order == Qt.AscendingOrder, inplace=True)
+#         self._df.reset_index(inplace=True, drop=True)
+#         self.layoutChanged.emit()
+#
+# #
+# class DataFrameModel(QAbstractTableModel):
+#     """
+#     https://stackoverflow.com/posts/44605011/revisions
+#     """
+#     DtypeRole = Qt.UserRole + 1000
+#     ValueRole = Qt.UserRole + 1001
+#
+#     def __init__(self, df=pd.DataFrame(), parent=None):
+#         super(DataFrameModel, self).__init__(parent)
+#         self._dataframe = df
+#
+#     def setDataFrame(self, dataframe):
+#         self.beginResetModel()
+#         self._dataframe = dataframe.copy()
+#         self.endResetModel()
+#
+#     def dataFrame(self):
+#         return self._dataframe
+#
+#     dataFrame = pyqtProperty(pd.DataFrame, fget=dataFrame, fset=setDataFrame)
+#
+#     @pyqtSlot(int, Qt.Orientation, result=str)
+#     def headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.DisplayRole):
+#         if role == Qt.DisplayRole:
+#             if orientation == Qt.Horizontal:
+#                 return self._dataframe.columns[section]
+#             else:
+#                 return str(self._dataframe.index[section])
+#         return QVariant()
+#
+#     def rowCount(self, parent=QModelIndex()):
+#         if parent.isValid():
+#             return 0
+#         return len(self._dataframe.index)
+#
+#     def columnCount(self, parent=QModelIndex()):
+#         if parent.isValid():
+#             return 0
+#         return self._dataframe.columns.size
+#
+#     def data(self, index, role=Qt.DisplayRole):
+#         if not index.isValid() or not (0 <= index.row() < self.rowCount() \
+#             and 0 <= index.column() < self.columnCount()):
+#             return QVariant()
+#         row = self._dataframe.index[index.row()]
+#         col = self._dataframe.columns[index.column()]
+#         dt = self._dataframe[col].dtype
+#
+#         val = self._dataframe.iloc[row][col]
+#         if role == Qt.DisplayRole:
+#             return str(val)
+#         elif role == DataFrameModel.ValueRole:
+#             return val
+#         if role == DataFrameModel.DtypeRole:
+#             return dt
+#         return QVariant()
+#
+#     def roleNames(self):
+#         roles = {
+#             Qt.DisplayRole: b'display',
+#             DataFrameModel.DtypeRole: b'dtype',
+#             DataFrameModel.ValueRole: b'value'
+#         }
+#         return roles
 
-class PandasModel(QAbstractTableModel):
-    """
-    https://stackoverflow.com/posts/44605011/revisions
-    """
-    def __init__(self, df = pd.DataFrame(), parent=None):
-        QAbstractTableModel.__init__(self, parent=parent)
-        self._df = df.copy()
-
-    def toDataFrame(self):
-        return self._df.copy()
-
-    def headerData(self, section, orientation, role=Qt.DisplayRole):
-        if role != Qt.DisplayRole:
-            return QVariant()
-
-        if orientation == Qt.Horizontal:
-            try:
-                return self._df.columns.tolist()[section]
-            except (IndexError, ):
-                return QtCore.QVariant()
-        elif orientation == Qt.Vertical:
-            try:
-                # return self.df.index.tolist()
-                return self._df.index.tolist()[section]
-            except (IndexError, ):
-                return QVariant()
-
-    def data(self, index, role=Qt.DisplayRole):
-        if role != Qt.DisplayRole:
-            return QVariant()
-
-        if not index.isValid():
-            return QVariant()
-
-        return QVariant(str(self._df.ix[index.row(), index.column()]))
-
-    def setData(self, index, value, role):
-        row = self._df.index[index.row()]
-        col = self._df.columns[index.column()]
-        if hasattr(value, 'toPyObject'):
-            # PyQt4 gets a QVariant
-            value = value.toPyObject()
-        else:
-            # PySide gets an unicode
-            dtype = self._df[col].dtype
-            if dtype != object:
-                value = None if value == '' else dtype.type(value)
-        self._df.set_value(row, col, value)
-        return True
-
-    def rowCount(self, parent=QModelIndex()):
-        return len(self._df.index)
-
-    def columnCount(self, parent=QModelIndex()):
-        return len(self._df.columns)
-
-    def sort(self, column, order):
-        colname = self._df.columns.tolist()[column]
-        self.layoutAboutToBeChanged.emit()
-        self._df.sort_values(colname, ascending= order == Qt.AscendingOrder, inplace=True)
-        self._df.reset_index(inplace=True, drop=True)
-        self.layoutChanged.emit()
 
 
-class DataFrameModel(QAbstractTableModel):
-    """
-    https://stackoverflow.com/posts/44605011/revisions
-    """
-    DtypeRole = Qt.UserRole + 1000
-    ValueRole = Qt.UserRole + 1001
+class DictionaryTableModel(QAbstractTableModel):
+    def __init__(self, dictionary):
+        super(DictionaryTableModel, self).__init__()
+        self._data = dictionary
+        self._headers = []
+        for keys,val in dictionary.items():
+            self._headers += [keys]
 
-    def __init__(self, df=pd.DataFrame(), parent=None):
-        super(DataFrameModel, self).__init__(parent)
-        self._dataframe = df
+    def data(self, index, role):
+        if role == Qt.DisplayRole:
+            # Look up the key by header index.
+            column = index.column()
+            column_key = self._headers[column]
+            return self._data[column_key][index.row()]
 
-    def setDataFrame(self, dataframe):
-        self.beginResetModel()
-        self._dataframe = dataframe.copy()
-        self.endResetModel()
+    def rowCount(self, index):
+        # The length of the outer list.
+        return len(self._data)
 
-    def dataFrame(self):
-        return self._dataframe
+    def columnCount(self, index):
+        # The length of our headers.
+        return len(self._headers)
 
-    dataFrame = pyqtProperty(pd.DataFrame, fget=dataFrame, fset=setDataFrame)
-
-    @pyqtSlot(int, Qt.Orientation, result=str)
-    def headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.DisplayRole):
+    def headerData(self, section, orientation, role):
+        # section is the index of the column/row.
         if role == Qt.DisplayRole:
             if orientation == Qt.Horizontal:
-                return self._dataframe.columns[section]
-            else:
-                return str(self._dataframe.index[section])
-        return QVariant()
+                return str(self._headers[section])
 
-    def rowCount(self, parent=QModelIndex()):
-        if parent.isValid():
-            return 0
-        return len(self._dataframe.index)
-
-    def columnCount(self, parent=QModelIndex()):
-        if parent.isValid():
-            return 0
-        return self._dataframe.columns.size
-
-    def data(self, index, role=Qt.DisplayRole):
-        if not index.isValid() or not (0 <= index.row() < self.rowCount() \
-            and 0 <= index.column() < self.columnCount()):
-            return QVariant()
-        row = self._dataframe.index[index.row()]
-        col = self._dataframe.columns[index.column()]
-        dt = self._dataframe[col].dtype
-
-        val = self._dataframe.iloc[row][col]
-        if role == Qt.DisplayRole:
-            return str(val)
-        elif role == DataFrameModel.ValueRole:
-            return val
-        if role == DataFrameModel.DtypeRole:
-            return dt
-        return QVariant()
-
-    def roleNames(self):
-        roles = {
-            Qt.DisplayRole: b'display',
-            DataFrameModel.DtypeRole: b'dtype',
-            DataFrameModel.ValueRole: b'value'
-        }
-        return roles
-
-
+            if orientation == Qt.Vertical:
+                return str(section)
 
 
 
@@ -1036,6 +1071,21 @@ def print_slider_values(sliders):
         print(slider.value())
 
 
+
+def save_csv(mydict,fileName):
+    with open(fileName,'w') as f:
+        w = csv.writer(f)
+        w.writerow(mydict.keys())
+        w.writerows(mydict.items())
+
+
+def load_csv(fileName):
+    with open(fileName,mode='r') as infile:
+        reader = csv.reader(infile)
+        with open('coors_new.csv',mode='w') as outfile:
+            writer = csv.writer(outfile)
+            loaded_dict = {rows[0]:rows[1] for rows in reader}
+    return loaded_dict
 
 
 if __name__=='__main__':
