@@ -2,7 +2,7 @@ from fbs_runtime.application_context.PyQt5 import ApplicationContext, cached_pro
 
 from PyQt5.QtGui import  QIcon
 import csv
-# from MainWindow import InspectXRays
+from MainWindow import InspectXRays
 
 
 #from Utils import *
@@ -17,7 +17,7 @@ class AppContext(ApplicationContext):
 
     @cached_property
     def main_window(self):
-        return QMainWindow()#ImageHandler(self.image_handler_icons)#(self)
+        return InspectXRays(self)#ImageHandler(self.image_handler_icons)#(self)
 
     @cached_property
     def joint_list(self):

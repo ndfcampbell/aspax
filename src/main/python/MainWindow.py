@@ -367,7 +367,7 @@ class InspectXRays(QMainWindow):
         print(dates)
         # print(self.xray_selection_menu.combobox_xrayid.currentText())
         # print(id)
-        image_name = self.xray_record.meta_table['file_name'][id[0]].to_numpy()[0]
+        image_name = self.xray_record.meta_table['file_name'][0]#[id[0]].to_numpy()[0]
         print(image_name)
         self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
 
