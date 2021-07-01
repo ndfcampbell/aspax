@@ -1047,15 +1047,21 @@ class DictionaryTableModel(QAbstractTableModel):
             self._headers += [keys]
 
     def data(self, index, role):
+        row = index.row()
+        col = self._headers[index.column()]
+        # dt  = self._data[col].dtype
+        val = self._data[col][row]
         if role == Qt.DisplayRole:
             # Look up the key by header index.
-            column = index.column()
-            column_key = self._headers[column]
-            return self._data[column_key][index.row()]
+            return str(val)
+            # column = index.column()
+            # column_key = self._headers[column]
+            # return self._data[column_key][index.row()]
+
 
     def rowCount(self, index):
         # The length of the outer list.
-        return len(self._data)
+        return len(self._data[self._headers[0]])
 
     def columnCount(self, index):
         # The length of our headers.
