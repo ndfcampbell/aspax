@@ -267,16 +267,13 @@ class score_menu_widget(distance_menu_widget):
     def create_table_view(self):
         row_index = [f+'_'+side for side in ['L','R'] for f in
                      self.damage_areas]
-        col_names = ['Joint Name']+ self.damage_types
+
         my_dict = {}
         my_dict['Joint Name'] = row_index
         for col in self.damage_types:
             my_dict[col] = np.zeros(len(row_index))
 
-        # data = np.zeros((len(row_index),len(col_names))).astype(np.int)
-        # # data[:]= np.NAN
-        # df = pd.DataFrame(data=data,columns=col_names)
-        # df['Joint Name'] = row_index
+
         self.load_table_view(my_dict)
 
 
@@ -284,12 +281,11 @@ class score_menu_widget(distance_menu_widget):
     def load_table_view(self,dataframe):
         # model = DataFrameModel(dataframe)
         model = DictionaryTableModel(dataframe)
-        print(dataframe)
         self.tableView.setModel(model)
 
     def save_table_view(self,file_loc):
-        dataframe = self.tableView.model()._dataframe
-        dataframe.to_csv(file_loc)
+        dataframe = self.tableView.model()._data
+        save_csv(dataframe,fileName=file_loc)
 
     def save_slider_value(self):
         if self.side_button_group.checkedButton() is None:
@@ -302,13 +298,13 @@ class score_menu_widget(distance_menu_widget):
 
         else:
 
-            df = self.tableView.model()._dataframe
+            df = self.tableView.model()._data
 
             for keys,val in self.score_sliders.items():
                 row_name = str(self.score_area_box.currentText())+'_'+self.side_button_group.checkedButton().text()
                 col_name = keys
-                score_array = df[col_name].to_list()
-                id = np.where(df['Joint Name']==row_name)
+                score_array = df[col_name]
+                id = np.where(np.array(df['Joint Name'])==row_name)
                 score_array[id[0][0]] = val.value()
                 df[col_name] = np.array(score_array).astype(np.int)
             self.load_table_view(df)
