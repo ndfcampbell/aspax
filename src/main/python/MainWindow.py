@@ -355,6 +355,7 @@ class InspectXRays(QMainWindow):
         if not os.path.isdir(self.output_loc):
             return -1
         if self.xray_selection_menu.combobox_studyid.currentText() is not None:
+
             meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
             self.xray_record = XrayData(image_name=None,xray_id=None,acquisition_date=None,meta_loc=meta_loc)
             self.display_xrays()

@@ -1081,13 +1081,13 @@ def save_csv(mydict,fileName):
     headers = []
     vals    = []
     for key,val in mydict.items():
-        headers += key
+        headers += [key]
         vals    += [val]
 
     N = len(vals[0])
-    with open(fileName,'w') as f:
+    with open(fileName,'w',newline='') as f:
         w = csv.writer(f)
-        w.writerow(mydict.keys())
+        w.writerow(headers)
         for i in range(N):
             row = [f[i] for f in vals]
             w.writerow(row)
