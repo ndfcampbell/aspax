@@ -576,7 +576,7 @@ class xray_selection_menu(QWidget):
 
         self.layout = QVBoxLayout()
         self.init_xray_creation_options()
-        self.init_xray_info()
+
         self.init_damage_selector()
         self.setLayout(self.layout)
 
@@ -609,10 +609,24 @@ class xray_selection_menu(QWidget):
         button_layout.addWidget(self.new_study_button)
         button_layout.addWidget(self.addXrayToStudy_button)
 
+        layout2 = QHBoxLayout()
+        score_date_label         = QLabel("Date")
+        score_organ_label        = QLabel("Anatomical Structure")
+        self.xray_info_box_date  = QLineEdit()
+        #self.xray_info_box_date.setReadOnly(True)
+        self.xray_info_box_organ = QLineEdit()
+        #self.xray_info_box_organ.setReadOnly(True)
+        layout2.addWidget(score_date_label, 1)
+        layout2.addWidget(self.xray_info_box_date, 2)
+        layout2.addWidget(score_organ_label, 1)
+        layout2.addWidget(self.xray_info_box_organ, 2)
+        widget = QWidget()
+        widget.setLayout(layout2)
 
         widget_options = QWidget()
         widget_options.setLayout(layout)
-        widget_info    = self.init_xray_info()
+        widget_info    = QWidget()
+        widget_info.setLayout(layout2)
         widget_buttons = QWidget()
         widget_buttons.setLayout(button_layout)
         self.layout.addWidget(widget_options)
@@ -636,22 +650,6 @@ class xray_selection_menu(QWidget):
         widget = QWidget()
         widget.setLayout(layout)
         self.layout.addWidget(widget)
-
-    def init_xray_info(self):
-        layout = QHBoxLayout()
-        score_date_label         = QLabel("Date")
-        score_organ_label        = QLabel("Anatomical Structure")
-        self.xray_info_box_date  = QLineEdit()
-        self.xray_info_box_date.setReadOnly(True)
-        self.xray_info_box_organ = QLineEdit()
-        self.xray_info_box_organ.setReadOnly(True)
-        layout.addWidget(score_date_label, 1)
-        layout.addWidget(self.xray_info_box_date, 2)
-        layout.addWidget(score_organ_label, 1)
-        layout.addWidget(self.xray_info_box_organ, 2)
-        widget = QWidget()
-        widget.setLayout(layout)
-        return widget
 
 
 

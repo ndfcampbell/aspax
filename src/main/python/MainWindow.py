@@ -366,10 +366,12 @@ class InspectXRays(QMainWindow):
         will read in the filename being isplyed in xray id and will look for the file in self.output_loc/study_id
         """
         meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
-        # dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        file_names = np.array(self.xray_record.meta_table['file_name'])
+        organs     = np.array(self.xray_record.meta_table['organ'])
         #
         #
-        # id =np.where(dates==int(self.xray_selection_menu.combobox_xrayid.currentText()))
+        id =np.where(file_names==self.xray_selection_menu.combobox_xrayid.currentText())
         # print(dates)
         # print(self.xray_selection_menu.combobox_xrayid.currentText())
         # print(id)
@@ -377,6 +379,8 @@ class InspectXRays(QMainWindow):
         image_name = self.xray_selection_menu.combobox_xrayid.currentText()
         print(image_name)
         self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
+        self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
+        self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
 
 
 
