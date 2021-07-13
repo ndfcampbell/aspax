@@ -38,10 +38,13 @@ class InspectXRays(QMainWindow):
         self.output_loc = 'saved_data'
         self.connect_sub_buttons()
         self.initialise_xray_record()
+        self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
 
     def initialise_left_panel(self):
         layout = QVBoxLayout()
         self.xray_selection_menu = xray_selection_menu()
+        self.xray_selection_menu.setMinimumWidth(500)
+        self.xray_selection_menu.setMaximumWidth(500)
         # score_profiles = [f.split('.')[0] for f in os.listdir(self.ctx.profiles) if f.split('.')[-1]=='h5']
         score_profiles = [keys for keys,_ in self.ctx.score_profiles.items()]
         self.xray_selection_menu.score_selector.addItems(score_profiles)
@@ -89,6 +92,22 @@ class InspectXRays(QMainWindow):
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
         self.image_widget = ImageHandler(self.ctx.image_handler_icons)
         self._panels = self._panels + [self.image_widget]
+
+
+    def open_output_folder_selector(self):
+        dlg = QFileDialog()
+        dlg.setFileMode(QFileDialog.Directory)
+        if dlg.exec_():
+            folder_names = dlg.selectedFiles()
+            self.output_loc = os.path.join(os.sep,folder_names[0],'saved_data')
+            if not os.path.isdir(self.output_loc):
+                os.makedirs(self.output_loc)
+            self.xray_selection_menu.wd_info.setText(self.output_loc)
+            self.xray_selection_menu.combobox_xrayid.clear()
+            self.xray_selection_menu.combobox_studyid.clear()
+            self.display_studies()
+            self.display_xrays()
+            print(self.output_loc)
 
 
     def open_study_creator(self):
@@ -194,16 +213,18 @@ class InspectXRays(QMainWindow):
             '/')[-1] ) )
         self.xray_selection_menu.combobox_xrayid.addItem(filename.split('/')[-1])
         self.xray_selection_menu.combobox_xrayid.setCurrentIndex(self.xray_selection_menu.combobox_xrayid.count() - 1)
-        # print(self.xray_record.save_loc)
+
         self.create_xray_window.close()
+        self.display_image_info()
 
 
 
 
 
     def connect_sub_buttons(self):
-        #todo: move connection of save_buttons here
+
         self.display_studies()
+        self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_output_folder_selector)
         self.xray_selection_menu.new_study_button.clicked.connect(self.open_study_creator)
         self.xray_selection_menu.addXrayToStudy_button.clicked.connect(self.open_xray_adder)
         self.xray_selection_menu.combobox_studyid.currentIndexChanged.connect(self.display_xrays)
@@ -378,9 +399,26 @@ class InspectXRays(QMainWindow):
         # image_name = self.xray_record.meta_table['file_name'][id[0][0]]#.to_numpy()[0]
         image_name = self.xray_selection_menu.combobox_xrayid.currentText()
         print(image_name)
-        self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
-        self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
-        self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
+        if os.path.isfile(os.path.join(meta_loc,image_name)):
+            self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
+            self.display_image_info()
+            # self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
+            # self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
+
+
+    def display_image_info(self):
+        dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        file_names = np.array(self.xray_record.meta_table['file_name'])
+        organs     = np.array(self.xray_record.meta_table['organ'])
+        #
+        #
+        id =np.where(file_names==self.xray_selection_menu.combobox_xrayid.currentText())
+        if len(id)!=0:
+            if len(id[0])!=0:
+                self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
+                self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
+            else:
+                print('empty array for the id where the filenames = the combobox content')
 
 
 

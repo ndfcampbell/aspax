@@ -609,26 +609,47 @@ class xray_selection_menu(QWidget):
         button_layout.addWidget(self.new_study_button)
         button_layout.addWidget(self.addXrayToStudy_button)
 
+        self.set_wdir_button = QPushButton("Change save location")
+        self.set_wdir_button.setStyleSheet(
+            "QPushButton" "{" "background-color: rgb(102,102,102); color: white" "}" "QPushButton::pressed" "{"
+            "background-color: #362699; color: white" "}")
+        button_layout.addWidget(self.set_wdir_button)
+
+        layout3 = QHBoxLayout()
+        wd_label         = QLabel("Working Directory")
+
+        self.wd_info  = QLineEdit()
+        self.wd_info.setReadOnly(True)
+
+        layout3.addWidget(wd_label, 1)
+        layout3.addWidget(self.wd_info, 2)
+
+
+
+
         layout2 = QHBoxLayout()
         score_date_label         = QLabel("Date")
         score_organ_label        = QLabel("Anatomical Structure")
         self.xray_info_box_date  = QLineEdit()
-        #self.xray_info_box_date.setReadOnly(True)
+        self.xray_info_box_date.setReadOnly(True)
         self.xray_info_box_organ = QLineEdit()
-        #self.xray_info_box_organ.setReadOnly(True)
+        self.xray_info_box_organ.setReadOnly(True)
         layout2.addWidget(score_date_label, 1)
         layout2.addWidget(self.xray_info_box_date, 2)
         layout2.addWidget(score_organ_label, 1)
         layout2.addWidget(self.xray_info_box_organ, 2)
-        widget = QWidget()
-        widget.setLayout(layout2)
 
+
+
+        widget_wd = QWidget()
+        widget_wd.setLayout(layout3)
         widget_options = QWidget()
         widget_options.setLayout(layout)
         widget_info    = QWidget()
         widget_info.setLayout(layout2)
         widget_buttons = QWidget()
         widget_buttons.setLayout(button_layout)
+        self.layout.addWidget(widget_wd)
         self.layout.addWidget(widget_options)
         self.layout.addWidget(widget_info)
         self.layout.addWidget(widget_buttons)
