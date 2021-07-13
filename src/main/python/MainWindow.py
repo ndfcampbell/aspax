@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 
 
 from Profiles import *
+import shutil
 import numpy as np
 
 

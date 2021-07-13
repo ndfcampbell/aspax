@@ -26,10 +26,10 @@ class AppContext(ApplicationContext):
     @cached_property
     def score_profiles(self):
 
-        return {'PsA-MSS'      :  os.path.join("config","PsA-MSS.h5"),
-                'Ratingen'     :  os.path.join("config","Ratingen.h5"),
-                'Steinbrocker' :  os.path.join("config","Steinbrocker.h5"),
-                'VdH-PsA'      :  os.path.join("config","VdH-PsA.h5")
+        return {'PsA-MSS':  os.path.join("config","PsA-MSS.h5"),
+                'Ratingen':  os.path.join("config","Ratingen.h5"),
+                'Steinbrocker':  os.path.join("config","Steinbrocker.h5"),
+                'VdH-PsA':  os.path.join("config","VdH-PsA.h5")
         }
 
     @cached_property

@@ -162,8 +162,6 @@ class MyScene(QGraphicsScene):
             self.addItem(self.polyline_annotate_item)
             self.annotation_length-=1
 
-
-
 # Class to handle the x-ray image - including zooming, contrasts, annotating etc.
 class ImageHandler(QWidget):
 
@@ -189,6 +187,8 @@ class ImageHandler(QWidget):
         self.setLayout(self.layout)
         self.icons = icon_library
         self.activate_toolbar()
+        self.zoom_tracker  = 1.0
+        self.zoom_out_scaling_factor = 1.0
 
         #replace with a connect toolbar
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
@@ -250,20 +250,20 @@ class ImageHandler(QWidget):
 
     # Function to zoom in
     def zoom_in(self):
-        global zoom_tracker
-        if zoom_tracker < 10:
+
+        if self.zoom_tracker < 10:
             self.zoom_in_scaling_factor = self.scaling_factor
             self.image_view.scale(self.zoom_in_scaling_factor, self.zoom_in_scaling_factor)
-            zoom_tracker = zoom_tracker * self.zoom_in_scaling_factor
+            self.zoom_tracker = self.zoom_tracker * self.zoom_in_scaling_factor
             self.layout.addWidget(self.image_view)
             self.update()
 
     def zoom_out(self):
-        global zoom_tracker
-        if zoom_tracker > 0.3:
+
+        if self.zoom_tracker > 0.3:
             self.zoom_out_scaling_factor = 1 / self.scaling_factor
             self.image_view.scale(self.zoom_out_scaling_factor, self.zoom_out_scaling_factor)
-            zoom_tracker = zoom_tracker * self.zoom_out_scaling_factor
+            self.zoom_tracker = self.zoom_tracker * self.zoom_out_scaling_factor
             self.layout.addWidget(self.image_view)
             self.update()
 
