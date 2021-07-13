@@ -576,6 +576,7 @@ class xray_selection_menu(QWidget):
 
         self.layout = QVBoxLayout()
         self.init_xray_creation_options()
+        self.init_xray_info()
         self.init_damage_selector()
         self.setLayout(self.layout)
 
@@ -611,9 +612,11 @@ class xray_selection_menu(QWidget):
 
         widget_options = QWidget()
         widget_options.setLayout(layout)
+        widget_info    = self.init_xray_info()
         widget_buttons = QWidget()
         widget_buttons.setLayout(button_layout)
         self.layout.addWidget(widget_options)
+        self.layout.addWidget(widget_info)
         self.layout.addWidget(widget_buttons)
 
 
@@ -626,19 +629,31 @@ class xray_selection_menu(QWidget):
 
         self.score_selector = QComboBox()
         self.score_selector.setFont(self.font_text)
-        self.score_selector.setStyleSheet(
-            "QPushButton" "{" "background-color: rgb(102,102,102); color: white" "}" "QPushButton::pressed" "{"
-            "background-color: #362699; color: white" "}")
+        # self.score_selector.setStyleSheet(
+        #     "QPushButton" "{" "background-color: rgb(102,102,102); color: white" "}" "QPushButton::pressed" "{"
+        #     "background-color: #362699; color: white" "}")
         layout.addWidget(self.score_selector,2)
         widget = QWidget()
         widget.setLayout(layout)
         self.layout.addWidget(widget)
 
-
-
-
     def init_xray_info(self):
-        pass
+        layout = QHBoxLayout()
+        score_date_label         = QLabel("Date")
+        score_organ_label        = QLabel("Anatomical Structure")
+        self.xray_info_box_date  = QLineEdit()
+        self.xray_info_box_date.setReadOnly(True)
+        self.xray_info_box_organ = QLineEdit()
+        self.xray_info_box_organ.setReadOnly(True)
+        layout.addWidget(score_date_label, 1)
+        layout.addWidget(self.xray_info_box_date, 2)
+        layout.addWidget(score_organ_label, 1)
+        layout.addWidget(self.xray_info_box_organ, 2)
+        widget = QWidget()
+        widget.setLayout(layout)
+        return widget
+
+
 
 
 
