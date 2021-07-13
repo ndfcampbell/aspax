@@ -192,7 +192,7 @@ class InspectXRays(QMainWindow):
         shutil.copyfile(self.image_widget.image_filename,os.path.join(self.xray_record.save_loc,
                                                                   self.image_widget.image_filename.split(
             '/')[-1] ) )
-        self.xray_selection_menu.combobox_xrayid.addItem(acquisition_date)
+        self.xray_selection_menu.combobox_xrayid.addItem(filename.split('/')[-1])
         self.xray_selection_menu.combobox_xrayid.setCurrentIndex(self.xray_selection_menu.combobox_xrayid.count() - 1)
         # print(self.xray_record.save_loc)
         self.create_xray_window.close()
@@ -208,6 +208,7 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu.addXrayToStudy_button.clicked.connect(self.open_xray_adder)
         self.xray_selection_menu.combobox_studyid.currentIndexChanged.connect(self.display_xrays)
         self.xray_selection_menu.combobox_xrayid.activated.connect(self.load_selected_xrays)
+        self.xray_selection_menu.combobox_xrayid.currentIndexChanged.connect(self.load_selected_xrays)
         self.xray_selection_menu.score_selector.currentIndexChanged.connect(self.load_new_score_sheet)
         self.widget_area_menu.save_button.clicked.connect(self.save_annotation)
         self.widget_score_menu.save_button.clicked.connect(self.save_scores)
@@ -256,7 +257,7 @@ class InspectXRays(QMainWindow):
                 self.image_widget.image_scene.rect_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text() == 'Bone':
             self.popupWindow = QMessageBox.question(self,'Warning!',
-                                                    "Please select Bone when annotating with a polyline" ,
+                                                    "Please select Joint when annotating with a rectangle" ,
                                                     QMessageBox.Ok)
             return -1
 
@@ -269,44 +270,36 @@ class InspectXRays(QMainWindow):
                 self.image_widget.image_scene.rect_annotate_item is None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text() == 'Joint':
             self.popupWindow = QMessageBox.question(self,'Warning!',
-                                                    "Please select Joint when annotating with a box" ,
+                                                    "Please select Bone when annotating with a polyline" ,
                                                     QMessageBox.Ok)
 
+
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        filenames = np.array(self.xray_record.meta_table['file_name'])
+
+        id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
+
+        # print(self.xray_selection_menu.combobox_xrayid.currentText())
+        # print(id)
+        level1_name = self.xray_record.meta_table['organ'][id[0][0]]
+
+        # level1_name = self.xray_record.meta_table['organ']
+        level2_name = self.widget_area_menu.side_button_group.checkedButton().text()
+        level3_name = self.widget_area_menu.line_edit_labels.text()
+
+        annotation_id = output_annotation_name(level1_name =level1_name,
+                                               level2_name=level2_name,
+                                               level3_name=level3_name)
+        date = dates[id[0][0]]
+        print(date)
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Bone':
-
-            dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
-
-            id = np.where(dates == int(self.xray_selection_menu.combobox_xrayid.currentText()))
-
-            # print(self.xray_selection_menu.combobox_xrayid.currentText())
-            # print(id)
-            level1_name = self.xray_record.meta_table['organ'][id[0]].to_numpy()[0]
-
-            # level1_name = self.xray_record.meta_table['organ']
-            level2_name = self.widget_area_menu.side_button_group.checkedButton().text()
-            level3_name = self.widget_area_menu.line_edit_labels.text()
-
-            annotation_id = output_annotation_name(level1_name =level1_name,
-                                                   level2_name=level2_name,
-                                                   level3_name=level3_name)
-            date = self.xray_selection_menu.combobox_xrayid.currentText()
-            print(date)
-
             self.xray_record.save_bone_outline(bone_id=annotation_id,date=date,
                                                plineItem=self.image_widget.image_scene.polyline_annotate_item)
 
 
         if self.image_widget.image_scene.rect_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Joint':
-            level1_name = self.xray_record.meta_table['organ']
-            level2_name = self.widget_area_menu.side_button_group.checkedButton().text()
-            level3_name = self.widget_area_menu.line_edit_labels.text()
-
-            annotation_id = output_annotation_name(level1_name =level1_name,
-                                                   level2_name=level2_name,
-                                                   level3_name=level3_name)
-            date = self.xray_selection_menu.combobox_xrayid.currentText()
             self.xray_record.save_patch(joint_id=annotation_id,date=date,\
             rectItem=self.image_widget.image_scene.rect_annotate_item)
 
@@ -338,14 +331,19 @@ class InspectXRays(QMainWindow):
 
 
     def display_xrays(self):
+        """
+        changes the list in the xray id box to be a list of filenames of images presemt in tehe metaloc of the selected
+        study id and loads the last image in that list of file names
+        """
         study_name = self.xray_selection_menu.combobox_studyid.currentText()
         meta_loc   = os.path.join(self.output_loc,study_name)
         # meta_data  = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
         meta_data = load_csv(os.path.join(meta_loc,'metadata.csv'))
         dates      = meta_data['acquisition_date']
+        fileNames  = meta_data['file_name']
         self.xray_selection_menu.combobox_xrayid.clear()
-        for it in dates:
-            self.xray_selection_menu.combobox_xrayid.addItem(str(it))
+        for it in fileNames:
+            self.xray_selection_menu.combobox_xrayid.addItem(it)
         meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
         self.xray_record = XrayData(image_name=None,xray_id=None,acquisition_date=None,meta_loc=meta_loc)
         # self.initialise_xray_record()
@@ -362,14 +360,21 @@ class InspectXRays(QMainWindow):
             self.load_selected_xrays()
 
     def load_selected_xrays(self):
+        """
+        method that loads the xray corrsponding the the id being displayed in the study id box and the filename being
+        displayed in the xray id box
+        will read in the filename being isplyed in xray id and will look for the file in self.output_loc/study_id
+        """
         meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
-        dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
-
-        id =np.where(dates==int(self.xray_selection_menu.combobox_xrayid.currentText()))
-        print(dates)
+        # dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        #
+        #
+        # id =np.where(dates==int(self.xray_selection_menu.combobox_xrayid.currentText()))
+        # print(dates)
         # print(self.xray_selection_menu.combobox_xrayid.currentText())
         # print(id)
-        image_name = self.xray_record.meta_table['file_name'][0]#[id[0]].to_numpy()[0]
+        # image_name = self.xray_record.meta_table['file_name'][id[0][0]]#.to_numpy()[0]
+        image_name = self.xray_selection_menu.combobox_xrayid.currentText()
         print(image_name)
         self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
 

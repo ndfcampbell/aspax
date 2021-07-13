@@ -637,7 +637,8 @@ class xray_selection_menu(QWidget):
 
 
 
-
+    def init_xray_info(self):
+        pass
 
 
 
