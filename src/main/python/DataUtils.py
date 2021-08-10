@@ -6,7 +6,7 @@ import os
 # from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
 #     QPolygonF
 # from PyQt5.QtCore import *
-
+from MenuWidgets import NameSignature
 import numpy as np
 from math import sqrt
 from PIL import Image
@@ -137,10 +137,6 @@ class PsAScoreDataFrame(object):
         tempdict  = self.dict
 
         self.dict = {**tempdict,**score_lib}
-
-
-
-
 
 
 

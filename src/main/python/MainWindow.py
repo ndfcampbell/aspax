@@ -20,6 +20,7 @@ xray_image = 0
 from MenuWidgets import area_menu_widget,score_menu_widget, \
     xray_selection_menu, XrayDataCreationDialog,  XRayCreationWindow, XrayData, NameSignature,output_annotation_name,\
     save_csv, load_csv
+
 from ImagingWidgets import ImageHandler
 
 

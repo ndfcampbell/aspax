@@ -928,9 +928,57 @@ class XrayData(object):
         # self.meta_table = self.meta_table.to_dict()
 
 
+class XrayStudy(object):#todo: finish this class so I can initialise a study from a filename and load xrays
+    # corresponding to the id of the root xray
+    def __init__(self,filename,save_loc='saved_data'):
+        #checking if this is an absolute path
+        assert len(filename.split('/'))>1
+        assert len(filename.split('.'))>1
+
+
+        self.name_sig = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+        self.x_ray_dict = {} #todo: this should contain an array of absolute locations,  filenames,
+        #todo: to identify the xrays we can either use a namesignature for each xray or save an array of organ names
+        # and an array of years.
 
 
 
+
+    def load_xrays_from_loc(self,loc):
+        #todo: this method should find the xrays corresponding the the xray_id of the root xray and copy all the
+        # xrays to tge save_loc
+        #study_loc
+        #-------->/xray_id/xray1,xray2 etc
+        files    = [os.path.join(loc,f) for f in os.listdir(loc) if f.split('.')[-1]=='jpg' or f.split('.')[-1]=='png']
+        x_ray_id = self.name_sig.id
+        ids      = []
+        for f in files:
+            name_sig = NameSignature(fileName=f.split('/')[-1].split('.')[0])
+
+
+    def make_metadata(self):
+        #todo: this should save the metdata.csv to the output location of the study
+        #study_loc
+        #-------->/xray_id/metadata.csv
+        pass
+
+
+
+
+
+#
+#
+# def create_projects(src_loc='/media/adwaye/2tb/data/xray_data/anonymised_24052021/results',target_loc='/media/adwaye/2tb/data/xray_data/aspax_projects'):
+#     """
+#     reads in a list of images from file_loc and creates a blank aspax project for each one of them
+#     :param file_loc:   string, full path of location folder containing the images from which projects should be created
+#     :param target_loc: string, full path of location folder where projects should be saved
+#     :return:
+#     """
+#     files = [os.path.join(src_loc,f) for f in os.listdir(src_loc)
+#     #todo: this should use the xraystudy class to create study folders to save the xrays in
+#
+#
 
 
 # #class to create a dataframe that is viewable through qttableview
