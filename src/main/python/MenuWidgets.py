@@ -1,4 +1,6 @@
 import os
+import shutil
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
@@ -788,26 +790,7 @@ class XRayCreationWindow(QMainWindow):
 
 
 
-#extracts year,id and organ information from a saved filename
-class NameSignature(object):
-    def __init__(self,fileName):
-        if len(fileName.split('.'))==2:
-            fileName = fileName.split('.')[0]
-        self.year  = ''
-        self.organ = ''
-        self.id    = ''
-        self.verify(fileName)
 
-    def verify(self,fileName):
-        if len(fileName)==13 and (fileName[-5]=='h' or fileName[-5]=='f'):
-            self.year  = fileName[-4:]
-            self.organ = 'FEET' if fileName[-5]=='f' else 'HANDS'
-            self.id    = fileName[:8]
-        elif len(fileName.split('_'))==3:
-            splits     = fileName.split('_')
-            self.year  = splits[1]
-            self.organ = splits[2].upper()
-            self.id    = splits[0]
 
 
 def output_annotation_name(level1_name ='hand',level2_name='R',level3_name='MCP1'):
@@ -928,18 +911,61 @@ class XrayData(object):
         # self.meta_table = self.meta_table.to_dict()
 
 
+#extracts year,id and organ information from a saved filename
+class NameSignature(object):
+    def __init__(self,fileName):
+        if len(fileName.split('.'))==2:
+            fileName = fileName.split('.')[0]
+        self.year  = ''
+        self.organ = ''
+        self.id    = ''
+        self.verify(fileName)
+
+    def verify(self,fileName):
+        if len(fileName)==13 and (fileName[-5]=='h' or fileName[-5]=='f'):
+            self.year  = fileName[-4:]
+            self.organ = 'FEET' if fileName[-5]=='f' else 'HANDS'
+            self.id    = fileName[:8]
+        elif len(fileName.split('_'))==3:
+            splits     = fileName.split('_')
+            self.year  = splits[1]
+            self.organ = splits[2].upper()
+            self.id    = splits[0]
+        else:
+            print("case for such a filename nor created yet, please extend the class to")
+
+
+
 class XrayStudy(object):#todo: finish this class so I can initialise a study from a filename and load xrays
     # corresponding to the id of the root xray
+    """
+    Class that loads up xrays corresponding to the same id from multiple locaytions and copies it to one aspax projects
+    """
     def __init__(self,filename,save_loc='saved_data'):
         #checking if this is an absolute path
-        assert len(filename.split('/'))>1
-        assert len(filename.split('.'))>1
+        self.output_loc = save_loc
+        if not os.path.isdir(save_loc):
+            os.makedirs(save_loc)
+        if os.path.isfile(filename):
+            print('extracting id from the filename')
+            name_sig   = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+            self.id    = name_sig.id
+            year       = name_sig.year
+            organ_name = name_sig.organ
+            xray       = XrayData(image_name=filename.split('/')[-1],xray_id=self.id,acquisition_date=year,
+                                       organ_name=organ_name,save_loc=self.output_loc)
+            dest_loc   = os.path.join(self.output_loc,self.id)
+            shutil.copyfile(filename,os.path.join(dest_loc,filename.split('/')[-1] ) )
 
+            self.x_ray_list = []
+            self.meta_data  = []#xray.meta_table
 
-        self.name_sig = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
-        self.x_ray_dict = {} #todo: this should contain an array of absolute locations,  filenames,
-        #todo: to identify the xrays we can either use a namesignature for each xray or save an array of organ names
-        # and an array of years.
+        elif len(filename.split('.'))==1:
+            print('assuming that the filename is the id')
+            self.id = filename
+            self.x_ray_list = []
+            self.meta_data = {}
+
 
 
 
@@ -950,19 +976,51 @@ class XrayStudy(object):#todo: finish this class so I can initialise a study fro
         #study_loc
         #-------->/xray_id/xray1,xray2 etc
         files    = [os.path.join(loc,f) for f in os.listdir(loc) if f.split('.')[-1]=='jpg' or f.split('.')[-1]=='png']
-        x_ray_id = self.name_sig.id
-        ids      = []
+        x_ray_id = self.id
+
         for f in files:
-            name_sig = NameSignature(fileName=f.split('/')[-1].split('.')[0])
+#            if f.split('/')[-1]!=self.meta_data['file_name'][0]:
+            name_sig  = NameSignature(fileName=f.split('/')[-1].split('.')[0])
+            if name_sig.id == self.id:
+                year       = name_sig.year
+                print(year)
+                organ_name = name_sig.organ
+                xray       = XrayData(image_name=f.split('/')[-1],xray_id=self.id,acquisition_date=year,
+                                organ_name=organ_name,save_loc=self.output_loc)
+                dest_loc   =  os.path.join(self.output_loc,self.id)
+
+                shutil.copyfile(f,os.path.join(dest_loc,f.split('/')[-1]))
+                self.x_ray_list +=[xray]
+                if len(self.x_ray_list)==1:
+                    self.meta_data = {'acquisition_date' : [year],
+                                      'xray_id'          : [self.id],
+                                     'organ'             :[organ_name],
+                                     'file_name'         :[f.split('/')[-1]]}
+
+                else:
+
+                    self.meta_data['acquisition_date'].append(year)
+                    self.meta_data['xray_id'].append(self.id)
+                    self.meta_data['organ'].append(organ_name)
+                    self.meta_data['file_name'].append(f.split('/')[-1])
+        self.save_metadata()
+
+    def save_metadata(self):
+        fileloc  = os.path.join(self.output_loc,self.id)
+        filename = os.path.join(fileloc,'metadata.csv')
+        save_csv(self.meta_data,fileName=filename)
 
 
-    def make_metadata(self):
-        #todo: this should save the metdata.csv to the output location of the study
-        #study_loc
-        #-------->/xray_id/metadata.csv
-        pass
 
 
+def find_unique_ids(loc):
+    files = [os.path.join(loc,f) for f in os.listdir(loc) if f.split('.')[-1] == 'jpg' or f.split('.')[-1] == 'png']
+    ids = []
+    for f in files:
+        name_sig = NameSignature(fileName=f.split('/')[-1].split('.')[0])
+        ids += [name_sig.id]
+
+    return np.unique(ids)
 
 
 
@@ -1199,14 +1257,55 @@ def load_csv(fileName):
 
 if __name__=='__main__':
     #main()
-    xray_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012')
-    xray_record.add_xray(image_name='CPSA0045h2019.png',xray_id='CPSA0045',acquisition_date='2019',
-     save_loc='saved_data',
-     organ_name='hand')
+    # xray_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012')
+    # xray_record.add_xray(image_name='CPSA0045h2019.png',xray_id='CPSA0045',acquisition_date='2019',
+    #  save_loc='saved_data',
+    #  organ_name='hand')
+    #
+    #
+    # loaded_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012',
+    #                          meta_loc=xray_record.save_loc)
+    #
+    dest_loc = '/media/adwaye/2tb/data/xray_data/aspax_studies'
+    src_loc  = '/media/adwaye/2tb/data/xray_data/anonymised_backup/results/'
+    ids      = find_unique_ids(src_loc)
+    #study    = XrayStudy
+    filename = '/media/adwaye/2tb/data/xray_data/anonymised_backup/results/29471_2000_hands.jpg'
+    #study    = XrayStudy(filename=filename,save_loc=dest_loc)
+    for id in ids:
+        print(id)
+        study     = XrayStudy(id,save_loc=dest_loc)
+        study.load_xrays_from_loc(loc = src_loc)
 
 
-    loaded_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012',
-                             meta_loc=xray_record.save_loc)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

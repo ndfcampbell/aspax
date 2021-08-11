@@ -197,7 +197,7 @@ class ImageHandler(QWidget):
         self.toolbar.buttons['Zoom In'].triggered.connect(self.zoom_in)
         self.toolbar.buttons['Undo'].triggered.connect(self.image_scene.undo)
         self.toolbar.buttons['Clear Label'].triggered.connect(self.image_scene.clear_poly)
-        self.toolbar.buttons['Draw Polyline'].setCheckable(1)
+        self.toolbar.buttons['Draw Polyline'].setCeckable(1)
         self.toolbar.buttons['Draw Rectangle'].setCheckable(1)
         self.toolbar.buttons['Draw Polyline'].triggered.connect(self.toggle_action_states)
         self.toolbar.buttons['Draw Rectangle'].triggered.connect(self.toggle_action_states)
