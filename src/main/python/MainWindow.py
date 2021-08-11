@@ -100,14 +100,14 @@ class InspectXRays(QMainWindow):
         dlg.setFileMode(QFileDialog.Directory)
         if dlg.exec_():
             folder_names = dlg.selectedFiles()
-            self.output_loc = os.path.join(os.sep,folder_names[0],'saved_data')
+            self.output_loc = os.path.join(os.sep,folder_names[0])
             if not os.path.isdir(self.output_loc):
                 os.makedirs(self.output_loc)
             self.xray_selection_menu.wd_info.setText(self.output_loc)
             self.xray_selection_menu.combobox_xrayid.clear()
             self.xray_selection_menu.combobox_studyid.clear()
             self.display_studies()
-            self.display_xrays()
+            #self.display_xrays()
             print(self.output_loc)
 
 
@@ -357,19 +357,20 @@ class InspectXRays(QMainWindow):
         changes the list in the xray id box to be a list of filenames of images presemt in tehe metaloc of the selected
         study id and loads the last image in that list of file names
         """
-        study_name = self.xray_selection_menu.combobox_studyid.currentText()
-        meta_loc   = os.path.join(self.output_loc,study_name)
-        # meta_data  = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
-        meta_data = load_csv(os.path.join(meta_loc,'metadata.csv'))
-        dates      = meta_data['acquisition_date']
-        fileNames  = meta_data['file_name']
-        self.xray_selection_menu.combobox_xrayid.clear()
-        for it in fileNames:
-            self.xray_selection_menu.combobox_xrayid.addItem(it)
-        meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
-        self.xray_record = XrayData(image_name=None,xray_id=None,acquisition_date=None,meta_loc=meta_loc)
-        # self.initialise_xray_record()
-        self.load_selected_xrays()
+        if self.xray_selection_menu.combobox_studyid.count()>0:
+            study_name = self.xray_selection_menu.combobox_studyid.currentText()
+            meta_loc   = os.path.join(self.output_loc,study_name)
+            # meta_data  = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
+            meta_data = load_csv(os.path.join(meta_loc,'metadata.csv'))
+            dates      = meta_data['acquisition_date']
+            fileNames  = meta_data['file_name']
+            self.xray_selection_menu.combobox_xrayid.clear()
+            for it in fileNames:
+                self.xray_selection_menu.combobox_xrayid.addItem(it)
+            meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
+            self.xray_record = XrayData(image_name=None,xray_id=None,acquisition_date=None,meta_loc=meta_loc)
+            # self.initialise_xray_record()
+            self.load_selected_xrays()
 
     def initialise_xray_record(self):
         if not os.path.isdir(self.output_loc):
