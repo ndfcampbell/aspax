@@ -227,6 +227,7 @@ class score_menu_widget(distance_menu_widget):
         self.layout.addLayout(score_slider_layout)
         self.score_sliders = score_slider_layout.sliders
         for key,val in self.score_sliders.items():
+            #val.sliderMoved[int].connect(self.save_slider_value())
             val.valueChanged[int].connect(self.save_slider_value)
 
     def init_label_selection(self):
@@ -290,13 +291,26 @@ class score_menu_widget(distance_menu_widget):
         save_csv(dataframe,fileName=file_loc)
 
     def save_slider_value(self):
+        #todo: the popup window here does not disappear right away after resetting the scores
+        scores = []
+        for key,val in self.score_sliders.items():
+            scores += [int(val.value())]
+        self.scores_bool = np.sum(scores) > 0
+
+
+            #val.update()
         if self.side_button_group.checkedButton() is None:
-            self.popupWindow = QMessageBox.question(self,'Warning!',
-                                                    "Please select a side to allocate the score" ,
-                                                    QMessageBox.Ok)
-            for key, val in self.score_sliders.items():
-                val.setValue(0)
-                val.update()
+
+
+            if self.scores_bool:
+                self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                            "Please select a side to allocate the score" ,
+                                                            QMessageBox.Ok)
+
+                for key,val in self.score_sliders.items():
+                    val.setValue(0)
+                    val.update()
+
 
         else:
 
