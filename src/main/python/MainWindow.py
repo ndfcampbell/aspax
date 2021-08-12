@@ -319,6 +319,10 @@ class InspectXRays(QMainWindow):
             self.xray_record.save_bone_outline(bone_id=annotation_id,date=date,
                                                plineItem=self.image_widget.image_scene.polyline_annotate_item)
 
+        if self.image_widget.image_scene.polyline_annotate_item is not None and \
+                self.widget_area_menu.annotation_button_group.checkedButton().text()=='Tissue':
+            self.xray_record.save_tissue_outline(bone_id=annotation_id,date=date,
+                                               plineItem=self.image_widget.image_scene.polyline_annotate_item)
 
         if self.image_widget.image_scene.rect_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Joint':

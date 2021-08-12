@@ -830,7 +830,7 @@ class XrayData(object):
                                'file_name': [image_name]}
 
 
-            for id in ['scores','bone','joint']:
+            for id in ['scores','bone','joint','tissue']:
                 temp_loc = os.path.join(self.save_loc,id)
                 if not os.path.isdir(os.path.join(temp_loc,acquisition_date)): os.makedirs(os.path.join(temp_loc,acquisition_date))
             self.save_metadata()
@@ -865,7 +865,7 @@ class XrayData(object):
             self.meta_table['organ'].append(organ_name)
             self.meta_table['file_name'].append(image_name)
             # self.meta_table = pd.DataFrame(self.meta_table)
-        for id in ['scores','bone','joint']:
+        for id in ['scores','bone','joint','tissue']:
             temp_loc = os.path.join(self.save_loc,id)
             if not os.path.isdir(os.path.join(temp_loc,acquisition_date)): os.makedirs(
                 os.path.join(temp_loc,acquisition_date))
@@ -875,6 +875,15 @@ class XrayData(object):
     def save_bone_outline(self,bone_id,date,plineItem):
         save_folder = os.path.join(self.save_loc,'bone')
         save_folder = os.path.join(save_folder,str(date))
+        print(bone_id)
+        filename    = os.path.join(save_folder,bone_id+'.txt')
+        np.savetxt(filename,plineItem.control_points.tolist())
+
+    def save_tissue_outline(self,bone_id,date,plineItem):
+        save_folder = os.path.join(self.save_loc,'tissue')
+        save_folder = os.path.join(save_folder,str(date))
+        if not os.path.isdir(save_folder):
+            os.makedirs(save_folder)
         print(bone_id)
         filename    = os.path.join(save_folder,bone_id+'.txt')
         np.savetxt(filename,plineItem.control_points.tolist())
