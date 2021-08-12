@@ -879,6 +879,12 @@ class XrayData(object):
         filename    = os.path.join(save_folder,bone_id+'.txt')
         np.savetxt(filename,plineItem.control_points.tolist())
 
+    def save_phantom_outline(self,bone_id,date,plineItem):
+        save_folder = os.path.join(self.save_loc,'bone')
+        save_folder = os.path.join(save_folder,str(date))
+        filename    = os.path.join(save_folder,bone_id+'.txt')
+        np.savetxt(filename,plineItem.control_points.tolist())
+
     def save_tissue_outline(self,bone_id,date,plineItem):
         save_folder = os.path.join(self.save_loc,'tissue')
         save_folder = os.path.join(save_folder,str(date))

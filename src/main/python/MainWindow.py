@@ -40,6 +40,7 @@ class InspectXRays(QMainWindow):
         self.connect_sub_buttons()
         self.initialise_xray_record()
         self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
+        self.load_new_score_sheet()
 
     def initialise_left_panel(self):
         layout = QVBoxLayout()
@@ -49,6 +50,9 @@ class InspectXRays(QMainWindow):
         # score_profiles = [f.split('.')[0] for f in os.listdir(self.ctx.profiles) if f.split('.')[-1]=='h5']
         score_profiles = [keys for keys,_ in self.ctx.score_profiles.items()]
         self.xray_selection_menu.score_selector.addItems(score_profiles)
+
+
+
 
 
         layout.addWidget(self.xray_selection_menu)
@@ -329,6 +333,11 @@ class InspectXRays(QMainWindow):
             self.xray_record.save_patch(joint_id=annotation_id,date=date,\
             rectItem=self.image_widget.image_scene.rect_annotate_item)
 
+        if self.image_widget.image_scene.polyline_annotate_item is not None and \
+                self.widget_area_menu.annotation_button_group.checkedButton().text()=='Other':
+            annotation_id = 'phantom'
+            self.xray_record.save_phantom_outline(bone_id=annotation_id,date=date,\
+            plineItem=self.image_widget.image_scene.polyline_annotate_item)
 
 
     def save_scores(self):
