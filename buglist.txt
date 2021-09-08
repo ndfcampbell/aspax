@@ -1,0 +1,3 @@
+(i)  when loading the score for an xray, if that xray has a saved scoresheet, then it should be displayed.
+     fix: need to extend score_menu_widget.create_table_view to also look for the savelocation to search for the score.csv
+(ii) hitting cancel or close on the select new folder window does not close it, user has to do this multiple times

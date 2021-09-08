@@ -112,11 +112,11 @@ class InspectXRays(QMainWindow):
             self.xray_selection_menu.combobox_studyid.clear()
             self.display_studies()
             #self.display_xrays()
-            print(self.output_loc)
+
 
 
     def open_study_creator(self):
-        print('function triggered')
+        #print('function triggered')
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.AnyFile)
         # dlg.setFilter("Text files (*.txt)")
@@ -132,7 +132,7 @@ class InspectXRays(QMainWindow):
                 self.create_xray_window = XRayCreationWindow()
                 self.create_xray_window.show()
                 self.name_sig  = NameSignature(fileName=filenames[0].split('/')[-1].split('.')[0])
-                print(self.name_sig.year)
+                #print(self.name_sig.year)
                 self.create_xray_window.xray_creation_options.save_button.clicked.connect(
                     lambda:self.create_xray_data(filenames[0]))
 
@@ -146,7 +146,7 @@ class InspectXRays(QMainWindow):
                     lambda:self.create_xray_window.close())
 
     def open_xray_adder(self):
-        print('function triggered')
+        #print('function triggered')
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.AnyFile)
         # dlg.setFilter("Text files (*.txt)")
@@ -162,7 +162,7 @@ class InspectXRays(QMainWindow):
                 self.create_xray_window = XRayCreationWindow()
                 self.create_xray_window.show()
                 self.name_sig  = NameSignature(fileName=filenames[0].split('/')[-1].split('.')[0])
-                print(self.name_sig.year)
+                #print(self.name_sig.year)
                 self.create_xray_window.xray_creation_options.save_button.clicked.connect(
                     lambda:self.add_xray_to_study(filenames[0]))
 
@@ -317,7 +317,7 @@ class InspectXRays(QMainWindow):
                                                level2_name=level2_name,
                                                level3_name=level3_name)
         date = dates[id[0][0]]
-        print(date)
+        #print(date)
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Bone':
             self.xray_record.save_bone_outline(bone_id=annotation_id,date=date,
@@ -352,7 +352,7 @@ class InspectXRays(QMainWindow):
             date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
             #self.xray_record.meta_table[]
             file_loc = os.path.join(self.xray_record.save_loc,'scores')
-            print(file_loc)
+            #print(file_loc)
             file_loc = os.path.join(file_loc,date)
             file_name = os.path.join(file_loc,self.widget_score_menu.score_technique+'.csv')
             self.widget_score_menu.save_table_view(file_loc=file_name)
@@ -414,7 +414,7 @@ class InspectXRays(QMainWindow):
         # print(id)
         # image_name = self.xray_record.meta_table['file_name'][id[0][0]]#.to_numpy()[0]
         image_name = self.xray_selection_menu.combobox_xrayid.currentText()
-        print(image_name)
+        #print(image_name)
         if os.path.isfile(os.path.join(meta_loc,image_name)):
             self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
             self.display_image_info()
@@ -434,7 +434,7 @@ class InspectXRays(QMainWindow):
                 self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
                 self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
             else:
-                print('empty array for the id where the filenames = the combobox content')
+                ('empty array for the id where the filenames = the combobox content')
 
 
 

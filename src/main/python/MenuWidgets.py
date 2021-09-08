@@ -267,7 +267,7 @@ class score_menu_widget(distance_menu_widget):
         # model = DataFrameModel(iris)
         # self.tableView.setModel(model)
 
-    def create_table_view(self):
+    def create_table_view(self): #todo: force this to search the save location for the csv file
         row_index = [f+'_'+side for side in ['L','R'] for f in
                      self.damage_areas]
 
