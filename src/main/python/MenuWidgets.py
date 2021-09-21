@@ -1013,7 +1013,7 @@ def update_dir(nameInit):
     return output_directory
 
 #Class that loads the latest data stored in the csv file into a python array
-class XrayData(object):
+class   XrayData(object):
     def __init__(self,image_name,xray_id,acquisition_date,save_loc='saved_data',organ_name='hand',meta_loc=None):
 
 

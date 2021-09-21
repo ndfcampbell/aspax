@@ -358,7 +358,13 @@ class InspectXRays(QMainWindow):
             annotation_id = 'phantom'
             self.xray_record.save_phantom_outline(bone_id=annotation_id,date=date,\
             plineItem=self.image_widget.image_scene.polyline_annotate_item)
-            #self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+        file_name = 'annotation_tracking_'+str(date)+'.csv'
+        xray_id = self.xray_selection_menu.combobox_studyid.currentText()
+        file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
+        df = self.widget_area_menu.tableView.model()._data
+        save_csv(df,fileName=file_loc)
+
 
     def update_tracking(self):
         if self.xray_record is None:
@@ -405,6 +411,12 @@ class InspectXRays(QMainWindow):
         area_name = level3_name+'_'+side_name
         date = dates[id[0][0]]
         self.widget_area_menu.update_table_view(row_name=area_name,signal='Unsure')
+        df = self.widget_area_menu.tableView.model()._data
+
+        file_name = 'annotation_tracking_'+str(date)+'.csv'
+        xray_id = self.xray_selection_menu.combobox_studyid.currentText()
+        file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
+        save_csv(df,fileName=file_loc)
 
 
     def save_scores(self):
