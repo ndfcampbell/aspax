@@ -327,7 +327,138 @@ class score_menu_widget(distance_menu_widget):
 
 
 
-            #todo: set the value of df[col_name] to the slider value and reinit the tableView
+class track_menu_widget(distance_menu_widget):
+    def __init__(self,name='Tracking',profile={}):
+        damage_types         = profile.pop('damage_types',['Destruction','Proliferation'])
+        self.damage_types    = damage_types
+        if type(self.damage_types) is np.ndarray:
+            self.damage_types = self.damage_types.tolist()
+        damage_ranges        = profile.pop('damage_scores',[(0,5),(0,5)])
+        self.damage_ranges   = damage_ranges
+        score_technique      = profile.pop('score_technique','Ratingen')
+        self.score_technique = score_technique
+        default_areas        = ["IP", "DIP2", "DIP3", "DIP4", "DIP5", "PIP2", "PIP3", "PIP4", "PIP5", "MCP1", "MCP2",
+                                "MCP3", "MCP4", "MCP5"]#todo: expand the score profiles to have the default areas as
+        # well
+        damage_areas         = profile.pop('damage_areas',default_areas)
+        self.damage_areas    = damage_areas
+        super(score_menu_widget,self).__init__(name=name)
+
+
+    def init(self):
+        self.init_side_buttons() #initialises panel with R L N/A
+        self.init_label_selection() #initialises qcombobox for the joint/bone selection
+        self.init_score_slider() #initialises the score sliders for dsicrete scales
+        self.init_save_discard() ##initialises the buttons for the save and discard methods
+        self.init_table_view()
+
+    def init_score_slider(self):
+        score_slider_layout = score_sliders(score_name=self.score_technique,damage_types=self.damage_types,
+                                            damage_ranges=self.damage_ranges)
+        self.layout.addLayout(score_slider_layout)
+        self.score_sliders = score_slider_layout.sliders
+        for key,val in self.score_sliders.items():
+            #val.sliderMoved[int].connect(self.save_slider_value())
+            val.valueChanged[int].connect(self.save_slider_value)
+
+    def init_label_selection(self):
+        label_layout = QHBoxLayout()
+        self.score_technique_label = QLabel(self.score_technique+' on')
+        self.score_technique_label.setFont(self.font_text)
+        self.score_area_box = QComboBox()
+        self.score_area_box.setFont(self.font_text)
+        self.score_area_box.setContentsMargins(2,1,2,1)
+        self.score_area_box.setStyleSheet(
+            "background-color: #f2f2f2; color: black; border-style: solid; border-width: 1px; border-color: "
+            "#BFBFBF")
+        self.score_area_box.setMaximumSize(300,30)
+        self.score_area_box.setMinimumSize(300,30)
+        self.score_area_box.addItems(self.damage_areas)
+        label_layout.addWidget(self.score_technique_label)
+        label_layout.addWidget(self.score_area_box)
+        label_widget = QWidget()
+        label_widget.setLayout(label_layout)
+        self.layout.addWidget(label_widget)
+
+    def init_table_view(self):
+        table_layout = QVBoxLayout()
+        self.tableView = QTableView()
+        self.tableView.setObjectName("tableView")
+        self.tableView_lineEdit = QLineEdit()
+        self.tableView_lineEdit.setObjectName("lineEdit")
+        table_layout.addWidget(self.tableView_lineEdit)
+        table_layout.addWidget(self.tableView)
+        table_widget = QWidget()
+        table_widget.setLayout(table_layout)
+        self.layout.addWidget(table_widget)
+
+        self.create_table_view()
+        # iris = sns.load_dataset('iris')
+        # iris_df = pd.DataFrame(iris)
+        # model = DataFrameModel(iris)
+        # self.tableView.setModel(model)
+
+    def create_table_view(self): #todo: force this to search the save location for the csv file
+        row_index = [f+'_'+side for side in ['L','R'] for f in
+                     self.damage_areas]
+
+        my_dict = {}
+        my_dict['Joint Name'] = row_index
+        for col in self.damage_types:
+            my_dict[col] = np.zeros(len(row_index))
+
+
+        self.load_table_view(my_dict)
+
+
+
+    def load_table_view(self,dataframe):
+        # model = DataFrameModel(dataframe)
+        model = DictionaryTableModel(dataframe)
+        self.tableView.setModel(model)
+
+    def save_table_view(self,file_loc):
+        dataframe = self.tableView.model()._data
+        save_csv(dataframe,fileName=file_loc)
+
+    def save_slider_value(self):
+        #todo: the popup window here does not disappear right away after resetting the scores
+        scores = []
+        for key,val in self.score_sliders.items():
+            scores += [int(val.value())]
+        self.scores_bool = np.sum(scores) > 0
+
+
+            #val.update()
+        if self.side_button_group.checkedButton() is None:
+
+
+            if self.scores_bool:
+                self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                            "Please select a side to allocate the score" ,
+                                                            QMessageBox.Ok)
+
+                for key,val in self.score_sliders.items():
+                    val.setValue(0)
+                    val.update()
+
+
+        else:
+
+            df = self.tableView.model()._data
+
+            for keys,val in self.score_sliders.items():
+                row_name = str(self.score_area_box.currentText())+'_'+self.side_button_group.checkedButton().text()
+                col_name = keys
+                score_array = df[col_name]
+                id = np.where(np.array(df['Joint Name'])==row_name)
+                score_array[id[0][0]] = val.value()
+                df[col_name] = np.array(score_array).astype(np.int)
+            self.load_table_view(df)
+
+
+
+
 
 
 

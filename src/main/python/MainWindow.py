@@ -310,7 +310,10 @@ class InspectXRays(QMainWindow):
         level1_name = self.xray_record.meta_table['organ'][id[0][0]]
 
         # level1_name = self.xray_record.meta_table['organ']
-        level2_name = self.widget_area_menu.side_button_group.checkedButton().text()
+        side_name   = self.widget_area_menu.side_button_group.checkedButton().text()
+        if side_name=='N/A':
+            side_name = 'NA'
+        level2_name = side_name
         level3_name = self.widget_area_menu.line_edit_labels.text()
 
         annotation_id = output_annotation_name(level1_name =level1_name,
