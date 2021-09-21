@@ -220,12 +220,14 @@ class area_menu_widget(distance_menu_widget):
     def create_table_view(self,my_dict=None):
         if my_dict is None:
             row_index = [f+'_'+side for side in ['L','R'] for f in
-                         self.damage_areas]
+                         self.bones_joints_list]
 
             my_dict = {}
             my_dict['Joint Name'] = row_index
-            for col in self.damage_types:
-                my_dict[col] = np.zeros(len(row_index))
+            my_dict['Completed'] = np.zeros(len(row_index))
+            my_dict['Not Completed'] = np.ones(len(row_index))
+            my_dict['Unsure'] = np.zeros(len(row_index))
+
 
 
         self.load_table_view(my_dict)
