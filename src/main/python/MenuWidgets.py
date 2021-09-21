@@ -223,13 +223,10 @@ class area_menu_widget(distance_menu_widget):
                          self.bones_joints_list]
 
             my_dict = {}
-            my_dict['Joint Name'] = row_index
+            my_dict['Area Name'] = row_index
             my_dict['Completed'] = np.zeros(len(row_index))
             my_dict['Not Completed'] = np.ones(len(row_index))
             my_dict['Unsure'] = np.zeros(len(row_index))
-
-
-
         self.load_table_view(my_dict)
 
 
@@ -242,6 +239,35 @@ class area_menu_widget(distance_menu_widget):
     def save_table_view(self,file_loc):
         dataframe = self.tableView.model()._data
         save_csv(dataframe,fileName=file_loc)
+
+
+    def update_table_view(self,row_name,signal):
+        """
+        signal needs to be save or unsure and is handled by the main class
+        :param row_name:
+        :param signal:
+        :return:
+        """
+        df = self.tableView.model()._data
+        id = np.where(np.array(df['Area Name']) == row_name)
+        print(id)
+
+        if len(id)>0:
+            for keys, val in df.items():
+                if keys != 'Area Name':
+
+                    val[id[0][0]] = 0.0
+                    df[keys] = val
+
+
+            state_array = df[signal]
+            id = np.where(np.array(df['Area Name']) == row_name)
+            state_array[id[0][0]] = 1.0
+            df[signal] = np.array(state_array)
+            self.load_table_view(df)
+        else:
+            print("no need to update this")
+
 
 
 class score_menu_widget(distance_menu_widget):

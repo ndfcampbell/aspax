@@ -4,12 +4,10 @@
 (iii) selecting n/a and then clicking on save does not save the annotation---------fixed 21/09/2021 in 0.0.4
 (iv)  unite the save method in Menuwidget under one method for neatness
 (v)   show the shape of the saved outline in the save message box   : extend the message box class for this
-
-
-new features
--message box saying that the annotation was saved-----done 21/09/2021 in 0.0.4
--for the wrist bone annotation need to have a rotate function on the rectangle
--need to be able to track the bones that have been annotated so we can come back to them, especially have the ability to come back to that
--we want to be able to annotate landmarks
+(vi)  create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated
+(v)   need to be able to track the bones that have been annotated so we can come back to them, especially have the ability to come back to that---prototype started, see commit message day end 21/09/2021
+(vi)  we want to be able to annotate landmarks
+(v)   for the wrist bone annotation need to have a rotate function on the rectangle
+(vi)  message box saying that the annotation was saved-----done 21/09/2021 in 0.0.4
 
 

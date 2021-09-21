@@ -249,6 +249,7 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu.score_selector.currentIndexChanged.connect(self.load_new_score_sheet)
         self.widget_area_menu.save_button.clicked.connect(self.save_annotation)
         self.widget_score_menu.save_button.clicked.connect(self.save_scores)
+        self.widget_area_menu.unsure_button.clicked.connect(self.update_tracking)
 
 
 
@@ -330,28 +331,80 @@ class InspectXRays(QMainWindow):
         annotation_id = output_annotation_name(level1_name =level1_name,
                                                level2_name=level2_name,
                                                level3_name=level3_name)
+        area_name = level3_name+'_'+side_name
+        #print(area_name)
         date = dates[id[0][0]]
         #print(date)
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Bone':
             self.xray_record.save_bone_outline(bone_id=annotation_id,date=date,
                                                plineItem=self.image_widget.image_scene.polyline_annotate_item)
+            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
 
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Tissue':
             self.xray_record.save_tissue_outline(bone_id=annotation_id,date=date,
                                                plineItem=self.image_widget.image_scene.polyline_annotate_item)
+            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
 
         if self.image_widget.image_scene.rect_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Joint':
             self.xray_record.save_patch(joint_id=annotation_id,date=date,\
             rectItem=self.image_widget.image_scene.rect_annotate_item)
+            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
 
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Other':
             annotation_id = 'phantom'
             self.xray_record.save_phantom_outline(bone_id=annotation_id,date=date,\
             plineItem=self.image_widget.image_scene.polyline_annotate_item)
+            #self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+
+    def update_tracking(self):
+        if self.xray_record is None:
+            self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                    "No xray record loaded. Please create or load an x-ray record "
+                                                    "before "
+                                                    "saving the "
+                                                    "score" ,
+                                                    QMessageBox.Ok)
+            return -1
+
+
+        if self.widget_area_menu.line_edit_labels.text() == '':
+            self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                    "Please select which bone or joint you wish to save" ,
+                                                    QMessageBox.Ok)
+            return -1
+
+        if self.widget_area_menu.side_button_group.checkedButton() is None:
+            self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                    "Please select the L or R before saving",
+                                                    QMessageBox.Ok)
+
+
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        filenames = np.array(self.xray_record.meta_table['file_name'])
+
+        id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
+
+        # print(self.xray_selection_menu.combobox_xrayid.currentText())
+        # print(id)
+        level1_name = self.xray_record.meta_table['organ'][id[0][0]]
+
+        # level1_name = self.xray_record.meta_table['organ']
+        side_name   = self.widget_area_menu.side_button_group.checkedButton().text()
+        if side_name=='N/A':
+            side_name = 'NA'
+        level2_name = side_name
+        level3_name = self.widget_area_menu.line_edit_labels.text()
+
+        annotation_id = output_annotation_name(level1_name =level1_name,
+                                               level2_name=level2_name,
+                                               level3_name=level3_name)
+        area_name = level3_name+'_'+side_name
+        date = dates[id[0][0]]
+        self.widget_area_menu.update_table_view(row_name=area_name,signal='Unsure')
 
 
     def save_scores(self):
