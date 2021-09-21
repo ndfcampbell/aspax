@@ -887,17 +887,30 @@ class XrayData(object):
 
 
     def save_bone_outline(self,bone_id,date,plineItem):
+        """
+        method to save the bone_outline
+        :param bone_id:
+        :param date:
+        :param plineItem:
+        :return:
+        """
         save_folder = os.path.join(self.save_loc,'bone')
         save_folder = os.path.join(save_folder,str(date))
+        if not os.path.isdir(save_folder):
+            os.makedirs(save_folder)
         print(bone_id)
         filename    = os.path.join(save_folder,bone_id+'.txt')
         np.savetxt(filename,plineItem.control_points.tolist())
+        self.output_confirmation(organ=bone_id,filename=filename)
 
     def save_phantom_outline(self,bone_id,date,plineItem):
         save_folder = os.path.join(self.save_loc,'bone')
         save_folder = os.path.join(save_folder,str(date))
+        if not os.path.isdir(save_folder):
+            os.makedirs(save_folder)
         filename    = os.path.join(save_folder,bone_id+'.txt')
         np.savetxt(filename,plineItem.control_points.tolist())
+        self.output_confirmation(organ=bone_id,filename=filename)
 
     def save_tissue_outline(self,bone_id,date,plineItem):
         save_folder = os.path.join(self.save_loc,'tissue')
@@ -907,12 +920,14 @@ class XrayData(object):
         print(bone_id)
         filename    = os.path.join(save_folder,bone_id+'.txt')
         np.savetxt(filename,plineItem.control_points.tolist())
+        self.output_confirmation(organ=bone_id,filename=filename)
 
     def save_patch(self,joint_id,date,rectItem):
         save_folder =os.path.join(self.save_loc,'joint')
         save_folder = os.path.join(save_folder,str(date))
         filename = os.path.join(save_folder,joint_id + '.txt')
         np.savetxt(filename,rectItem.model.control_points.tolist())
+        self.output_confirmation(organ=joint_id,filename=filename)
 
     def load_patches(self):
         save_folder = os.path.join(self.save_loc,'joint_patch')
@@ -938,6 +953,24 @@ class XrayData(object):
         self.meta_table = load_csv(os.path.join(meta_loc,'metadata.csv'))
         # self.meta_table = pd.read_csv(os.path.join(meta_loc,'metadata.csv'))
         # self.meta_table = self.meta_table.to_dict()
+
+    def output_confirmation(self,organ,filename):
+        """
+        this is the method called when a file has been sucessfully saved,
+        it should output the text in a message box
+        :param text:
+        :return:
+        """
+        if os.path.isfile(filename):
+            self.msg = QMessageBox()
+            self.msg.setIcon(QMessageBox.Information)
+            self.msg.setText("Saved annotation under")
+            self.msg.setInformativeText(organ)
+            self.msg.setDetailedText("Save location \n"+filename)
+            self.msg.setStandardButtons(QMessageBox.Ok)
+            self.msg.show()
+
+
 
 
 #extracts year,id and organ information from a saved filename
@@ -1038,6 +1071,9 @@ class XrayStudy(object):#todo: finish this class so I can initialise a study fro
         fileloc  = os.path.join(self.output_loc,self.id)
         filename = os.path.join(fileloc,'metadata.csv')
         save_csv(self.meta_data,fileName=filename)
+
+
+
 
 
 

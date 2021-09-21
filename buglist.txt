@@ -1,3 +1,15 @@
-(i)  when loading the score for an xray, if that xray has a saved scoresheet, then it should be displayed.
-     fix: need to extend score_menu_widget.create_table_view to also look for the savelocation to search for the score.csv
-(ii) hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
+(i)   when loading the score for an xray, if that xray has a saved scoresheet, then it should be displayed.
+      fix: need to extend score_menu_widget.create_table_view to also look for the savelocation to search for the score.csv
+(ii)  hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
+(iii) selecting n/a and then clicking on save does not save the annotation
+(iv)  unite the save method in Menuwidget under one method for neatness
+(v)   show the shape of the saved outline in the save message box   : extend the message box class for this
+
+
+new features
+-message box saying that the annotation was saved-----done 21/09/2021 in 0.0.4
+-for the wrist bone annotation need to have a rotate function on the rectangle
+-need to be able to track the bones that have been annotated so we can come back to them, especially have the ability to come back to that
+-we want to be able to annotate landmarks
+
+
