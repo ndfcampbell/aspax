@@ -122,6 +122,8 @@ class distance_menu_widget(QWidget):
         self.save_discard_layout.addSpacing(290)
         self.save_button = SaveButton()
         self.save_button.add_to_layout(self.save_discard_layout)
+        self.unsure_button = SaveButton(title="Unsure")
+        self.unsure_button.add_to_layout(self.save_discard_layout)
         self.discard_button = QPushButton("X")
         self.discard_button.setStyleSheet("background-color: #FF6666; color: white")
         self.discard_button.setFont(self.font_button)
@@ -158,6 +160,7 @@ class area_menu_widget(distance_menu_widget):
         self.init_side_buttons() #initialises panel with R L N/A
         self.init_label_selection() #initialises qlineedit for the joint/bone selection
         self.init_save_discard() #initialises the buttons for the save and discard methods
+        self.init_table_view()
 
 
     def init_annotation_type(self):
@@ -194,6 +197,49 @@ class area_menu_widget(distance_menu_widget):
         self.suborgan_name = self.line_edit_labels.text()
         self.extension_name = self.side_name+self.limb_type+self.suborgan_name
         print(self.extension_name)
+
+
+    def init_table_view(self):
+        table_layout = QVBoxLayout()
+        self.tableView = QTableView()
+        self.tableView.setObjectName("tableView")
+        self.tableView_lineEdit = QLineEdit()
+        self.tableView_lineEdit.setObjectName("lineEdit")
+        table_layout.addWidget(self.tableView_lineEdit)
+        table_layout.addWidget(self.tableView)
+        table_widget = QWidget()
+        table_widget.setLayout(table_layout)
+        self.layout.addWidget(table_widget)
+
+        self.create_table_view()
+        # iris = sns.load_dataset('iris')
+        # iris_df = pd.DataFrame(iris)
+        # model = DataFrameModel(iris)
+        # self.tableView.setModel(model)
+
+    def create_table_view(self,my_dict=None):
+        if my_dict is None:
+            row_index = [f+'_'+side for side in ['L','R'] for f in
+                         self.damage_areas]
+
+            my_dict = {}
+            my_dict['Joint Name'] = row_index
+            for col in self.damage_types:
+                my_dict[col] = np.zeros(len(row_index))
+
+
+        self.load_table_view(my_dict)
+
+
+
+    def load_table_view(self,dataframe):
+        # model = DataFrameModel(dataframe)
+        model = DictionaryTableModel(dataframe)
+        self.tableView.setModel(model)
+
+    def save_table_view(self,file_loc):
+        dataframe = self.tableView.model()._data
+        save_csv(dataframe,fileName=file_loc)
 
 
 class score_menu_widget(distance_menu_widget):
@@ -267,7 +313,7 @@ class score_menu_widget(distance_menu_widget):
         # model = DataFrameModel(iris)
         # self.tableView.setModel(model)
 
-    def create_table_view(self,my_dict=None): #todo: force this to search the save location for the csv file
+    def create_table_view(self,my_dict=None):
         if my_dict is None:
             row_index = [f+'_'+side for side in ['L','R'] for f in
                          self.damage_areas]
@@ -373,7 +419,7 @@ class track_menu_widget(distance_menu_widget):
         # model = DataFrameModel(iris)
         # self.tableView.setModel(model)
 
-    def create_table_view(self): #todo: force this to search the save location for the csv file
+    def create_table_view(self):
         row_index = [f+'_'+side for side in ['L','R'] for f in
                      self.damage_areas]
 
@@ -646,18 +692,18 @@ class BoxDistanceArea(QLabel):
 
 
 class SaveButton(QPushButton):
-    def __init__(self):
+    def __init__(self,title="Save"):
         super().__init__()
-        self.initUI()
+        self.initUI(title=title)
 
-    def initUI(self):
+    def initUI(self,title):
         # Font settings
         self.font_header = QFont('Android Roboto', 15)
         self.font_subheader = QFont('Android Roboto', 13)
         self.font_text = QFont('Android Roboto', 10)
         self.font_button = QFont('Android Roboto', 11)
 
-        self.setText("Save")
+        self.setText(title)
         self.setStyleSheet("background-color: #16CCB1; color: white")
         self.setFont(self.font_button)
         self.setMaximumSize(75, 30)
@@ -1205,7 +1251,7 @@ def find_unique_ids(loc):
 #     :return:
 #     """
 #     files = [os.path.join(src_loc,f) for f in os.listdir(src_loc)
-#     #todo: this should use the xraystudy class to create study folders to save the xrays in
+#
 #
 #
 
