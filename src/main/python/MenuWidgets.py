@@ -267,14 +267,15 @@ class score_menu_widget(distance_menu_widget):
         # model = DataFrameModel(iris)
         # self.tableView.setModel(model)
 
-    def create_table_view(self): #todo: force this to search the save location for the csv file
-        row_index = [f+'_'+side for side in ['L','R'] for f in
-                     self.damage_areas]
+    def create_table_view(self,my_dict=None): #todo: force this to search the save location for the csv file
+        if my_dict is None:
+            row_index = [f+'_'+side for side in ['L','R'] for f in
+                         self.damage_areas]
 
-        my_dict = {}
-        my_dict['Joint Name'] = row_index
-        for col in self.damage_types:
-            my_dict[col] = np.zeros(len(row_index))
+            my_dict = {}
+            my_dict['Joint Name'] = row_index
+            for col in self.damage_types:
+                my_dict[col] = np.zeros(len(row_index))
 
 
         self.load_table_view(my_dict)
@@ -346,39 +347,13 @@ class track_menu_widget(distance_menu_widget):
 
 
     def init(self):
-        self.init_side_buttons() #initialises panel with R L N/A
-        self.init_label_selection() #initialises qcombobox for the joint/bone selection
-        self.init_score_slider() #initialises the score sliders for dsicrete scales
-        self.init_save_discard() ##initialises the buttons for the save and discard methods
+        #self.init_side_buttons() #initialises panel with R L N/A
+        #self.init_label_selection() #initialises qcombobox for the joint/bone selection
+        #self.init_score_slider() #initialises the score sliders for dsicrete scales
+        #self.init_save_discard() ##initialises the buttons for the save and discard methods
         self.init_table_view()
 
-    def init_score_slider(self):
-        score_slider_layout = score_sliders(score_name=self.score_technique,damage_types=self.damage_types,
-                                            damage_ranges=self.damage_ranges)
-        self.layout.addLayout(score_slider_layout)
-        self.score_sliders = score_slider_layout.sliders
-        for key,val in self.score_sliders.items():
-            #val.sliderMoved[int].connect(self.save_slider_value())
-            val.valueChanged[int].connect(self.save_slider_value)
 
-    def init_label_selection(self):
-        label_layout = QHBoxLayout()
-        self.score_technique_label = QLabel(self.score_technique+' on')
-        self.score_technique_label.setFont(self.font_text)
-        self.score_area_box = QComboBox()
-        self.score_area_box.setFont(self.font_text)
-        self.score_area_box.setContentsMargins(2,1,2,1)
-        self.score_area_box.setStyleSheet(
-            "background-color: #f2f2f2; color: black; border-style: solid; border-width: 1px; border-color: "
-            "#BFBFBF")
-        self.score_area_box.setMaximumSize(300,30)
-        self.score_area_box.setMinimumSize(300,30)
-        self.score_area_box.addItems(self.damage_areas)
-        label_layout.addWidget(self.score_technique_label)
-        label_layout.addWidget(self.score_area_box)
-        label_widget = QWidget()
-        label_widget.setLayout(label_layout)
-        self.layout.addWidget(label_widget)
 
     def init_table_view(self):
         table_layout = QVBoxLayout()

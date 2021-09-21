@@ -88,6 +88,17 @@ class InspectXRays(QMainWindow):
         self.menu_tabs.addTab(self.widget_score_menu,self.widget_score_menu.score_technique)
         self.connect_sub_buttons()
 
+        date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+        #self.xray_record.meta_table[]
+        file_loc = os.path.join(self.xray_record.save_loc,'scores')
+        #print(file_loc)
+        file_loc = os.path.join(file_loc,date)
+        file_name = os.path.join(file_loc,self.widget_score_menu.score_technique + '.csv')
+
+        if os.path.isfile(file_name):
+            my_dict = load_csv(file_name)
+            self.widget_score_menu.load_table_view(my_dict)
+
 
 
     def initialise_right_panel(self):

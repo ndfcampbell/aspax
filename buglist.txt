@@ -1,5 +1,5 @@
 (i)   when loading the score for an xray, if that xray has a saved scoresheet, then it should be displayed.
-      fix: need to extend score_menu_widget.create_table_view to also look for the savelocation to search for the score.csv
+      fix: need to extend score_menu_widget.create_table_view to also look for the savelocation to search for the score.csv----fixed 21/09/2021 in 0.0.4
 (ii)  hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
 (iii) selecting n/a and then clicking on save does not save the annotation---------fixed 21/09/2021 in 0.0.4
 (iv)  unite the save method in Menuwidget under one method for neatness
