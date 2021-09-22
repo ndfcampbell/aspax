@@ -397,7 +397,7 @@ class score_menu_widget(distance_menu_widget):
                 score_array = df[col_name]
                 id = np.where(np.array(df['Joint Name'])==row_name)
                 score_array[id[0][0]] = val.value()
-                df[col_name] = np.array(score_array).astype(np.int)
+                df[col_name] = np.array(score_array).astype(np.float32)
             self.load_table_view(df)
 
 
