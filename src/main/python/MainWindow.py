@@ -363,11 +363,19 @@ class InspectXRays(QMainWindow):
             self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
 
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
-                self.widget_area_menu.annotation_button_group.checkedButton().text()=='Other':
-            annotation_id = 'phantom'
+                self.widget_area_menu.annotation_button_group.checkedButton().text()=='Phantom':
+            annotation_id = 'Phantom'
             self.xray_record.save_phantom_outline(bone_id=annotation_id,date=date,\
             plineItem=self.image_widget.image_scene.polyline_annotate_item)
             self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+
+        if self.image_widget.image_scene.polyline_annotate_item is not None and \
+                self.widget_area_menu.annotation_button_group.checkedButton().text()=='Landmark':
+
+            self.xray_record.save_landmark(landmark_id=annotation_id,date=date,\
+            plineItem=self.image_widget.image_scene.polyline_annotate_item)
+
+
         file_name = 'annotation_tracking_'+str(date)+'.csv'
         xray_id = self.xray_selection_menu.combobox_studyid.currentText()
         file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)

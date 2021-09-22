@@ -28,7 +28,7 @@ class distance_menu_widget(QWidget):
         self.font_header = QFont('Android Roboto', 15)
         self.font_subheader = QFont('Android Roboto', 13)
         self.font_text = QFont('Android Roboto', 10)
-        self.font_button = QFont('Android Roboto', 11)
+        self.font_button = QFont('Android Roboto', 10)
         self.layout      = QVBoxLayout()
         text_file = open(joint_list,"r")
         lines = text_file.readline().split(',')
@@ -173,14 +173,14 @@ class area_menu_widget(distance_menu_widget):
 
         self.annotation_button_group,self.annotation_type_buttons = make_buttons_from_list(titles=['Joint','Bone',
                                                                                                  'Tissue',
-                                                                                        'Other'])
+                                                                                        'Phantom','Landmark'])
         self.annotation_type_buttons[1].setChecked(True)
 
         for button in self.annotation_type_buttons:
             button.setStyleSheet("background-color: #999999; color: white")
             button.setFont(self.font_button)
-            button.setMaximumSize(70,30)
-            button.setMinimumSize(70,30)
+            button.setMaximumSize(80,30)
+            button.setMinimumSize(80,30)
             button.setCheckable(True)
             # button.setAutoExclusive(True)
             button.clicked.connect(self.get_label_name)
@@ -672,6 +672,7 @@ def make_buttons_from_list(titles=['L','R','N/A']):
     button_list = []
     for title in titles:
         button = QPushButton(title)
+
         # button.setAutoExclusive(True)
         button_list += [button]
         groupBox.addButton(button)
@@ -1107,9 +1108,20 @@ class   XrayData(object):
     def save_patch(self,joint_id,date,rectItem):
         save_folder =os.path.join(self.save_loc,'joint')
         save_folder = os.path.join(save_folder,str(date))
+        if not os.path.isdir(save_folder):
+            os.makedirs(save_folder)
         filename = os.path.join(save_folder,joint_id + '.txt')
         np.savetxt(filename,rectItem.model.control_points.tolist())
         self.output_confirmation(organ=joint_id,filename=filename)
+
+    def save_landmark(self,landmark_id,date,plineItem):
+        save_folder =os.path.join(self.save_loc,'landmark')
+        save_folder = os.path.join(save_folder,str(date))
+        if not os.path.isdir(save_folder):
+            os.makedirs(save_folder)
+        filename = os.path.join(save_folder,landmark_id + '.txt')
+        np.savetxt(filename,plineItem.model.control_points.tolist())
+        self.output_confirmation(organ=landmark_id,filename=filename)
 
     def load_patches(self):
         save_folder = os.path.join(self.save_loc,'joint_patch')
@@ -1151,6 +1163,8 @@ class   XrayData(object):
             self.msg.setDetailedText("Save location \n"+filename)
             self.msg.setStandardButtons(QMessageBox.Ok)
             self.msg.show()
+
+
 
 
 
