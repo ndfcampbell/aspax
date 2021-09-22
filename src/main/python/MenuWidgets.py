@@ -233,7 +233,7 @@ class area_menu_widget(distance_menu_widget):
 
     def load_table_view(self,dataframe):
         # model = DataFrameModel(dataframe)
-        model = DictionaryTableModel(dataframe)
+        model = StatusTableModel(dataframe)
         self.tableView.setModel(model)
 
     def save_table_view(self,file_loc):
@@ -504,6 +504,7 @@ class track_menu_widget(distance_menu_widget):
                 score_array[id[0][0]] = val.value()
                 df[col_name] = np.array(score_array).astype(np.int)
             self.load_table_view(df)
+            self.tableView.color_me()
 
 
 
@@ -1425,14 +1426,20 @@ class DictionaryTableModel(QAbstractTableModel):
         for keys,val in dictionary.items():
             self._headers += [keys]
 
+        #self.color_me()
+
     def data(self, index, role):
         row = index.row()
         col = self._headers[index.column()]
         # dt  = self._data[col].dtype
         val = self._data[col][row]
         if role == Qt.DisplayRole:
-            # Look up the key by header index.
-            return str(val)
+
+                return str(val)
+        elif role == Qt.BackgroundRole:
+            if type(val) is not str:
+
+                return QBrush(QColor(255*val/5,255-255*(val/5)**2,255-255*val/5))
             # column = index.column()
             # column_key = self._headers[column]
             # return self._data[column_key][index.row()]
@@ -1454,6 +1461,39 @@ class DictionaryTableModel(QAbstractTableModel):
 
             if orientation == Qt.Vertical:
                 return str(section)
+
+
+
+class StatusTableModel(DictionaryTableModel):
+    def __init__(self, dictionary):
+        super(StatusTableModel, self).__init__(dictionary)
+
+    def data(self, index, role):
+        num_cols = self.columnCount(index=0)
+        row = index.row()
+        col = self._headers[index.column()]
+        # dt  = self._data[col].dtype
+        val  = self._data[col][row]
+        df = self._data
+
+
+
+        if role == Qt.DisplayRole:
+
+                return str(val)
+        elif role == Qt.BackgroundRole:
+            if col=="Area Name":
+
+                if df["Completed"][row] ==1.0:
+                    return QBrush(QColor(126,249,255))
+                elif df["Not Completed"][row] ==1.0:
+                    return QBrush(QColor(255,255,255))
+                elif df["Unsure"][row] ==1.0:
+                    return QBrush(QColor(250, 160, 160))
+            # column = index.column()
+            # column_key = self._headers[column]
+            # return self._data[column_key][index.row()]
+
 
 
 
