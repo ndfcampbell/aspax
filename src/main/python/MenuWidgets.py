@@ -235,6 +235,7 @@ class area_menu_widget(distance_menu_widget):
         # model = DataFrameModel(dataframe)
         model = StatusTableModel(dataframe)
         self.tableView.setModel(model)
+        #self.tableView.update()
 
     def save_table_view(self,file_loc):
         dataframe = self.tableView.model()._data
@@ -1270,153 +1271,6 @@ def find_unique_ids(loc):
 
 
 
-#
-#
-# def create_projects(src_loc='/media/adwaye/2tb/data/xray_data/anonymised_24052021/results',target_loc='/media/adwaye/2tb/data/xray_data/aspax_projects'):
-#     """
-#     reads in a list of images from file_loc and creates a blank aspax project for each one of them
-#     :param file_loc:   string, full path of location folder containing the images from which projects should be created
-#     :param target_loc: string, full path of location folder where projects should be saved
-#     :return:
-#     """
-#     files = [os.path.join(src_loc,f) for f in os.listdir(src_loc)
-#
-#
-#
-
-
-# #class to create a dataframe that is viewable through qttableview
-#
-# class PandasModel(QAbstractTableModel):
-#     """
-#     https://stackoverflow.com/posts/44605011/revisions
-#     """
-#     def __init__(self, df = pd.DataFrame(), parent=None):
-#         QAbstractTableModel.__init__(self, parent=parent)
-#         self._df = df.copy()
-#
-#     def toDataFrame(self):
-#         return self._df.copy()
-#
-#     def headerData(self, section, orientation, role=Qt.DisplayRole):
-#         if role != Qt.DisplayRole:
-#             return QVariant()
-#
-#         if orientation == Qt.Horizontal:
-#             try:
-#                 return self._df.columns.tolist()[section]
-#             except (IndexError, ):
-#                 return QtCore.QVariant()
-#         elif orientation == Qt.Vertical:
-#             try:
-#                 # return self.df.index.tolist()
-#                 return self._df.index.tolist()[section]
-#             except (IndexError, ):
-#                 return QVariant()
-#
-#     def data(self, index, role=Qt.DisplayRole):
-#         if role != Qt.DisplayRole:
-#             return QVariant()
-#
-#         if not index.isValid():
-#             return QVariant()
-#
-#         return QVariant(str(self._df.ix[index.row(), index.column()]))
-#
-#     def setData(self, index, value, role):
-#         row = self._df.index[index.row()]
-#         col = self._df.columns[index.column()]
-#         if hasattr(value, 'toPyObject'):
-#             # PyQt4 gets a QVariant
-#             value = value.toPyObject()
-#         else:
-#             # PySide gets an unicode
-#             dtype = self._df[col].dtype
-#             if dtype != object:
-#                 value = None if value == '' else dtype.type(value)
-#         self._df.set_value(row, col, value)
-#         return True
-#
-#     def rowCount(self, parent=QModelIndex()):
-#         return len(self._df.index)
-#
-#     def columnCount(self, parent=QModelIndex()):
-#         return len(self._df.columns)
-#
-#     def sort(self, column, order):
-#         colname = self._df.columns.tolist()[column]
-#         self.layoutAboutToBeChanged.emit()
-#         self._df.sort_values(colname, ascending= order == Qt.AscendingOrder, inplace=True)
-#         self._df.reset_index(inplace=True, drop=True)
-#         self.layoutChanged.emit()
-#
-# #
-# class DataFrameModel(QAbstractTableModel):
-#     """
-#     https://stackoverflow.com/posts/44605011/revisions
-#     """
-#     DtypeRole = Qt.UserRole + 1000
-#     ValueRole = Qt.UserRole + 1001
-#
-#     def __init__(self, df=pd.DataFrame(), parent=None):
-#         super(DataFrameModel, self).__init__(parent)
-#         self._dataframe = df
-#
-#     def setDataFrame(self, dataframe):
-#         self.beginResetModel()
-#         self._dataframe = dataframe.copy()
-#         self.endResetModel()
-#
-#     def dataFrame(self):
-#         return self._dataframe
-#
-#     dataFrame = pyqtProperty(pd.DataFrame, fget=dataFrame, fset=setDataFrame)
-#
-#     @pyqtSlot(int, Qt.Orientation, result=str)
-#     def headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.DisplayRole):
-#         if role == Qt.DisplayRole:
-#             if orientation == Qt.Horizontal:
-#                 return self._dataframe.columns[section]
-#             else:
-#                 return str(self._dataframe.index[section])
-#         return QVariant()
-#
-#     def rowCount(self, parent=QModelIndex()):
-#         if parent.isValid():
-#             return 0
-#         return len(self._dataframe.index)
-#
-#     def columnCount(self, parent=QModelIndex()):
-#         if parent.isValid():
-#             return 0
-#         return self._dataframe.columns.size
-#
-#     def data(self, index, role=Qt.DisplayRole):
-#         if not index.isValid() or not (0 <= index.row() < self.rowCount() \
-#             and 0 <= index.column() < self.columnCount()):
-#             return QVariant()
-#         row = self._dataframe.index[index.row()]
-#         col = self._dataframe.columns[index.column()]
-#         dt = self._dataframe[col].dtype
-#
-#         val = self._dataframe.iloc[row][col]
-#         if role == Qt.DisplayRole:
-#             return str(val)
-#         elif role == DataFrameModel.ValueRole:
-#             return val
-#         if role == DataFrameModel.DtypeRole:
-#             return dt
-#         return QVariant()
-#
-#     def roleNames(self):
-#         roles = {
-#             Qt.DisplayRole: b'display',
-#             DataFrameModel.DtypeRole: b'dtype',
-#             DataFrameModel.ValueRole: b'value'
-#         }
-#         return roles
-
-
 
 class DictionaryTableModel(QAbstractTableModel):
     def __init__(self, dictionary):
@@ -1484,11 +1338,11 @@ class StatusTableModel(DictionaryTableModel):
         elif role == Qt.BackgroundRole:
             if col=="Area Name":
 
-                if df["Completed"][row] ==1.0:
+                if np.float(df["Completed"][row]) ==1.0:
                     return QBrush(QColor(126,249,255))
-                elif df["Not Completed"][row] ==1.0:
+                elif np.float(df["Not Completed"][row]) ==1.0:
                     return QBrush(QColor(255,255,255))
-                elif df["Unsure"][row] ==1.0:
+                elif np.float(df["Unsure"][row]) ==1.0:
                     return QBrush(QColor(250, 160, 160))
             # column = index.column()
             # column_key = self._headers[column]

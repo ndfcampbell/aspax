@@ -1,13 +1,14 @@
-(i)   when loading the score for an xray, if that xray has a saved scoresheet, then it should be displayed.
+(i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
+(ii)  unite the save method in Menuwidget under one method for neatness
+(iii) show the shape of the saved outline in the save message box   : extend the message box class for this
+(iv)  create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated
+(v)   we want to be able to annotate landmarks
+(vi)  for the wrist bone annotation need to have a rotate function on the rectangle
+
+
+Fixed
+-when loading the score for an xray, if that xray has a saved scoresheet, then it should be displayed.
       fix: need to extend score_menu_widget.create_table_view to also look for the savelocation to search for the score.csv----fixed 21/09/2021 in 0.0.4
-(ii)  hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
-(iii) selecting n/a and then clicking on save does not save the annotation---------fixed 21/09/2021 in 0.0.4
-(iv)  unite the save method in Menuwidget under one method for neatness
-(v)   show the shape of the saved outline in the save message box   : extend the message box class for this
-(vi)  create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated
-(v)   need to be able to track the bones that have been annotated so we can come back to them, especially have the ability to come back to that---prototype started, see commit message day end 21/09/2021
-(vi)  we want to be able to annotate landmarks
-(v)   for the wrist bone annotation need to have a rotate function on the rectangle
-(vi)  message box saying that the annotation was saved-----done 21/09/2021 in 0.0.4
-
-
+-selecting n/a and then clicking on save does not save the annotation---------fixed 21/09/2021 in 0.0.4
+-need to be able to track the bones that have been annotated so we can come back to them, especially have the ability to come back to that---implemented 22/09/2021
+-message box saying that the annotation was saved-----done 21/09/2021 in 0.0.4

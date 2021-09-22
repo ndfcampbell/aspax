@@ -42,6 +42,8 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
         self.load_new_score_sheet()
 
+
+
     def initialise_left_panel(self):
         layout = QVBoxLayout()
         self.xray_selection_menu = xray_selection_menu()
@@ -98,6 +100,12 @@ class InspectXRays(QMainWindow):
         if os.path.isfile(file_name):
             my_dict = load_csv(file_name)
             self.widget_score_menu.load_table_view(my_dict)
+
+        file_loc = os.path.join(self.xray_record.save_loc)
+        file_name = os.path.join(file_loc,"annotation_tracking_"+date+".csv")
+        if os.path.isfile(file_name):
+            my_dict = load_csv(file_name)
+            self.widget_area_menu.load_table_view(my_dict)
 
 
 
@@ -249,7 +257,8 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu.score_selector.currentIndexChanged.connect(self.load_new_score_sheet)
         self.widget_area_menu.save_button.clicked.connect(self.save_annotation)
         self.widget_score_menu.save_button.clicked.connect(self.save_scores)
-        self.widget_area_menu.unsure_button.clicked.connect(self.update_tracking)
+        self.widget_area_menu.unsure_button.clicked.connect(self.update_tracking_annotation)
+        self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
 
 
 
@@ -366,7 +375,7 @@ class InspectXRays(QMainWindow):
         save_csv(df,fileName=file_loc)
 
 
-    def update_tracking(self):
+    def update_tracking_annotation(self):
         if self.xray_record is None:
             self.popupWindow = QMessageBox.question(self,'Warning!',
                                                     "No xray record loaded. Please create or load an x-ray record "
@@ -418,6 +427,54 @@ class InspectXRays(QMainWindow):
         file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
         save_csv(df,fileName=file_loc)
 
+
+    def update_tracking_score(self):
+        if self.xray_record is None:
+            self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                    "No xray record loaded. Please create or load an x-ray record "
+                                                    "before "
+                                                    "saving the "
+                                                    "score" ,
+                                                    QMessageBox.Ok)
+            return -1
+
+
+        if self.widget_score_menu.side_button_group.checkedButton() is None:
+            self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                            "Please select a side to allocate the score" ,
+                                                            QMessageBox.Ok)
+            return -1
+
+
+
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        filenames = np.array(self.xray_record.meta_table['file_name'])
+
+        id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
+
+        # print(self.xray_selection_menu.combobox_xrayid.currentText())
+        # print(id)
+        level1_name = self.xray_record.meta_table['organ'][id[0][0]]
+
+        # level1_name = self.xray_record.meta_table['organ']
+        side_name   = self.widget_score_menu.side_button_group.checkedButton().text()
+        if side_name=='N/A':
+            side_name = 'NA'
+        level2_name = side_name
+        level3_name = self.widget_score_menu.score_area_box.currentText()
+
+        annotation_id = output_annotation_name(level1_name =level1_name,
+                                               level2_name=level2_name,
+                                               level3_name=level3_name)
+        area_name = level3_name+'_'+side_name
+        date = dates[id[0][0]]
+        self.widget_area_menu.update_table_view(row_name=area_name,signal='Unsure')
+        df = self.widget_area_menu.tableView.model()._data
+
+        file_name = 'annotation_tracking_'+str(date)+'.csv'
+        xray_id = self.xray_selection_menu.combobox_studyid.currentText()
+        file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
+        save_csv(df,fileName=file_loc)
 
     def save_scores(self):
         if self.xray_record is None:
