@@ -101,7 +101,7 @@ class InspectXRays(QMainWindow):
             my_dict = load_csv(file_name)
             self.widget_score_menu.load_table_view(my_dict)
 
-        file_loc = os.path.join(self.xray_record.save_loc)
+        file_loc = os.path.join(self.output_loc)
         file_name = os.path.join(file_loc,"annotation_tracking_"+date+".csv")
         if os.path.isfile(file_name):
             my_dict = load_csv(file_name)
