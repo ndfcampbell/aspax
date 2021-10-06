@@ -974,37 +974,39 @@ def make_GraphicsItem_draggable(parent):
 
 
 #rectangle = RectItem(x=0,y=0,width=10,height=10)
-DraggableRectItem = make_GraphicsItem_draggable(QtWidgets.QGraphicsRectItem)
+def main():
+    DraggableRectItem = make_GraphicsItem_draggable(QtWidgets.QGraphicsRectItem)
 
-app = QtWidgets.QApplication([])
-window = QtWidgets.QMainWindow()
-view = QtWidgets.QGraphicsView()
-scene = QGraphicsScene()
-# item = scene.addRect(0, 0, 100, 100)
-# item.setTransformOriginPoint(50, 50)
+    app = QtWidgets.QApplication([])
+    window = QtWidgets.QMainWindow()
+    view = QtWidgets.QGraphicsView()
+    scene = QGraphicsScene()
+    # item = scene.addRect(0, 0, 100, 100)
+    # item.setTransformOriginPoint(50, 50)
 
-item = RectItem(x=20,y=30,width=10,height=10)
-scene.addItem(item)
-scene.addItem(item.rotate_handle)
+    item = RectItem(x=20,y=30,width=10,height=10)
+    scene.addItem(item)
+    scene.addItem(item.rotate_handle)
 
-#handle_item = DraggableRectItem()
-
-
-
+    #handle_item = DraggableRectItem()
 
 
 
-view.setScene(scene)
-layout = QtWidgets.QVBoxLayout()
-layout.addWidget(view)
-widget = QtWidgets.QWidget()
-widget.setLayout(layout)
-window.setCentralWidget(widget)
-# layout.addWidget(QPushButton('3'))
-window.show()
-app.exec_()
 
 
+
+    view.setScene(scene)
+    layout = QtWidgets.QVBoxLayout()
+    layout.addWidget(view)
+    widget = QtWidgets.QWidget()
+    widget.setLayout(layout)
+    window.setCentralWidget(widget)
+    # layout.addWidget(QPushButton('3'))
+    window.show()
+    app.exec_()
+
+if __name__=='__main__':
+    mian()
 
 
 """

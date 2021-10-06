@@ -131,6 +131,7 @@ class MyScene(QGraphicsScene):
                 if self.rect_annotate_item is None and self.draw_rect_flag:
                     self.rect_annotate_item = RectItem(x=self.start[0],y=self.start[1],width=width,height=height)
                     self.addItem(self.rect_annotate_item)
+                    self.addItem(self.rect_annotate_item.rotate_handle)
         super(MyScene,self).mouseMoveEvent(event)
         self.update()
 
@@ -145,6 +146,7 @@ class MyScene(QGraphicsScene):
             self.annotation_length     = 0
         if self.rect_annotate_item is not None:
             self.removeItem(self.rect_annotate_item)
+            self.removeItem(self.rect_annotate_item.rotate_handle)
             self.rect_annotate_item=None
             self.start     = None
             self.end       = None
@@ -160,6 +162,7 @@ class MyScene(QGraphicsScene):
             self.polyline_annotate_item = PolylineItem(polyline_annotate)
             self.polyline_annotate_item.edge_color = QColor("#FF511C")
             self.addItem(self.polyline_annotate_item)
+
             self.annotation_length-=1
 
 # Class to handle the x-ray image - including zooming, contrasts, annotating etc.
