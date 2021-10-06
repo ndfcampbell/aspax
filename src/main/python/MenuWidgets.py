@@ -281,9 +281,10 @@ class score_menu_widget(distance_menu_widget):
         self.damage_ranges   = damage_ranges
         score_technique      = profile.pop('score_technique','Ratingen')
         self.score_technique = score_technique
-        default_areas        = ["IP", "DIP2", "DIP3", "DIP4", "DIP5", "PIP2", "PIP3", "PIP4", "PIP5", "MCP1", "MCP2",
-                                "MCP3", "MCP4", "MCP5"]#todo: expand the score profiles to have the default areas as
-        # well
+
+        default_areas        = profile.pop(["IP", "DIP2", "DIP3", "DIP4", "DIP5", "PIP2", "PIP3", "PIP4", "PIP5", "MCP1", "MCP2",
+                                "MCP3", "MCP4", "MCP5","WRIST"])
+
         damage_areas         = profile.pop('damage_areas',default_areas)
         self.damage_areas    = damage_areas
         super(score_menu_widget,self).__init__(name=name)

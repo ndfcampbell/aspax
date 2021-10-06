@@ -1,6 +1,6 @@
 
-import os,h5py
 
+import os,h5py
 
 
 class SCORE_PROFILE(object):
@@ -8,7 +8,7 @@ class SCORE_PROFILE(object):
         pass
 
 
-def create_profile(name,damage_types,damage_scores,loc='score_profiles'):
+def create_profile(name,damage_types,damage_scores,damage_areas,loc='score_profiles'):
     """
 
     :param name: name of the coring techniques eg Ratingen, VdH-PsA, PsA-MSS, Steinbrocker
@@ -22,6 +22,7 @@ def create_profile(name,damage_types,damage_scores,loc='score_profiles'):
     if not os.path.isdir(loc): os.makedirs(loc)
     mylib['damage_types']  = damage_types
     mylib['damage_scores'] =  damage_scores
+    mylib['damage_areas']  = damage_areas
     hf = h5py.File(os.path.join(loc,name+'.h5'),'w')
     #Store this dictionary object as hdf5 metadata
     for k in mylib.keys():
@@ -53,9 +54,15 @@ if __name__=='__main__':
                            [(0,3),(0,4)],
                            [(0,5),(0,5)],
                            ]
-
-    for name,damage_types,damage_scores in zip(names,damage_types_array,damage_scores_array):
-        create_profile(name,damage_types,damage_scores)
+    damage_areas = []
+    for name in names:
+        area_loc  = "config"
+        text_file = open(os.path.join(name+'_areas.txt'))
+        lines     = text_file.readline().split(",")
+        damage_areas+=[lines]
+        text_file.close()
+    for name,damage_types,damage_scores,damage_area in zip(names,damage_types_array,damage_scores_array,damage_areas):
+        create_profile(name,damage_types,damage_scores,damage_areas=damage_area,loc = "./")
 
 
 
