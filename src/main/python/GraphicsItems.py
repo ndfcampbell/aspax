@@ -14,6 +14,8 @@ from PyQt5.QtWidgets import (QGraphicsScene, QGraphicsItem, QGraphicsTextItem)
 from DataModels import *
 from Common import *
 from Utils import _NP, _QP
+import math
+from PyQt5 import QtCore, QtWidgets
 
 DEFAULT_COLOR = QColor(255, 255, 150, 50)
 DEFAULT_HIGH_COLOR = Qt.yellow
@@ -741,8 +743,22 @@ class RectItem(ControllableItem):
         """
         model = Rect(x, y, width, height)
 
+
         super(RectItem, self).__init__(model=model, **kwargs)
         self._drag_flag = False
+        DraggableRectItem = make_GraphicsItem_draggable(QtWidgets.QGraphicsEllipseItem)
+        self.rotate_handle = DraggableRectItem()
+        self.rotate_handle.signaller.positionChanged.connect(self.rotate_item)
+        self.rotate_handle.setRect(-40, -40, 20, 20)
+        #scene.addItem(handle_item)
+
+    def rotate_item(position):
+        item_position = self.transformOriginPoint()
+        angle = math.atan2(item_position.y() - position.y(),
+                           item_position.x() - position.x()) / math.pi * 180 - 45  # -45 because handle item is at upper left border, adjust to your needs
+
+        self.setRotation(angle)
+
 
     def _updateRect(self):
         self.rect = self._adjustEdge(QRectF(self.model.x, self.model.y, self.model.width, self.model.height))
@@ -920,18 +936,73 @@ class graphicsScene(QtGui.QGraphicsScene):
 """
 
 
+class DraggableGraphicsItemSignaller(QtCore.QObject):
+
+    positionChanged = QtCore.pyqtSignal(QtCore.QPointF)
+
+    def __init__(self):
+        super().__init__()
+
+def make_GraphicsItem_draggable(parent):
+
+    class DraggableGraphicsItem(parent):
+
+        def __init__(self, *args, **kwargs):
+            """
+            By default QGraphicsItems are not movable and also do not emit signals when the position is changed for
+            performance reasons. We need to turn this on.
+            """
+            parent.__init__(self, *args, **kwargs)
+            self.parent = parent
+            self.setFlags(QtWidgets.QGraphicsItem.ItemIsMovable | QtWidgets.QGraphicsItem.ItemSendsScenePositionChanges)
+            self.signaller = DraggableGraphicsItemSignaller()
+
+        def itemChange(self, change, value):
+            if change == QtWidgets.QGraphicsItem.ItemPositionChange:
+                self.signaller.positionChanged.emit(value)
+
+            return parent.itemChange(self, change, value)
+
+    return DraggableGraphicsItem
+
+# def rotate_item(position):
+#     item_position = item.transformOriginPoint()
+#     angle = math.atan2(item_position.y() - position.y(), item_position.x() - position.x()) / math.pi * 180 - 45 # -45 because handle item is at upper left border, adjust to your needs
+#     print(angle)
+#     item.setRotation(angle)
 
 
-if __name__ == '__main__':
-    geo1 = ControllableItem(Polyline([[0, 1]]))
-    geo2 = ControllableItem(Polyline([[0, 1]]))
-    geo3 = ControllableItem(Polyline([[0, 1]]))
 
-    print(DEFAULT_IDMAN.ids)
+#rectangle = RectItem(x=0,y=0,width=10,height=10)
+DraggableRectItem = make_GraphicsItem_draggable(QtWidgets.QGraphicsRectItem)
+
+app = QtWidgets.QApplication([])
+window = QtWidgets.QMainWindow()
+view = QtWidgets.QGraphicsView()
+scene = QGraphicsScene()
+# item = scene.addRect(0, 0, 100, 100)
+# item.setTransformOriginPoint(50, 50)
+
+item = RectItem(x=20,y=30,width=10,height=10)
+scene.addItem(item)
+scene.addItem(item.rotate_handle)
+
+#handle_item = DraggableRectItem()
 
 
 
 
+
+
+view.setScene(scene)
+layout = QtWidgets.QVBoxLayout()
+layout.addWidget(view)
+widget = QtWidgets.QWidget()
+widget.setLayout(layout)
+window.setCentralWidget(widget)
+# layout.addWidget(QPushButton('3'))
+window.show()
+app.exec_()
 
 
 
