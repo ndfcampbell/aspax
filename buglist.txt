@@ -2,7 +2,7 @@
 (ii)  unite the save method in Menuwidget under one method for neatness
 (iii) show the shape of the saved outline in the save message box   : extend the message box class for this
 (iv)  create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated
-(v)  for the wrist bone annotation need to have a rotate function on the rectangle
+(v)  for the wrist bone annotation need to have a rotate function on the rectangle: this can be done now, but it needs to be refined
 
 
 Fixed
