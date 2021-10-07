@@ -732,6 +732,25 @@ class PointsItem(ControllableItem):
             self.update()            # self.addHandle(_NP(e.scenePos()))
            
 
+class Ellipse(QtWidgets.QGraphicsEllipseItem):
+    def __init__(self):
+        super(Ellipse,self).__init__()
+        self.size = 3
+        self.color = DEFAULT_COLOR
+        self.idd = DEFAULT_IDMAN.next()
+
+    def boundingRect(self):
+        size = self.size
+        return self.rect.adjusted(-size,-size,0,0)
+
+    def paint(self,painter,option,widget=None):
+        qp = painter
+        qp.setPen(QtGui.QColor(168, 34, 3))
+        qp.setBrush(QBrush(self.color, Qt.SolidPattern))
+        # size = self.size
+        qp.drawEllipse(self.boundingRect())
+
+
 class RectItem(ControllableItem):
     def __init__(self, x, y, width, height, **kwargs):
         """
@@ -746,13 +765,19 @@ class RectItem(ControllableItem):
 
         super(RectItem, self).__init__(model=model, **kwargs)
         self._drag_flag = False
+
         DraggableRectItem = make_GraphicsItem_draggable(QtWidgets.QGraphicsEllipseItem)
+        #DraggableRectItem = make_GraphicsItem_draggable(QtWidgets.QGraphicsEllipseItem)
         self.rotate_handle = DraggableRectItem()
+        self.rotate_handle.setBrush(QBrush(QtCore.Qt.red, style = QtCore.Qt.SolidPattern))
+        #self.rotate_handle._pa
         self.rotate_handle.signaller.positionChanged.connect(self.rotate_item)
-        self.rotate_handle.setRect(-40, -40, 20, 20)
+        self.rotate_handle.setRect(self.model.x-10, self.model.y-10, 10, 10)
+        self.setTransformOriginPoint(self.model.x+self.model.width/2,self.model.y+self.model.height/2)
+        #self.rotate_handle.
         #scene.addItem(handle_item)
 
-    def rotate_item(position):
+    def rotate_item(self,position):
         item_position = self.transformOriginPoint()
         angle = math.atan2(item_position.y() - position.y(),
                            item_position.x() - position.x()) / math.pi * 180 - 45  # -45 because handle item is at upper left border, adjust to your needs
@@ -776,6 +801,7 @@ class RectItem(ControllableItem):
             #self.moveBy(dx, dy)
             #self.moveTo(_NP(e.scenePos())[0],_NP(e.scenePos())[1])
             self.model._shiftControlPts(dx,dy)
+            self.setTransformOriginPoint(self.model.x + self.model.width / 2, self.model.y + self.model.height / 2)
             self.update()            # self.addHandle(_NP(e.scenePos()))
 
 
@@ -1006,7 +1032,7 @@ def main():
     app.exec_()
 
 if __name__=='__main__':
-    mian()
+    main()
 
 
 """
