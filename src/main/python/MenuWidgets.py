@@ -1112,7 +1112,8 @@ class   XrayData(object):
         if not os.path.isdir(save_folder):
             os.makedirs(save_folder)
         filename = os.path.join(save_folder,joint_id + '.txt')
-        np.savetxt(filename,rectItem.model.control_points.tolist())
+        bounding_points = rectItem.model.bounding_points
+        np.savetxt(filename,bounding_points.tolist())
         self.output_confirmation(organ=joint_id,filename=filename)
 
     def save_landmark(self,landmark_id,date,plineItem):

@@ -1,16 +1,15 @@
 (i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
 (ii)  unite the save method in Menuwidget under one method for neatness
 (iii) show the shape of the saved outline in the save message box   : extend the message box class for this
-(iv)  create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated
-(v)  for the wrist bone annotation need to have a rotate function on the rectangle: this can be done now, but it needs to be refined:
-     - in DataModels.py: modify the rect model so as to accept a rotation parameter which modifies the angle attribute
-     - keep the width, x and height constant, however use these and the angle to generate the control points
-     - in RectItem.rotate_item, the contrl_points are not being modified: if tis is doe on the model which then updates thegraphicsitem, then things will work
+(iv)  create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated:
+      will now connect this into the mainwindow
 
-(vi)  check that the control points for both the rectitem and the polyline ites generate coordinates corresponding to the area of interest
 
 
 Fixed
+-for the wrist bone annotation need to have a rotate function on the rectangle: this can be done now,
+  fix:this was fixed by changing the way the RectItem is being painted, it now uses the x,y coords along with the width and height to generate points which gets turned into a polygon
+-check that the control points for both the rectitem and the polyline ites generate coordinates corresponding to the area of interest: this was done on polylines and rectitems
 -when loading the score for an xray, if that xray has a saved scoresheet, then it should be displayed.
       fix: need to extend score_menu_widget.create_table_view to also look for the savelocation to search for the score.csv----fixed 21/09/2021 in 0.0.4
 -selecting n/a and then clicking on save does not save the annotation---------fixed 21/09/2021 in 0.0.4
@@ -18,76 +17,3 @@ Fixed
 -message box saying that the annotation was saved-----done 21/09/2021 in 0.0.4
 -we want to be able to annotate landmarks----fixed 22/09/2021 in 0.0.4
 
-
-
-
-
-class Rect(Geometry):
-    def __init__(self, x=0, y=0, width=0, height=0):
-        self._x, self._y, self._width, self._height = x, y, width, height
-        self._angle = 0.0
-        super(Rect, self).__init__()
-
-    @property
-    def x(self): return self._x
-
-    @x.setter
-    def x(self, value): self._x = value
-
-    @property
-    def y(self): return self._y
-
-    @y.setter
-    def y(self, value): self._y = value
-
-    @property
-    def width(self): return self._width
-
-    @width.setter
-    def width(self, value): self._width = value
-
-    @property
-    def height(self): return self._height
-
-    @height.setter
-    def height(self, value): self._height = value
-
-    @property
-    def angle(self):
-        return self._angle
-
-    @angle.setter
-    def angle(self,theta):
-        self._angle = theta
-
-    @property
-    def control_points(self):
-        x1 = self._x
-        y1 = self._y
-        x2 = self._x+self._width
-        y2 =self._y+self._height
-        theta = self.angle
-        coords = np.array([[xrot, yrot], [self._x + self._width, self._y + self._height]])
-        coords = coords - np.mean(coords,axis=1)
-        rotation_matrix = np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
-        coords_rot = (rotation_matrix@coords.transpose).transpose
-        return coords_rot
-
-
-
-    @control_points.setter
-    def control_points(self, points):
-        if points.shape == (2, 2):
-            self._x, self._y, self._width, self._height = \
-                points[0][0], points[0][1], abs(points[1][0] - points[0][0]), abs(points[1][1] - points[0][1])
-
-    def toPolies(self):
-        return np.array([])
-
-    def _shiftControlPts(self,dx,dy):
-        control = self.control_points
-        self.x += dx
-        self.y += dy
-
-
-        self.update()
