@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 from Profiles import *
 import shutil
 import numpy as np
+import cv2
 
 
 # Global variables to flag what tab needs to be navigated back to after creating new scoring sheet
@@ -22,6 +23,7 @@ from MenuWidgets import area_menu_widget,score_menu_widget, \
     save_csv, load_csv
 
 from ImagingWidgets import ImageHandler
+from DiagnosticWidgets import PlotWindow
 
 
 class InspectXRays(QMainWindow):
@@ -257,6 +259,7 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu.score_selector.currentIndexChanged.connect(self.load_new_score_sheet)
         self.widget_area_menu.save_button.clicked.connect(self.save_annotation)
         self.widget_score_menu.save_button.clicked.connect(self.save_scores)
+        self.widget_area_menu.view_button.clicked.connect(self.display_all_current_annotations)
         self.widget_area_menu.unsure_button.clicked.connect(self.update_tracking_annotation)
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
 
@@ -579,6 +582,38 @@ class InspectXRays(QMainWindow):
                 self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
             else:
                 ('empty array for the id where the filenames = the combobox content')
+
+
+    def display_all_current_annotations(self):
+        im_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
+        date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+        im_name = self.xray_selection_menu.combobox_xrayid.currentText()
+        # self.xray_record.meta_table[]
+        joint_loc = os.path.join(self.xray_record.save_loc, 'joint')
+        joint_loc = os.path.join(joint_loc, date)
+        bones_loc = os.path.join(self.xray_record.save_loc, 'bone')
+        bones_loc = os.path.join(bones_loc, date)
+        rects = [os.path.join(joint_loc, f) for f in os.listdir(joint_loc)]
+        polys = [os.path.join(bones_loc, f) for f in os.listdir(bones_loc)]
+        self.display_window = PlotWindow()
+
+        for rect in rects:
+            x = np.loadtxt(rect)
+            self.display_window.plot(np.append(x[:, 0], x[0, 0]), np.append(x[:, 1], x[0, 1]))
+
+        for poly in polys:
+            x = np.loadtxt(poly)
+            self.display_window.plot(x[:, 0], x[:, 1])
+
+        im = cv2.imread(os.path.join(im_loc,im_name))
+        self.display_window.imshow(im)
+
+
+
+
+        self.display_window.show()
+
+
 
 
 

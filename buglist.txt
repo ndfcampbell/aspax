@@ -1,12 +1,13 @@
 (i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
 (ii)  unite the save method in Menuwidget under one method for neatness
-(iii) show the shape of the saved outline in the save message box   : extend the message box class for this
-(iv)  create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated:
-      will now connect this into the mainwindow
+(iii) show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
+
 
 
 
 Fixed
+-create a class that plots the bone outlines into a window, and display this window when pressing on some button on the menu_widget so people know what they have annotated:
+      this can now be done by clicking on 'view' in the area_menu_widget
 -for the wrist bone annotation need to have a rotate function on the rectangle: this can be done now,
   fix:this was fixed by changing the way the RectItem is being painted, it now uses the x,y coords along with the width and height to generate points which gets turned into a polygon
 -check that the control points for both the rectitem and the polyline ites generate coordinates corresponding to the area of interest: this was done on polylines and rectitems
