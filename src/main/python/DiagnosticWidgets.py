@@ -43,7 +43,7 @@ class PlotWindow(QtWidgets.QWidget):
 
 
 
-    def plot(self,x,y):
+    def plot(self,x,y):#todo: add the option to color and change the size etc, might have to pass **kwargs to imshow within
         ''' plot some random stuff '''
         # random data
 
