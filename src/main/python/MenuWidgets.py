@@ -162,6 +162,25 @@ class area_menu_widget(distance_menu_widget):
         self.init_save_discard() #initialises the buttons for the save and discard methods
         self.init_table_view()
 
+    def init_save_discard(self):
+        self.save_discard_layout = QHBoxLayout()
+        self.save_discard_layout.addSpacing(290)
+        self.save_button = SaveButton()
+        self.save_button.add_to_layout(self.save_discard_layout)
+        self.unsure_button = SaveButton(title="Unsure")
+        self.unsure_button.add_to_layout(self.save_discard_layout)
+        self.view_button = SaveButton(title="View")
+        self.view_button.add_to_layout(self.save_discard_layout)
+        self.discard_button = QPushButton("X")
+        self.discard_button.setStyleSheet("background-color: #FF6666; color: white")
+        self.discard_button.setFont(self.font_button)
+        self.discard_button.setMaximumSize(30,30)
+        self.discard_button.setMinimumSize(30,30)
+        self.save_discard_layout.addWidget(self.discard_button,alignment=Qt.AlignRight)
+        self.save_discard_widget = QWidget()
+        self.save_discard_widget.setLayout(self.save_discard_layout)
+
+        self.layout.addWidget(self.save_discard_widget)
 
     def init_annotation_type(self):
         """
@@ -781,20 +800,28 @@ class xray_selection_menu(QWidget):
         self.setLayout(self.layout)
 
     def init_xray_creation_options(self):
-        layout = QHBoxLayout()
+        layout = QVBoxLayout()
+        study_layout = QHBoxLayout()
         study_id_label = QLabel("Study ID")
         study_id_label.setFont(self.font_text)
-        layout.addWidget(study_id_label,1)  # Number for relative size compared to other widgets
+        study_layout.addWidget(study_id_label,1)  # Number for relative size compared to other widgets
         self.combobox_studyid = QComboBox()
         self.combobox_studyid.setFont(self.font_text)
-        layout.addWidget(self.combobox_studyid,2)  # Number for relative size compared to other widgets
+        study_layout.addWidget(self.combobox_studyid,2)  # Number for relative size compared to other widgets
+        studyWidget = QWidget()
+        studyWidget.setLayout(study_layout)
 
+        xray_layout = QHBoxLayout()
         xray_id_label = QLabel("Xray ID")
         xray_id_label.setFont(self.font_text)
-        layout.addWidget(xray_id_label,1)  # Number for relative size compared to other widgets
+        xray_layout.addWidget(xray_id_label,1)  # Number for relative size compared to other widgets
         self.combobox_xrayid = QComboBox()
         self.combobox_xrayid.setFont(self.font_text)
-        layout.addWidget(self.combobox_xrayid,2)  # Number for relative size compared to other widgets
+        xray_layout.addWidget(self.combobox_xrayid,2)  # Number for relative size compared to other widgets
+        xray_widget = QWidget()
+        xray_widget.setLayout(xray_layout)
+        layout.addWidget(studyWidget)
+        layout.addWidget(xray_widget)
 
         button_layout = QHBoxLayout()
         self.new_study_button = QPushButton("+ New Study")
