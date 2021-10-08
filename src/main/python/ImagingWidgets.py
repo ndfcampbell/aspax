@@ -105,13 +105,14 @@ class MyScene(QGraphicsScene):
 
                 if self.pressed and self.rect_annotate_item is not None:
                     coord = _NP(item.mapFromScene(event.scenePos()))
-                    print(coord)
+
 
                     dx = self.start[0]-self.rect_annotate_item.model.x
                     dy = self.start[1]-self.rect_annotate_item.model.y
                     self.start = coord
                     self.rect_annotate_item.model._shiftControlPts(dx,dy)
                     self.rect_annotate_item.update()
+                    print('control points= ')
                     print(self.rect_annotate_item.model.control_points)
                     self.update()
         super(MyScene,self).mouseMoveEvent(event)

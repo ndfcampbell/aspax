@@ -1,6 +1,7 @@
 
 from abc import abstractmethod
 from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.Qt import QPolygonF, QPointF
 from skimage import draw
 import json
 import numpy as np
@@ -177,6 +178,90 @@ class Rect(Geometry):
 
 
         self.update()
+
+
+
+class RotateRect(Rect):
+    def __init__(self,x=0, y=0, width=0, height=0,angle=0):
+        self._angle = angle
+        super(RotateRect,self).__init__(x=x,y=y,height=height,width=width)
+
+
+    @property
+    def angle(self): return self._angle
+
+    @angle.setter
+    def angle(self,theta): self._angle = theta
+
+
+    @property
+    def control_points(self):
+        x1 = self._x
+        y1 = self._y
+        x2 = self._x+self._width
+        y2 =self._y+self._height
+        theta = self.angle
+
+
+
+        coords   = np.array([[x1, y1], [x2, y2]])
+        # mean_pos = np.mean(coords,axis=0)
+        mean_pos = np.array([self._x + self._width / 2, self._y + self._height / 2])
+        coords = coords - mean_pos
+        rotation_matrix = np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
+        coords_rot = (rotation_matrix@coords.transpose()).transpose() + mean_pos
+        return coords_rot
+
+    @control_points.setter
+    def control_points(self, points):
+
+
+        if points.shape == (2, 2):
+            theta = -self.angle
+            coords = points.copy()
+            mean_pos = np.mean(coords,axis=0)
+            #mean_pos = np.array([self._x + self._width / 2, self._y + self._height / 2])
+            coords = coords - mean_pos
+            rotation_matrix = np.array([[np.cos(theta), -np.sin(theta)], [np.sin(theta), np.cos(theta)]])
+            coords_rot = (rotation_matrix @ coords.transpose()).transpose() + mean_pos
+            self._x, self._y, self._width, self._height = \
+                coords_rot[0][0], coords_rot[0][1], abs(coords_rot[1][0] - coords_rot[0][0]), abs(coords_rot[1][1] - coords_rot[0][1])
+
+    @property
+    def bounding_polygon(self):
+        x1 = self._x
+        y1 = self._y
+        x2 = self._x+self._width
+        y2 =self._y
+        x3 = self._x+self._width
+        y3 =self._y+self._height
+        x4 = self._x
+        y4 =self._y+self._height
+        theta = self.angle
+
+
+
+        coords   = np.array([[x1, y1], [x2, y2],[x3,y3],[x4,y4]])
+        # mean_pos = np.mean(coords,axis=0)
+        mean_pos = np.array([self._x + self._width / 2, self._y + self._height / 2])
+        coords = coords - mean_pos
+        rotation_matrix = np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
+        coords_rot = (rotation_matrix@coords.transpose()).transpose() + mean_pos
+        polygon = QPolygonF()#todo: look up the proper syntax
+        for i in range(4):
+            polygon.append(QPointF(coords_rot[i][0], coords_rot[i][1]))
+
+
+        return polygon
+
+
+    def rotate(self,theta):
+        pass
+
+
+
+
+
 
 
 class Box(Rect):

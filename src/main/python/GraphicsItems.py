@@ -751,7 +751,8 @@ class Ellipse(QtWidgets.QGraphicsEllipseItem):
         qp.drawEllipse(self.boundingRect())
 
 
-class RectItem(ControllableItem):
+
+class BaseRectItem(ControllableItem):
     def __init__(self, x, y, width, height, **kwargs):
         """
         :param x: top-left corner
@@ -761,6 +762,40 @@ class RectItem(ControllableItem):
         :param kwargs: see @ControllableItem
         """
         model = Rect(x, y, width, height)
+
+        super(BaseRectItem, self).__init__(model=model, **kwargs)
+        self._drag_flag = False
+
+    def _updateRect(self):
+        self.rect = self._adjustEdge(QRectF(self.model.x, self.model.y, self.model.width, self.model.height))
+
+    def _paintMe(self, painter, option, widget=None):
+        qp = painter
+        qp.drawRect(self.model.x, self.model.y, self.model.width, self.model.height)
+
+
+    def mousePressEvent(self, e):
+        if e.button() == 1 and self._drag_flag == True:
+            ctrl = self.model.control_points
+            dx = _NP(e.scenePos())[0]-self.model.x#ctrl[0,0]
+            dy = _NP(e.scenePos())[1]-self.model.y#ctrl[0,1]
+            #self.moveBy(dx, dy)
+            #self.moveTo(_NP(e.scenePos())[0],_NP(e.scenePos())[1])
+            self.model._shiftControlPts(dx,dy)
+            self.update()            # self.addHandle(_NP(e.scenePos()))
+
+
+
+class RectItem(ControllableItem):
+    def __init__(self, x, y, width, height, **kwargs):
+        """
+        :param x: top-left corner
+        :param y: bottom-right corner
+        :param width:
+        :param height:
+        :param kwargs: see @ControllableItem
+        """
+        model = RotateRect(x, y, width, height,angle=0)
 
 
         super(RectItem, self).__init__(model=model, **kwargs)
@@ -777,20 +812,41 @@ class RectItem(ControllableItem):
         #self.rotate_handle.
         #scene.addItem(handle_item)
 
+
+    def _paintMe(self, painter, option, widget=None):
+        qp = painter
+        polygon = self.model.bounding_polygon
+        #qp.drawRect(self.model.x, self.model.y, self.model.width, self.model.height)
+        qp.drawPolygon(polygon)
+
     def rotate_item(self,position):
+        center = np.mean(self.control_points, axis=0)
+        self.setTransformOriginPoint(center[0],center[1])
         item_position = self.transformOriginPoint()
         angle = math.atan2(item_position.y() - position.y(),
                            item_position.x() - position.x()) / math.pi * 180 - 45  # -45 because handle item is at upper left border, adjust to your needs
+        angle *=0.8
+        print('@computed angle={:.3}'.format(angle))
+        #self.setRotation(180*angle/np.pi)
 
-        self.setRotation(angle)
+        self.model.angle=angle
+        self.model.update()
+        self.update()
+
+        print('model angle =')
+        print(self.model.angle)
+        print('modelx=')
+        print(self.model.x)
+        print('control points =')
+        print(self.control_points)
 
 
     def _updateRect(self):
         self.rect = self._adjustEdge(QRectF(self.model.x, self.model.y, self.model.width, self.model.height))
 
-    def _paintMe(self, painter, option, widget=None):
-        qp = painter
-        qp.drawRect(self.model.x, self.model.y, self.model.width, self.model.height)
+    # def _paintMe(self, painter, option, widget=None):
+    #     qp = painter
+    #     qp.drawRect(self.model.x, self.model.y, self.model.width, self.model.height)
 
 
     def mousePressEvent(self, e):
