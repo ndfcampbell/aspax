@@ -1,6 +1,7 @@
 (i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
 (ii)  unite the save method in Menuwidget under one method for neatness
 (iii) show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
+(iv)  add the name of the annotations in the diagnostic window when displaying all annotations
 
 
 

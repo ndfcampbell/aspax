@@ -52,6 +52,11 @@ class MyScene(QGraphicsScene):
 
     def display_image(self,img):
         self.clear()
+        self.rect_annotate_item = None
+        self.polyline_annotate_item = None
+        self.annotation_length = 0
+        self.start = None
+        self.end = None
         self.pixmap = self.addPixmap(img)
         self.update()
 
