@@ -2,6 +2,7 @@
 (ii)  unite the save method in Menuwidget under one method for neatness
 (iii) show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
 (iv)  add the name of the annotations in the diagnostic window when displaying all annotations
+(v)   pressing clear when the rotate handle move too far away from the rectItem causes the program to crash
 
 
 
