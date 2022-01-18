@@ -807,6 +807,8 @@ class xray_selection_menu(QWidget):
         study_layout.addWidget(study_id_label,1)  # Number for relative size compared to other widgets
         self.combobox_studyid = QComboBox()
         self.combobox_studyid.setFont(self.font_text)
+        self.combobox_studyid.setToolTip(
+            "This displays the file study id to which the xray being viewed belongs. Use the dropdown to select another study from the working directory.")
         study_layout.addWidget(self.combobox_studyid,2)  # Number for relative size compared to other widgets
         studyWidget = QWidget()
         studyWidget.setLayout(study_layout)
@@ -816,6 +818,7 @@ class xray_selection_menu(QWidget):
         xray_id_label.setFont(self.font_text)
         xray_layout.addWidget(xray_id_label,1)  # Number for relative size compared to other widgets
         self.combobox_xrayid = QComboBox()
+        self.combobox_xrayid.setToolTip("This displays the file name of the xray being viewed. Use the dropdown to select another xray from the same study.")
         self.combobox_xrayid.setFont(self.font_text)
         xray_layout.addWidget(self.combobox_xrayid,2)  # Number for relative size compared to other widgets
         xray_widget = QWidget()
@@ -830,6 +833,7 @@ class xray_selection_menu(QWidget):
             "background-color: #362699; color: white" "}")
 
         self.addXrayToStudy_button = QPushButton("Add X-ray to Study")
+        self.addXrayToStudy_button.setToolTip("Opens up the file dialog to allow the the user to select a new xray to add to the current study.")
         self.addXrayToStudy_button.setStyleSheet(
             "QPushButton" "{" "background-color: rgb(102,102,102); color: white" "}" "QPushButton::pressed" "{"
             "background-color: #362699; color: white" "}")
@@ -837,6 +841,7 @@ class xray_selection_menu(QWidget):
         button_layout.addWidget(self.addXrayToStudy_button)
 
         self.set_wdir_button = QPushButton("Change save location")
+        self.set_wdir_button.setToolTip("Changes the location where xrays and annotations are saved. If a location with a supported file structure is found, the app loads all the studies for the user.")
         self.set_wdir_button.setStyleSheet(
             "QPushButton" "{" "background-color: rgb(102,102,102); color: white" "}" "QPushButton::pressed" "{"
             "background-color: #362699; color: white" "}")
@@ -859,8 +864,11 @@ class xray_selection_menu(QWidget):
         score_organ_label        = QLabel("Anatomical Structure")
         self.xray_info_box_date  = QLineEdit()
         self.xray_info_box_date.setReadOnly(True)
+        self.xray_info_box_organ.setToolTip("Shows the date of acquisition of the xray being viewed")
         self.xray_info_box_organ = QLineEdit()
+
         self.xray_info_box_organ.setReadOnly(True)
+        self.xray_info_box_organ.setToolTip("Shows the name of the organ being displayed")
         layout2.addWidget(score_date_label, 1)
         layout2.addWidget(self.xray_info_box_date, 2)
         layout2.addWidget(score_organ_label, 1)
