@@ -864,7 +864,7 @@ class xray_selection_menu(QWidget):
         score_organ_label        = QLabel("Anatomical Structure")
         self.xray_info_box_date  = QLineEdit()
         self.xray_info_box_date.setReadOnly(True)
-        self.xray_info_box_organ.setToolTip("Shows the date of acquisition of the xray being viewed")
+        self.xray_info_box_date.setToolTip("Shows the date of acquisition of the xray being viewed")
         self.xray_info_box_organ = QLineEdit()
 
         self.xray_info_box_organ.setReadOnly(True)
