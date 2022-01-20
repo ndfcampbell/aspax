@@ -41,7 +41,9 @@ class AppContext(ApplicationContext):
             "Zoom In": QIcon(self.get_resource(os.path.join("images","zoom_in.png"))),
             "Undo":QIcon(self.get_resource(os.path.join("images","undo.png"))),
             "Redo":QIcon(self.get_resource(os.path.join("images","redo.png"))),
-            "Clear Label":QIcon(self.get_resource(os.path.join("images","clear-icon-3.png")))
+            "Clear Label":QIcon(self.get_resource(os.path.join("images","clear-icon-3.png"))),
+            "Good Image Quality": QIcon(self.get_resource(os.path.join("images", "like_button_blue.png"))),
+            "Bad Image Quality": QIcon(self.get_resource(os.path.join("images", "dislike_button_blue.png")))
         }
 
 

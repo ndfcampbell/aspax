@@ -1,6 +1,6 @@
 
 import time
-from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction
+from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, QActionGroup
 from PyQt5.QtGui import QColor,QPixmap
 from PyQt5.QtCore import Qt
 from GraphicsItems import PolylineItem,RectItem
@@ -206,8 +206,20 @@ class ImageHandler(QWidget):
         self.toolbar.buttons['Zoom In'].triggered.connect(self.zoom_in)
         self.toolbar.buttons['Undo'].triggered.connect(self.image_scene.undo)
         self.toolbar.buttons['Clear Label'].triggered.connect(self.image_scene.clear_poly)
+
+        draw_group = QActionGroup(self)
+        draw_group.setExclusive(True)
         self.toolbar.buttons['Draw Polyline'].setCheckable(1)
         self.toolbar.buttons['Draw Rectangle'].setCheckable(1)
+        draw_group.addAction(self.toolbar.buttons['Draw Rectangle'])
+        draw_group.addAction(self.toolbar.buttons['Draw Polyline'])
+
+        like_dislike_group = QActionGroup(self)
+        like_dislike_group.setExclusive(True)
+        self.toolbar.buttons['Bad Image Quality'].setCheckable(1)
+        self.toolbar.buttons['Good Image Quality'].setCheckable(1)
+        like_dislike_group.addAction(self.toolbar.buttons['Bad Image Quality'])
+        like_dislike_group.addAction(self.toolbar.buttons['Good Image Quality'])
         self.toolbar.buttons['Draw Polyline'].triggered.connect(self.toggle_action_states)
         self.toolbar.buttons['Draw Rectangle'].triggered.connect(self.toggle_action_states)
 
@@ -248,14 +260,22 @@ class ImageHandler(QWidget):
         return self.image_scene
 
     def toggle_action_states(self):
-        if self.toolbar.buttons['Draw Rectangle'].isChecked():
-            self.toolbar.buttons['Draw Polyline'].setChecked(0)
+        # if self.toolbar.buttons['Draw Rectangle'].isChecked():
+        #     self.toolbar.buttons['Draw Polyline'].setChecked(0)
+        #
+        # if self.toolbar.buttons['Draw Polyline'].isChecked():
+        #     self.toolbar.buttons['Draw Rectangle'].setChecked(0)
+        #
+        # if self.toolbar.buttons['Good Image Quality'].isChecked():
+        #     self.toolbar.buttons['Bad Image Quality'].setChecked(0)
+        #
+        # if self.toolbar.buttons['Bad Image Quality'].isChecked():
+        #     self.toolbar.buttons['Good Image Quality'].setChecked(0)
 
-        if self.toolbar.buttons['Draw Polyline'].isChecked():
-            self.toolbar.buttons['Draw Rectangle'].setChecked(0)
 
         self.image_scene.draw_rect_flag = self.toolbar.buttons['Draw Rectangle'].isChecked()
         self.image_scene.draw_poly_flag = self.toolbar.buttons['Draw Polyline'].isChecked()
+        self.image_quality_flag         = self.toolbar.buttons['Good Image Quality'].isChecked()
 
     # Function to zoom in
     def zoom_in(self):
