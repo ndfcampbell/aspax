@@ -1067,7 +1067,7 @@ class   XrayData(object):
             self.xray_id  = xray_id
             self.save_loc = os.path.join(save_loc,xray_id)
             self.meta_table = {'acquisition_date': [acquisition_date],'xray_id':[xray_id],'organ':[organ_name],
-                               'file_name': [image_name]}
+                               'file_name': [image_name], 'image_quality': [1]}
 
 
             for id in ['scores','bone','joint','tissue']:
@@ -1104,6 +1104,7 @@ class   XrayData(object):
             self.meta_table['xray_id'].append(xray_id)
             self.meta_table['organ'].append(organ_name)
             self.meta_table['file_name'].append(image_name)
+            self.meta_table['image_quality'].append(1)
             # self.meta_table = pd.DataFrame(self.meta_table)
         for id in ['scores','bone','joint','tissue']:
             temp_loc = os.path.join(self.save_loc,id)
@@ -1297,7 +1298,8 @@ class XrayStudy(object):#todo: finish this class so I can initialise a study fro
                     self.meta_data = {'acquisition_date' : [year],
                                       'xray_id'          : [self.id],
                                      'organ'             :[organ_name],
-                                     'file_name'         :[f.split('/')[-1]]}
+                                     'file_name'         :[f.split('/')[-1]],
+                                      'image_quality'    :[1] }
 
                 else:
 
@@ -1305,6 +1307,7 @@ class XrayStudy(object):#todo: finish this class so I can initialise a study fro
                     self.meta_data['xray_id'].append(self.id)
                     self.meta_data['organ'].append(organ_name)
                     self.meta_data['file_name'].append(f.split('/')[-1])
+                    self.meta_data['image_quality'].append(1)
         self.save_metadata()
 
     def save_metadata(self):
