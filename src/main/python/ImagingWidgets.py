@@ -189,6 +189,7 @@ class ImageHandler(QWidget):
         # self.load_image('johncena.jpg')
         self.layout = QVBoxLayout()
         self.image_view.setScene(self.image_scene)
+        self.image_quality_flag = True
         self.toolbar = ImagingToolbar(icon_library)
         self.layout.addWidget(self.toolbar)
 

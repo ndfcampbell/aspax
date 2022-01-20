@@ -147,6 +147,8 @@ class InspectXRays(QMainWindow):
             filenames = dlg.selectedFiles()
             # f = open(filenames[0],'r')
             self.image_widget.load_image(file_name=filenames[0])
+            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
+            print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
 
             self.create_image_menu = XrayDataCreationDialog()
             if QMessageBox.Yes:
@@ -177,6 +179,9 @@ class InspectXRays(QMainWindow):
             filenames = dlg.selectedFiles()
             # f = open(filenames[0],'r')
             self.image_widget.load_image(file_name=filenames[0])
+            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
+            print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
+
 
             self.create_image_menu = XrayDataCreationDialog()
             if QMessageBox.Yes:
@@ -564,6 +569,8 @@ class InspectXRays(QMainWindow):
         #print(image_name)
         if os.path.isfile(os.path.join(meta_loc,image_name)):
             self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
+            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
+            print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
             self.display_image_info()
             # self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
             # self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
