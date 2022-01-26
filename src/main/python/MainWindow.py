@@ -267,6 +267,8 @@ class InspectXRays(QMainWindow):
         self.widget_area_menu.view_button.clicked.connect(self.display_all_current_annotations)
         self.widget_area_menu.unsure_button.clicked.connect(self.update_tracking_annotation)
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
+        self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
+        self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
 
 
 
@@ -391,6 +393,9 @@ class InspectXRays(QMainWindow):
         save_csv(df,fileName=file_loc)
 
 
+
+
+
     def update_tracking_annotation(self):
         if self.xray_record is None:
             self.popupWindow = QMessageBox.question(self,'Warning!',
@@ -442,6 +447,36 @@ class InspectXRays(QMainWindow):
         xray_id = self.xray_selection_menu.combobox_studyid.currentText()
         file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
         save_csv(df,fileName=file_loc)
+
+
+    def update_image_quality_score(self):
+        if self.xray_record is None:
+            self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                    "No xray record loaded. Please create or load an x-ray record "
+                                                    "before "
+                                                    "saving the "
+                                                    "score" ,
+                                                    QMessageBox.Ok)
+            return -1
+
+
+
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        filenames = np.array(self.xray_record.meta_table['file_name'])
+
+        id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
+        try:
+            image_quality_array = np.array(self.xray_record.meta_table['image_quality'])
+        except KeyError:
+            image_quality_array = np.ones(dates.shape)
+
+
+        image_quality_array[id[0][0]] = int(self.image_widget.toolbar.buttons['Good Image Quality'].isChecked())
+
+        self.xray_record.meta_table['image_quality'] = image_quality_array
+        self.xray_record.save_metadata()
+
+
 
 
     def update_tracking_score(self):
