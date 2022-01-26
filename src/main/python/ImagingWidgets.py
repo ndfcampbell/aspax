@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxL
 
 from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
-from GraphicsItems import PolylineItem,RectItem
+from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import Slider
@@ -52,6 +52,8 @@ class MyScene(QGraphicsScene):
         self.draw_poly_flag = False
         self.draw_rect_flag = False
         self.pressed = False
+        self.edge_width = DEFAULT_EDGE_WIDTH
+        self.handle_size = DEFAULT_HANDLE_SIZE
 
     def display_image(self,img):
         self.clear()
@@ -79,8 +81,10 @@ class MyScene(QGraphicsScene):
                     # functionality is active
                     if self.annotation_length == 0: # Draw and store first coordinate
                         polyline_annotate = Polyline(coord)
-                        self.polyline_annotate_item = PolylineItem(polyline_annotate)
+                        self.polyline_annotate_item = PolylineItem(polyline_annotate,edge_width=self.edge_width,handle_size=self.handle_size)
                         self.polyline_annotate_item.edge_color = QColor("#FF511C")
+
+
                         self.addItem(self.polyline_annotate_item)
                         self.annotation_length += 1
                     else:
@@ -264,6 +268,8 @@ class ImageHandler(QWidget):
 
 
         size_dict = self.annotation_options.get_slider_value()
+        self.image_scene.handle_size=size_dict['Dot Size']
+        self.image_scene.edge_width = size_dict['Line Width']
 
         # self.image_scene.removeItem(self.image_scene.polyline_annotate_item)
         # qt5G.DEFAULT_HANDLE_SIZE = scala*maxSize
@@ -379,6 +385,8 @@ class AnnotationModelOptions(QWidget):
                                             damage_ranges=[(1,10),(1,10)])
         self.layout.addLayout(self.score_slider_layout)
         self.score_sliders = self.score_slider_layout.sliders
+        self.score_sliders['Line Width'].setValue(DEFAULT_EDGE_WIDTH)
+        self.score_sliders['Dot Size'].setValue(DEFAULT_HANDLE_SIZE)
         # for key,val in self.score_sliders.items():
         #     #val.sliderMoved[int].connect(self.save_slider_value())
         #     val.valueChanged[int].connect(self.get_slider_value)
