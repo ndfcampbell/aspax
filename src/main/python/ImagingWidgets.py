@@ -1,11 +1,14 @@
 
 import time
-from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, QActionGroup
-from PyQt5.QtGui import QColor,QPixmap
+from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
+    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox
+
+from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
 from GraphicsItems import PolylineItem,RectItem
 from DataModels import Polyline, Rect
 import numpy as np
+from MenuWidgets import Slider
 
 
 from Utils import _NP
@@ -193,6 +196,15 @@ class ImageHandler(QWidget):
         self.toolbar = ImagingToolbar(icon_library)
         self.layout.addWidget(self.toolbar)
 
+        self.annotation_options = AnnotationModelOptions()
+        horizontal_dock = QHBoxLayout()
+        horizontal_dock.addWidget(self.annotation_options,50)
+        horizontal_widget = QWidget()
+        horizontal_widget.setMinimumSize(800,200)
+        horizontal_widget.setMaximumSize(800,200)
+
+        horizontal_widget.setLayout(horizontal_dock)
+        self.layout.addWidget(horizontal_widget)
         self.layout.addWidget(self.image_view)
         self.setLayout(self.layout)
         self.icons = icon_library
@@ -223,6 +235,9 @@ class ImageHandler(QWidget):
         like_dislike_group.addAction(self.toolbar.buttons['Good Image Quality'])
         self.toolbar.buttons['Draw Polyline'].triggered.connect(self.toggle_action_states)
         self.toolbar.buttons['Draw Rectangle'].triggered.connect(self.toggle_action_states)
+        for key,val in self.annotation_options.score_sliders.items():
+            #val.sliderMoved[int].connect(self.save_slider_value())
+            val.valueChanged[int].connect(self.update_annotation_dimensions)
 
         #.triggered.connect(self.image_scene.clear_poly)
         # self.toolbar.buttons['Draw Rect'].triggered.connect(self.image_scene.clear_poly)
@@ -243,6 +258,27 @@ class ImageHandler(QWidget):
         # h = 1000
         # self.image_view.fitInView(QRectF(0, 0, w, h), Qt.KeepAspectRatio)
         self.image_scene.update()
+
+    def update_annotation_dimensions(self):
+
+
+
+        size_dict = self.annotation_options.get_slider_value()
+
+        # self.image_scene.removeItem(self.image_scene.polyline_annotate_item)
+        # qt5G.DEFAULT_HANDLE_SIZE = scala*maxSize
+        # self.pLineItem = Pol	ylineItem(self.pLine,handle_size=100)
+        #
+        if self.image_scene.polyline_annotate_item is not None:
+            self.image_scene.polyline_annotate_item.prepareGeometryChange()
+            self.image_scene.polyline_annotate_item.handle_size = int(float(size_dict['Dot Size']))
+            self.image_scene.polyline_annotate_item.edge_width  = int(float(size_dict['Line Width']))
+            self.image_scene.polyline_annotate_item.model.update()
+            # self.image_scene.polyline_annotate_item.update()
+            self.image_scene.update()
+        # self.image_scene.addItem(self.image_scene.polyline_annotate_item)
+        # self.errorBox.setText(str(self.pLineItem.handle_size))
+
 
 
 
@@ -315,26 +351,167 @@ class ImagingToolbar(QToolBar):
     def load_buttons(self):
         # assert len(action_icon_names)==len(descriptions)
         self.buttons = {}
-        # Create toolbar widgets, connect to actions and add to toolbar#
+        # Create toolbar widgets, connect to actions and add to toolbar#set
         for keys,val in self.icons.items():
             action_button = QAction(val,keys,self)
             self.addAction(action_button)
             self.buttons[keys] = action_button
 
+class AnnotationModelOptions(QWidget):
+    def __init__(self,name='Score',profile={}):
 
 
-# def main():
-#     app = QApplication([])
-#     window = QMainWindow()
-#
-#     my_frame_widget = ImageHandler()
-#     layout = QVBoxLayout()
-#     layout.addWidget(my_frame_widget)
-#     window.setCentralWidget(my_frame_widget)
-#     # layout.addWidget(QPushButton('3'))
-#     window.show()
-#     app.exec_()
-#
-#
-# if __name__=='__main__':
-#     main()
+
+        super(AnnotationModelOptions,self).__init__()
+        self.layout = QHBoxLayout()
+        self.init()
+
+
+    def init(self):
+
+        self.init_score_slider() #initialises the score sliders for dsicrete scales
+        self.init_select_polylines()
+        self.setLayout(self.layout)
+
+
+    def init_score_slider(self):
+        self.score_slider_layout = score_sliders(score_name="Annotation Model",damage_types=["Dot Size","Line Width"],
+                                            damage_ranges=[(1,10),(1,10)])
+        self.layout.addLayout(self.score_slider_layout)
+        self.score_sliders = self.score_slider_layout.sliders
+        # for key,val in self.score_sliders.items():
+        #     #val.sliderMoved[int].connect(self.save_slider_value())
+        #     val.valueChanged[int].connect(self.get_slider_value)
+
+    def init_select_polylines(self):
+        self.selection_layout = QVBoxLayout()
+        layout1 = QHBoxLayout()
+        polyline_label = QLabel("Polylines")
+        polyline_label.setMaximumSize(60, 30)
+        polyline_label.setMinimumSize(60, 30)
+        self.polyline_dropdown = QComboBox()
+        polyline_box_label = QLabel("Display Polys")
+        polyline_box_label.setMaximumSize(90,30)
+        polyline_box_label.setMinimumSize(90, 30)
+        self.display_polylines_box = QCheckBox()
+        layout1.addWidget(polyline_label)
+        layout1.addWidget(self.polyline_dropdown)
+        layout1.addWidget(polyline_box_label)
+        layout1.addWidget(self.display_polylines_box)
+
+        layout2 = QHBoxLayout()
+        rectItem_label = QLabel("Rect-Items")
+        rectItem_label.setMaximumSize(60,30)
+        rectItem_label.setMinimumSize(60, 30)
+        self.rectItem_dropdown = QComboBox()
+        rectItem_box_label = QLabel("Display Rectangles")
+        rectItem_box_label.setMaximumSize(90,30)
+        rectItem_box_label.setMinimumSize(90, 30)
+        self.display_rectItem_box = QCheckBox()
+        layout2.addWidget(rectItem_label)
+        layout2.addWidget(self.rectItem_dropdown)
+        layout2.addWidget(rectItem_box_label)
+        layout2.addWidget(self.display_rectItem_box)
+
+        widget1 =  QWidget()
+        widget1.setLayout(layout1)
+        widget2 =  QWidget()
+        widget2.setLayout(layout2)
+
+        self.selection_layout.addWidget(widget1)
+        self.selection_layout.addWidget(widget2)
+        self.layout.addLayout(self.selection_layout)
+
+
+
+
+
+    def get_slider_value(self):
+        my_dict  = self.score_slider_layout.get_slider_values()
+
+
+        return my_dict
+
+
+
+
+class score_sliders(QVBoxLayout):
+    """
+    For discrete scores
+    """
+    def __init__(self,score_name='Ratingen',damage_types=['Destruction','Proliferation'],damage_ranges=[(0,5),(0,5)],
+                 opt_kwargs={}):
+        super(score_sliders,self).__init__()
+        self.opt_kwargs = opt_kwargs
+        self.font_header = QFont('Android Roboto', 15)
+        self.font_subheader = QFont('Android Roboto', 13)
+        self.font_text = QFont('Android Roboto', 10)
+        self.font_button = QFont('Android Roboto', 11)
+        self.score_name    = score_name
+        self.damage_types  = damage_types
+        self.damage_ranges = damage_ranges
+        self.sliders       = {}
+        self.init_sliders()
+
+    def init_sliders(self):
+        min_label_width = self.opt_kwargs.pop('label_minimum_width',110)
+        tick_spacing    = self.opt_kwargs.pop('tick_spacing',30)
+        slider_gap      = self.opt_kwargs.pop('slider_gap',130)
+        for damage,rng in zip(self.damage_types,self.damage_ranges):
+            layout = QHBoxLayout()
+            label  = QLabel(damage)
+            label.setFont(self.font_text)
+            label.setMinimumWidth(min_label_width)
+            layout.addWidget(label)
+
+            slider_layout = QVBoxLayout()
+            score_slider   = Slider()
+            score_slider.setStyleSheet("QSlider::handle:horizontal {background-color: #16CCB1;}")
+            score_slider.setOrientation(Qt.Horizontal)
+            score_slider.setRange(rng[0],rng[1])
+            score_slider.setTickInterval(1)
+            score_slider.setTickPosition(QSlider.TicksBelow)
+            slider_layout.addWidget(score_slider)
+
+
+            slider_label_layout  = QHBoxLayout()
+            scores = np.arange(rng[0],rng[1]+1)
+            for score in scores:
+                slider_label_layout.addWidget(QLabel(str(score)))
+                slider_label_layout.setSpacing(tick_spacing)
+            slider_layout.addLayout(slider_label_layout)
+            layout.addLayout(slider_layout)
+            self.sliders[damage] = score_slider
+            self.addLayout(layout)
+
+
+    def reinit_values(self):
+        for keys,val in self.sliders.items():
+            val.setValue(0)
+
+    def print_slider_values(self):
+        for keys,val in self.sliders.items():
+            print(val.value())
+
+    def get_slider_values(self):
+        mydict = {}
+        for keys, val in self.sliders.items():
+            mydict[keys]=val.value()
+        print(mydict)
+        return mydict
+
+def main():
+    app = QApplication([])
+    window = QMainWindow()
+
+    my_frame_widget = AnnotationModelOptions()
+    layout = QVBoxLayout()
+    layout.addWidget(my_frame_widget)
+    window.setCentralWidget(my_frame_widget)
+    # layout.addWidget(QPushButton('3'))
+    window.show()
+    app.exec_()
+
+
+if __name__=='__main__':
+    main()
