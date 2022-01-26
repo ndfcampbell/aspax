@@ -40,7 +40,7 @@ class InteractiveScene(QGraphicsScene):
         self._layer_stack = LayerStack()
         super(InteractiveScene, self).__init__(parent)
         self.reset()
-        
+
     def addItem(self, item):
         self._layer_stack.addItemToCurrentLayer(item)
         super(InteractiveScene, self).addItem(item)
@@ -128,7 +128,7 @@ class ControllableItem(QGraphicsItem):
         self._edge_width = edge_width
         self._draw_flag  = draw_flag
         self._drag_flag  = drag_flag
-        
+
 
         self.control_points = self.model.control_points
 
@@ -154,11 +154,11 @@ class ControllableItem(QGraphicsItem):
     def modelChanged(self, change=0):
         self.control_points = self.model.control_points
         # print('model changed')
-   
+
     @property
     def drag_flag(self):
         return self._drag_flag
-        
+
     @drag_flag.setter
     def drag_flag(self,value):
         if type(value)==bool:
@@ -170,7 +170,7 @@ class ControllableItem(QGraphicsItem):
     @property
     def draw_flag(self):
         return self._draw_flag
-        
+
     @draw_flag.setter
     def draw_flag(self,value):
         if type(value)==bool:
@@ -178,7 +178,7 @@ class ControllableItem(QGraphicsItem):
         else:
            #break
            print('needs to be boolean')
-    
+
     @property
     def rect(self):
         return self._rect
@@ -311,7 +311,7 @@ class ControllableItem(QGraphicsItem):
         :param rect:
         :return:
         """
-        
+
     def _adjustEdge(self, rect):
         """
         adjust bounding rect to
@@ -319,7 +319,7 @@ class ControllableItem(QGraphicsItem):
         :return:
         """
         return rect.adjusted(-self.half_edge_width, -self.half_edge_width, self.half_edge_width, self.half_edge_width)
-        
+
 
     def addHandle(self, pos):
         control = HandleItem(_QP(pos), parent=self, color=self.handle_color, size = self.handle_size)
@@ -346,7 +346,7 @@ class ControllableItem(QGraphicsItem):
         self._paintMe(qp, option, widget)
         for c in self._controls:
             c.paint(qp, option, widget)
-        
+
 
         self.label.paint(qp, option, widget)
         if self.isSelected():
@@ -364,7 +364,7 @@ class ControllableItem(QGraphicsItem):
             control[k,:] = control[k,:]+[dx,dy]
         self.control_points = control
         self.update()
-        
+
     def moveTo(self,posx,posy):
         control = self.control_points
         L = control.shape[0]
@@ -375,8 +375,8 @@ class ControllableItem(QGraphicsItem):
         self.control_points = control
         self.update()
 
-        
-        
+
+
     def scaleBy(self, sx, sy):
         for control in self.controls:
             control.setPos(control.x() * sx, control.y() * sy)
@@ -397,7 +397,7 @@ class ControllableItem(QGraphicsItem):
         self.update()
     """
 
-        
+
 
 class LayerStack(object):
     MAX_N_ITEMS_PER_LAYER = 1000
@@ -592,7 +592,7 @@ class GroupItem(ControllableItem):
     def mousePressEvent(self, e):
         for ch in self.childItems():
             self.scene().sendEvent(ch, e)
-            
+
     def _updateRect(self):
         x1, y1, x2, y2 = [], [], [], []
         for item in self.childItems():
@@ -600,21 +600,21 @@ class GroupItem(ControllableItem):
             y1.append(item.boundingRect().y())
             x2.append(item.boundingRect().right())
             y2.append(item.boundingRect().bottom())
-        if len(x1) > 0:    
+        if len(x1) > 0:
             self.rect = QRectF(min(x1), min(y1), max(x2) - min(x1), max(y2) - min(y1))
         else:
             self.rect = QRectF(self.x(), self.y(), 100, 100)
-            
+
     def _paintMe(self, painter, option, widget=None):
         for child in self.childItems():
             child._paintMe(painter, option, widget)
-    
+
     def addItem(self, item):
         item.setParentItem(self)
         if self.scene() is not None:
             self.scene().activeSubItem = item
         return item
-    
+
     # def setZValue(self, p_float):
     #     for child in self.childItems():
     #         child.setZValue(p_float)
@@ -647,7 +647,7 @@ class PolylineItem(ControllableItem):
     #     super(PolylineItem, self).__init__(model, **kwargs)
 
     def _paintMe(self, qp, option, widget=None):
-        qp.setPen(QPen(QBrush(self.edge_color), 2))
+        qp.setPen(QPen(QBrush(self.edge_color), self._edge_width))
         qp.drawPolyline(*[c.pos() for c in self.controls])
 
     def _updateRect(self):
@@ -730,7 +730,7 @@ class PointsItem(ControllableItem):
             #self.moveTo(_NP(e.scenePos())[0],_NP(e.scenePos())[1])
             self.model._shiftControlPts(dx,dy)
             self.update()            # self.addHandle(_NP(e.scenePos()))
-           
+
 
 class Ellipse(QtWidgets.QGraphicsEllipseItem):
     def __init__(self):
@@ -957,7 +957,7 @@ class SRectItem(ControllableItem):
         qp.drawRect(x, y, self.model.outer_r * 2, self.model.outer_r * 2)
 
 
-      
+
 class HandleItem(QGraphicsItem):
     def __init__(self, position, size=3, parent=None, color=Qt.green):
         super(HandleItem, self).__init__(parent)
@@ -971,18 +971,18 @@ class HandleItem(QGraphicsItem):
                       QGraphicsItem.ItemSendsGeometryChanges |
                       QGraphicsItem.ItemIsFocusable)
         self.rect = QRectF(0, 0, size, size)
-                    
+
     def boundingRect(self):
         size = self.size
         return self.rect.adjusted(-size,-size,0,0)
-        
+
     def paint(self, painter, option, widget=None):
         qp = painter
         qp.setPen(QtGui.QColor(168, 34, 3))
         qp.setBrush(QBrush(self.color, Qt.SolidPattern))
         # size = self.size
         qp.drawEllipse(self.boundingRect())
-    
+
     def points(self):
         return [[self.x(), self.y()]]
 
@@ -992,17 +992,17 @@ class HandleItem(QGraphicsItem):
         #     self.parentItem().main.bringToFront(self.parentItem().idd)
         # if e.button() == 2:
         #     self.parentItem().main.remove(self)
-            
+
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemPositionChange:
             self.parentItem().itemChange(ControllableItem.HandlePositionHasChanged, value)
         return super(HandleItem, self).itemChange(change, value)
-        
+
     def setSize(self, size):
         self.prepareGeometryChange()
         self.size = size
         self.rect = QRectF(0,0,size,size)
-        
+
     def setColor(self, color):
         self.color = color
         self.update()
