@@ -593,6 +593,7 @@ class InspectXRays(QMainWindow):
         dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
         file_names = np.array(self.xray_record.meta_table['file_name'])
         organs     = np.array(self.xray_record.meta_table['organ'])
+
         #
         #
         id =np.where(file_names==self.xray_selection_menu.combobox_xrayid.currentText())
@@ -601,10 +602,21 @@ class InspectXRays(QMainWindow):
         # print(id)
         # image_name = self.xray_record.meta_table['file_name'][id[0][0]]#.to_numpy()[0]
         image_name = self.xray_selection_menu.combobox_xrayid.currentText()
+
+        try:
+            image_quality_array = np.array(self.xray_record.meta_table['image_quality'])
+            image_qual_bool     = bool(int(float(image_quality_array[id[0][0]])))
+            print(image_qual_bool)
+            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(image_qual_bool)
+            self.image_widget.toolbar.buttons['Bad Image Quality'].setChecked(not image_qual_bool)
+        except KeyError:
+            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
+            print("No image quality info present in metadata")
+
         #print(image_name)
         if os.path.isfile(os.path.join(meta_loc,image_name)):
             self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
-            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
+
             print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
             self.display_image_info()
             # self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
