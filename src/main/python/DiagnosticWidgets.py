@@ -8,7 +8,8 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
 import cv2
-
+import os
+os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
 
 class PlotWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
