@@ -16,6 +16,10 @@ class AppContext(ApplicationContext):
         return self.app.exec_()
 
     @cached_property
+    def style(self):
+        return self.get_resource(os.path.join("config","stylesheet.css"))
+
+    @cached_property
     def main_window(self):
         return InspectXRays(self)#ImageHandler(self.image_handler_icons)#(self)
 

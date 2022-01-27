@@ -29,7 +29,9 @@ from DiagnosticWidgets import PlotWindow
 class InspectXRays(QMainWindow):
     def __init__(self,ctx):
         super(InspectXRays,self).__init__()
+
         self.ctx = ctx
+        self.setStyleSheet(open(self.ctx.style).read())
         self._panels = []
         self.initialise_left_panel()   #initialises self.menu_tabs and adds it to self._panels
         self.initialise_right_panel()  #initialises self.image_scene and adds it to self._panels
@@ -43,6 +45,7 @@ class InspectXRays(QMainWindow):
         self.initialise_xray_record()
         self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
         self.load_new_score_sheet()
+
 
 
 
@@ -139,6 +142,7 @@ class InspectXRays(QMainWindow):
     def open_study_creator(self):
         #print('function triggered')
         dlg = QFileDialog()
+
         dlg.setFileMode(QFileDialog.AnyFile)
         # dlg.setFilter("Text files (*.txt)")
         filenames =[]# QStringList()
