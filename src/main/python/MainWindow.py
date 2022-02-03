@@ -161,7 +161,7 @@ class InspectXRays(QMainWindow):
 
                 self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
 
-                self.create_xray_window.xray_creation_options.qline_edits['Xray id'].setText(self.name_sig.id)
+                self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(self.name_sig.id)
                 self.create_xray_window.xray_creation_options.qline_edits['Body Part'].setText(self.name_sig.organ)
 
 
@@ -186,6 +186,7 @@ class InspectXRays(QMainWindow):
             self.create_image_menu = XrayDataCreationDialog()
             if QMessageBox.Yes:
                 self.create_xray_window = XRayCreationWindow()
+
                 self.create_xray_window.show()
                 self.name_sig  = NameSignature(fileName=filenames[0].split('/')[-1].split('.')[0])
                 #print(self.name_sig.year)
@@ -195,8 +196,11 @@ class InspectXRays(QMainWindow):
 
                 self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
 
-                self.create_xray_window.xray_creation_options.qline_edits['Xray id'].setText(self.name_sig.id)
+                self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(self.name_sig.id)
                 self.create_xray_window.xray_creation_options.qline_edits['Body Part'].setText(self.name_sig.organ)
+                id_text = self.xray_selection_menu.combobox_studyid.currentText()
+                if id_text is not None or id_text!='':
+                    self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(id_text)
 
 
                 self.create_xray_window.xray_creation_options.discard_button.clicked.connect(
@@ -208,7 +212,7 @@ class InspectXRays(QMainWindow):
         # self.name_sig = NameSignature(fileName=filenames[0].split('/')[-1])
 
         acquisition_date = self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].text()
-        Xray_id          = self.create_xray_window.xray_creation_options.qline_edits['Xray id'].text()
+        Xray_id          = self.create_xray_window.xray_creation_options.qline_edits['Study id'].text()
         organ_name       = self.create_xray_window.xray_creation_options.qline_edits['Body Part'].text()
 
 
@@ -234,7 +238,7 @@ class InspectXRays(QMainWindow):
 
     def add_xray_to_study(self,filename):
         acquisition_date = self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].text()
-        Xray_id          = self.create_xray_window.xray_creation_options.qline_edits['Xray id'].text()
+        Xray_id          = self.create_xray_window.xray_creation_options.qline_edits['Study id'].text()
         organ_name       = self.create_xray_window.xray_creation_options.qline_edits['Body Part'].text()
         self.xray_record.add_xray(image_name=filename.split('/')[-1],xray_id=Xray_id,acquisition_date=acquisition_date,
                              save_loc=self.output_loc,

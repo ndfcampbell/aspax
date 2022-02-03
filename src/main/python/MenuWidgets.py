@@ -968,7 +968,7 @@ class XrayDataCreationOptions(QWidget):
         self.qline_edits = {}
         self.input_box_layout = QVBoxLayout()
         self.desc_box_layout  = QVBoxLayout()
-        for name in ['Acquisition Date','Xray id','Body Part']:
+        for name in ['Acquisition Date','Study id','Body Part']:
             self.qline_edits[name] = QLineEdit()
             label = QLabel(name)
             self.desc_box_layout.addWidget(label)

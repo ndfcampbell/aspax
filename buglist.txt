@@ -8,7 +8,11 @@ Need to review the following to see if they were solved
 
 
 new bugs:
-(i)   when creating an xray,one cannot enter a text entry for the date other the image will not load. this relates to INspecteXrays.load_selected_xrays: changed the line that was causing trouble, will check again.
+(i) (a)   when creating an xray,one cannot enter a text entry for the date other the image will not load. this relates to INspecteXrays.load_selected_xrays: changed the line that was causing trouble, will check again.
+      the xray-id needs to be the default study id:, the xray id appearing in combobox_xrayid is actually the file name
+      cannot add an xray to a study if no study are present: so need to get an error if this happens
+    (b)  should also have an option to just view an image
+    (c)  add option to view a dicom as well
 (ii)  when adding xray to a study, the studyid needs to be set already in the dialog by reading the text in the StudyId_combobox
 (iii) link the sliders to the handle size on the rectangle as well
 
