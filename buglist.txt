@@ -1,3 +1,4 @@
+Need to review the following to see if they were solved
 (i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
 (ii)  unite the save method in Menuwidget under one method for neatness
 (iii) show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
@@ -6,6 +7,10 @@
 (vi)  make it easier to look up the version number when using aspax
 
 
+new bugs:
+(i)   when creating an xray,one cannot enter a text entry for the date other the image will not load. this relates to INspecteXrays.load_selected_xrays: changed the line that was causing trouble, will check again.
+(ii)  when adding xray to a study, the studyid needs to be set already in the dialog by reading the text in the StudyId_combobox
+(iii) link the sliders to the handle size on the rectangle as well
 
 
 Fixed
