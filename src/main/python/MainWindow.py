@@ -120,7 +120,10 @@ class InspectXRays(QMainWindow):
         self._panels = self._panels + [self.image_widget]
 
 
-    def open_output_folder_selector(self):
+
+
+    def open_output_folder_selector_old(self):
+        print("yes man")
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.Directory)
         if dlg.exec_():
@@ -135,6 +138,40 @@ class InspectXRays(QMainWindow):
             #self.display_xrays()
 
 
+    def getDirectory(self):
+        response = QFileDialog.getExistingDirectory(
+            self,
+            caption='Select a folder'
+        )
+        return response
+
+
+    def open_output_folder_selector(self):
+        print("yes man")
+        # response = QFileDialog.getOpenFileName(
+        #     parent=self,
+        #     caption='Select a data file',
+        #     directory=os.getcwd(),
+        #     filter=file_filter,
+        #     initialFilter='Excel File (*.xlsx *.xls)'
+        # )
+        # QFileDialog.getExistingDirectory(self, 'Select Folder')
+        # response = QFileDialog.getExistingDirectory(self, "Open Directory",
+        #                                "/home",
+        #                                QFileDialog.ShowDirsOnly
+        #                                | QFileDialog.DontResolveSymlinks)
+        response = self.getDirectory()
+        print(response)
+
+        folder_names = response
+        self.output_loc = os.path.join(os.sep,folder_names)
+        if not os.path.isdir(self.output_loc):
+            os.makedirs(self.output_loc)
+        self.xray_selection_menu.wd_info.setText(self.output_loc)
+        self.xray_selection_menu.combobox_xrayid.clear()
+        self.xray_selection_menu.combobox_studyid.clear()
+        self.display_studies()
+            #self.display_xrays()
 
     def open_study_creator(self):
         #print('function triggered')
@@ -252,14 +289,27 @@ class InspectXRays(QMainWindow):
         self.create_xray_window.close()
         self.display_image_info()
 
-
+    # def open_file_dialog(self):
+    #     # Just this line will open a standard file dialog for you
+    #     res = QFileDialog.getOpenFileName(QFileDialog(self),  # parent
+    #                                       "Select file",  # Dialog title
+    #                                       "/some/path/to/open/by/default",
+    #                                       "JPEG Image (*.jpeg)")  # filter
+    #
+    #     # Once you reach here - dialog will be closed
+    #     if res == ('', ''):
+    #         print("Cancelled")
+    #     else:
+    #         self.process_result(res)
 
 
 
     def connect_sub_buttons(self):
 
         self.display_studies()
+
         self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_output_folder_selector)
+        # self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_file_dialog)
         self.xray_selection_menu.new_study_button.clicked.connect(self.open_study_creator)
         self.xray_selection_menu.addXrayToStudy_button.clicked.connect(self.open_xray_adder)
         self.xray_selection_menu.combobox_studyid.currentIndexChanged.connect(self.display_xrays)
@@ -607,7 +657,7 @@ class InspectXRays(QMainWindow):
         # image_name = self.xray_record.meta_table['file_name'][id[0][0]]#.to_numpy()[0]
         image_name = self.xray_selection_menu.combobox_xrayid.currentText()
 
-        try:
+        try:#todo: remove use of try except and try to use if id non empty
             image_quality_array = np.array(self.xray_record.meta_table['image_quality'])
             image_qual_bool     = bool(int(float(image_quality_array[id[0][0]])))
             print(image_qual_bool)

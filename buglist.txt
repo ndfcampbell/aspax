@@ -1,5 +1,16 @@
 Need to review the following to see if they were solved
-(i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times
+(i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times------> change the implementation to work in a two level mehod, one for opening the dialog
+       need to use
+
+       response = QFileDialog.getOpenFileName(
+            parent=self,
+            caption='Select a data file',
+            directory=os.getcwd(),
+            filter=file_filter,
+            initialFilter='Excel File (*.xlsx *.xls)'
+        )
+
+        using this approach: still having issues with the opening multiple times: need to switch off some connections in connect to sub buttons methods and  see what happens
 (ii)  unite the save method in Menuwidget under one method for neatness
 (iii) show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
 (iv)  add the name of the annotations in the diagnostic window when displaying all annotations
@@ -15,6 +26,10 @@ new bugs:
     (c)  add option to view a dicom as well
 (ii)  when adding xray to a study, the studyid needs to be set already in the dialog by reading the text in the StudyId_combobox
 (iii) link the sliders to the handle size on the rectangle as well
+
+
+
+
 
 
 Fixed
