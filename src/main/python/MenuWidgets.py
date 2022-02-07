@@ -799,6 +799,7 @@ class xray_selection_menu(QWidget):
         self.font_subheader = QFont('Android Roboto', 13)
         self.font_text = QFont('Android Roboto', 10)
         self.font_button = QFont('Android Roboto', 11)
+        self.temp_name   = None
 
         self.layout = QVBoxLayout()
         self.init_xray_creation_options()
@@ -925,12 +926,24 @@ class xray_selection_menu(QWidget):
         return response
 
 
+    def getFiles(self):
+        response = QFileDialog.getOpenFileNames(
+            self,
+            caption='Select a file'
+        )
+
+        self.temp_name = response
+        return response
+
+
     def change_wd(self):
         response = self.getDirectory()
         self.wd_info.setText(os.path.join(os.sep,response))
 
     def connect_buttons(self):
         self.set_wdir_button.clicked.connect(self.change_wd)
+        self.addXrayToStudy_button.clicked.connect(self.getFiles)
+        self.new_study_button.clicked.connect(self.getFiles)
 
 
 
