@@ -805,6 +805,7 @@ class xray_selection_menu(QWidget):
 
         self.init_damage_selector()
         self.setLayout(self.layout)
+        self.connect_buttons()
 
     def init_xray_creation_options(self):
         layout = QVBoxLayout()
@@ -913,6 +914,23 @@ class xray_selection_menu(QWidget):
         widget = QWidget()
         widget.setLayout(layout)
         self.layout.addWidget(widget)
+
+
+    def getDirectory(self):
+        response = QFileDialog.getExistingDirectory(
+            self,
+            caption='Select a folder'
+        )
+
+        return response
+
+
+    def change_wd(self):
+        response = self.getDirectory()
+        self.wd_info.setText(os.path.join(os.sep,response))
+
+    def connect_buttons(self):
+        self.set_wdir_button.clicked.connect(self.change_wd)
 
 
 

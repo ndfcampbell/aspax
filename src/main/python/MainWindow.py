@@ -173,6 +173,18 @@ class InspectXRays(QMainWindow):
         self.display_studies()
             #self.display_xrays()
 
+    def change_wd(self):
+        self.output_loc = self.xray_selection_menu.wd_info.text()
+        if not os.path.isdir(self.output_loc):
+            os.makedirs(self.output_loc)
+        self.xray_selection_menu.wd_info.setText(self.output_loc)
+        self.xray_selection_menu.combobox_xrayid.clear()
+        self.xray_selection_menu.combobox_studyid.clear()
+        self.display_studies()
+
+
+
+
     def open_study_creator(self):
         #print('function triggered')
         dlg = QFileDialog()
@@ -307,8 +319,8 @@ class InspectXRays(QMainWindow):
     def connect_sub_buttons(self):
 
         self.display_studies()
-
-        self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_output_folder_selector)
+        self.xray_selection_menu.wd_info.textChanged.connect(self.change_wd)
+        # self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_output_folder_selector)
         # self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_file_dialog)
         self.xray_selection_menu.new_study_button.clicked.connect(self.open_study_creator)
         self.xray_selection_menu.addXrayToStudy_button.clicked.connect(self.open_xray_adder)
