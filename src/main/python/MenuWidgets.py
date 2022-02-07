@@ -866,6 +866,18 @@ class xray_selection_menu(QWidget):
         layout3.addWidget(self.wd_info, 2)
 
 
+        layout4 = QHBoxLayout()
+        file_label         = QLabel("Current file")
+
+        self.current_file_info  = QLineEdit()
+        self.current_file_info.setReadOnly(True)
+
+        self.current_study_info = QLineEdit()
+        self.current_study_info.setReadOnly(True)
+
+        layout4.addWidget(file_label, 1)
+        layout4.addWidget(self.current_file_info, 2)
+
 
 
         layout2 = QHBoxLayout()
@@ -893,7 +905,10 @@ class xray_selection_menu(QWidget):
         widget_info.setLayout(layout2)
         widget_buttons = QWidget()
         widget_buttons.setLayout(button_layout)
+        widget_file = QWidget()
+        widget_file.setLayout(layout4)
         self.layout.addWidget(widget_wd)
+        # self.layout.addWidget(widget_file)
         self.layout.addWidget(widget_options)
         self.layout.addWidget(widget_info)
         self.layout.addWidget(widget_buttons)
@@ -927,23 +942,36 @@ class xray_selection_menu(QWidget):
 
 
     def getFiles(self):
-        response = QFileDialog.getOpenFileNames(
+        response = QFileDialog.getOpenFileName(
             self,
             caption='Select a file'
         )
-
-        self.temp_name = response
+        self.temp_name = response[0]
+        print("file name is")
+        print(response)
         return response
 
 
     def change_wd(self):
         response = self.getDirectory()
-        self.wd_info.setText(os.path.join(os.sep,response))
+        if response != '':
+            self.wd_info.setText(os.path.join(os.sep,response))
+
+    def add_xray_to_study(self):
+        file = self.getFiles()
+        if file[0] != '':
+            self.current_file_info.setText(os.path.join(os.sep,file[0]))
+
+
+    def create_new_study(self):
+        file = self.getFiles()
+        if file[0] != '':
+            self.current_study_info.setText(os.path.join(os.sep,file[0]))
 
     def connect_buttons(self):
         self.set_wdir_button.clicked.connect(self.change_wd)
-        self.addXrayToStudy_button.clicked.connect(self.getFiles)
-        self.new_study_button.clicked.connect(self.getFiles)
+        self.addXrayToStudy_button.clicked.connect(self.add_xray_to_study)
+        self.new_study_button.clicked.connect(self.create_new_study)
 
 
 

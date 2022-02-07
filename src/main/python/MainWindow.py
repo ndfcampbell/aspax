@@ -183,9 +183,37 @@ class InspectXRays(QMainWindow):
         self.display_studies()
 
 
-
-
     def open_study_creator(self):
+        #print('function triggered')
+
+
+
+        filename = self.xray_selection_menu.temp_name
+        # f = open(filenames[0],'r')
+        self.image_widget.load_image(file_name=filename)
+        self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
+        print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
+
+        self.create_image_menu = XrayDataCreationDialog()
+        if QMessageBox.Yes:
+            self.create_xray_window = XRayCreationWindow()
+            self.create_xray_window.show()
+            self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+            #print(self.name_sig.year)
+            self.create_xray_window.xray_creation_options.save_button.clicked.connect(
+                lambda:self.create_xray_data(filename))
+
+            self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
+
+            self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(self.name_sig.id)
+            self.create_xray_window.xray_creation_options.qline_edits['Body Part'].setText(self.name_sig.organ)
+
+
+            self.create_xray_window.xray_creation_options.discard_button.clicked.connect(
+                lambda:self.create_xray_window.close())
+
+
+    def open_study_creator_old(self):
         #print('function triggered')
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.AnyFile)
@@ -322,7 +350,8 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu.wd_info.textChanged.connect(self.change_wd)
         # self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_output_folder_selector)
         # self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_file_dialog)
-        self.xray_selection_menu.new_study_button.clicked.connect(self.open_study_creator)
+        # self.xray_selection_menu.new_study_button.clicked.connect(self.open_study_creator)
+        self.xray_selection_menu.current_study_info.textChanged.connect(self.open_study_creator)
         self.xray_selection_menu.addXrayToStudy_button.clicked.connect(self.open_xray_adder)
         self.xray_selection_menu.combobox_studyid.currentIndexChanged.connect(self.display_xrays)
         self.xray_selection_menu.combobox_xrayid.activated.connect(self.load_selected_xrays)
