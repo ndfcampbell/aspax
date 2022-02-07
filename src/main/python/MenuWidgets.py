@@ -876,7 +876,8 @@ class xray_selection_menu(QWidget):
         self.current_study_info.setReadOnly(True)
 
         layout4.addWidget(file_label, 1)
-        layout4.addWidget(self.current_file_info, 2)
+        # layout4.addWidget(self.current_file_info, 2)
+        # layout4.addWidget(self.c)
 
 
 
