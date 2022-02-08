@@ -192,20 +192,21 @@ class InspectXRays(QMainWindow):
         self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
         print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
 
-        self.create_image_menu = XrayDataCreationDialog()
-        if QMessageBox.Yes:
-            self.create_xray_window = XRayCreationWindow()
-            self.create_xray_window.show()
-            self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
-            #print(self.name_sig.year)
-            self.create_xray_window.xray_creation_options.save_button.clicked.connect(
-                lambda:self.create_xray_data(filename))
 
-            self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
-            self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(self.name_sig.id)
-            self.create_xray_window.xray_creation_options.qline_edits['Body Part'].setText(self.name_sig.organ)
-            self.create_xray_window.xray_creation_options.discard_button.clicked.connect(
-                lambda:self.create_xray_window.close())
+        # self.create_image_menu = XrayDataCreationDialog()
+        # if QMessageBox.Yes:
+        self.create_xray_window = XRayCreationWindow()
+        self.create_xray_window.show()
+        self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+        #print(self.name_sig.year)
+        self.create_xray_window.xray_creation_options.save_button.clicked.connect(
+            lambda:self.create_xray_data(filename))
+
+        self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
+        self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(self.name_sig.id)
+        self.create_xray_window.xray_creation_options.qline_edits['Body Part'].setText(self.name_sig.organ)
+        self.create_xray_window.xray_creation_options.discard_button.clicked.connect(
+            lambda:self.create_xray_window.close())
 
     def open_study_creator_old(self):
         #print('function triggered')
@@ -249,26 +250,26 @@ class InspectXRays(QMainWindow):
         print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
 
 
-        self.create_image_menu = XrayDataCreationDialog()
-        if QMessageBox.Yes:
-            self.create_xray_window = XRayCreationWindow()
+        # self.create_image_menu = XrayDataCreationDialog()
+        # if QMessageBox.Yes:
+        self.create_xray_window = XRayCreationWindow()
 
-            self.create_xray_window.show()
-            self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
-            #print(self.name_sig.year)
-            self.create_xray_window.xray_creation_options.save_button.clicked.connect(
-                lambda:self.add_xray_to_study(filename))
+        self.create_xray_window.show()
+        self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+        #print(self.name_sig.year)
+        self.create_xray_window.xray_creation_options.save_button.clicked.connect(
+            lambda:self.add_xray_to_study(filename))
 
 
-            self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
+        self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].setText(self.name_sig.year)
 
-            self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(self.name_sig.id)
-            self.create_xray_window.xray_creation_options.qline_edits['Body Part'].setText(self.name_sig.organ)
-            id_text = self.xray_selection_menu.combobox_studyid.currentText()
-            if id_text is not None or id_text!='':
-                self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(id_text)
-            self.create_xray_window.xray_creation_options.discard_button.clicked.connect(
-                lambda:self.create_xray_window.close())
+        self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(self.name_sig.id)
+        self.create_xray_window.xray_creation_options.qline_edits['Body Part'].setText(self.name_sig.organ)
+        id_text = self.xray_selection_menu.combobox_studyid.currentText()
+        if id_text is not None or id_text!='':
+            self.create_xray_window.xray_creation_options.qline_edits['Study id'].setText(id_text)
+        self.create_xray_window.xray_creation_options.discard_button.clicked.connect(
+            lambda:self.create_xray_window.close())
 
     def open_xray_adder_old(self):
         #print('function triggered')

@@ -963,7 +963,6 @@ class xray_selection_menu(QWidget):
         if file[0] != '':
             self.current_file_info.setText(os.path.join(os.sep,file[0]))
 
-
     def create_new_study(self):
         file = self.getFiles()
         if file[0] != '':
@@ -983,17 +982,6 @@ class xray_selection_menu(QWidget):
 
 
 
-class XrayDataCreationDialog(QMessageBox):
-    def __init__(self):
-        super(XrayDataCreationDialog,self).__init__()
-
-        self.setIcon(QMessageBox.Information)
-        self.setText("Do you wish to create a score sheet for this x-ray?")
-        self.setWindowTitle("Score Sheet Creation")
-        # self.continue_button = self.addButton(QPushButton("Continue"), QMessageBox.Yes,Q)
-        self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        # self.buttonClicked.connect(self.msgact_close)
-        self.exec()
 
 
 
@@ -1091,6 +1079,17 @@ class XRayCreationWindow(QMainWindow):
 
 
 
+class XrayDataCreationDialog(QMessageBox):
+    def __init__(self):
+        super(XrayDataCreationDialog,self).__init__()
+
+        self.setIcon(QMessageBox.Information)
+        self.setText("Do you wish to create a score sheet for this x-ray?")
+        self.setWindowTitle("Score Sheet Creation")
+        # self.continue_button = self.addButton(QPushButton("Continue"), QMessageBox.Yes,Q)
+        self.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        # self.buttonClicked.connect(self.msgact_close)
+        self.exec()
 
 
 def output_annotation_name(level1_name ='hand',level2_name='R',level3_name='MCP1'):
