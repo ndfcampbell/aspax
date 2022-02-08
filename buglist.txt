@@ -1,16 +1,4 @@
 Need to review the following to see if they were solved
-(i)   hitting cancel or close on the select new folder window does not close it, user has to do this multiple times------> change the implementation to work in a two level mehod, one for opening the dialog
-       need to use
-
-       response = QFileDialog.getOpenFileName(
-            parent=self,
-            caption='Select a data file',
-            directory=os.getcwd(),
-            filter=file_filter,
-            initialFilter='Excel File (*.xlsx *.xls)'
-        )
-
-        using this approach: still having issues with the opening multiple times: need to switch off some connections in connect to sub buttons methods and  see what happens
 (ii)  unite the save method in Menuwidget under one method for neatness
 (iii) show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
 (iv)  add the name of the annotations in the diagnostic window when displaying all annotations
@@ -20,12 +8,10 @@ Need to review the following to see if they were solved
 
 new bugs:
 (i) (a)   when creating an xray,one cannot enter a text entry for the date other the image will not load. this relates to INspecteXrays.load_selected_xrays: changed the line that was causing trouble, will check again.
-      the xray-id needs to be the default study id:, the xray id appearing in combobox_xrayid is actually the file name
+      the xray-id needs to be the default study id:, the xray id appearing in combobox_xrayid is actually the file name: need to think about acceptable formats for the dates and catch when it is being checked for ints
       cannot add an xray to a study if no study are present: so need to get an error if this happens
-    (b)  should also have an option to just view an image
-    (c)  add option to view a dicom as well
-(ii)  when adding xray to a study, the studyid needs to be set already in the dialog by reading the text in the StudyId_combobox
-(iii) link the sliders to the handle size on the rectangle as well
+    (c)  add option to view a dicom as well: create a dicom metadata viewer?
+(ii) link the sliders to the handle size on the rectangle as well
 
 
 
@@ -44,4 +30,8 @@ Fixed
 -need to be able to track the bones that have been annotated so we can come back to them, especially have the ability to come back to that---implemented 22/09/2021
 -message box saying that the annotation was saved-----done 21/09/2021 in 0.0.4
 -we want to be able to annotate landmarks----fixed 22/09/2021 in 0.0.4
+-hitting cancel or close on the select new folder window does not close it, user has to do this multiple times------> change the implementation to work in a two level mehod, one for opening the dialog
+ to fix it, I moved the initialisaton of the filedialog in the xray_selection_menu class and linked this to the buttons there. Also added some invisible qlineedits to contain the name of the files and folders that were selected
+ then linked the method in InspectXrays responsible for creating new studies to and item changed signal with these qlineedits. not sure if this is good programing practice----fixed 08/02/2022 in 0.0.8
+-when adding xray to a study, the studyid needs to be set already in the dialog by reading the text in the StudyId_combobox ----fixed 08/02/2022 in 0.0.8
 
