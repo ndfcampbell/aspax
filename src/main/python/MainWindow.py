@@ -43,6 +43,7 @@ class InspectXRays(QMainWindow):
         self.initialise_xray_record()
         self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
         self.load_new_score_sheet()
+        self.populate_polylines()
 
 
 
@@ -376,6 +377,7 @@ class InspectXRays(QMainWindow):
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
         self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
+        # self.image_widget.annotation_options.polyline_dropdown.activated.connect()
 
 
 
@@ -773,6 +775,17 @@ class InspectXRays(QMainWindow):
 
 
         self.display_window.show()
+
+
+    def populate_polylines(self):
+        study_id = self.xray_selection_menu.combobox_studyid.currentText()
+        target_loc = os.path.join(self.output_loc,study_id)#todo: link this to current date so that only the current
+        # xray's annotations are saved
+        for path, subdirs, files in os.walk(target_loc):
+            if path.find('joint') == -1:
+                for f in files:
+                    if f.split('.')[-1]=='txt':
+                        self.image_widget.annotation_options.polyline_dropdown.addItem(os.path.join(path,f))
 
 
 
