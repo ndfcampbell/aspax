@@ -177,7 +177,7 @@ class InspectXRays(QMainWindow):
         self.output_loc = self.xray_selection_menu.wd_info.text()
         if not os.path.isdir(self.output_loc):
             os.makedirs(self.output_loc)
-        self.xray_selection_menu.wd_info.setText(self.output_loc)
+        # self.xray_selection_menu.wd_info.setText(self.output_loc)
         self.xray_selection_menu.combobox_xrayid.clear()
         self.xray_selection_menu.combobox_studyid.clear()
         self.display_studies()
@@ -186,6 +186,7 @@ class InspectXRays(QMainWindow):
     def open_study_creator(self):
         #print('function triggered')
         filename = self.xray_selection_menu.temp_name
+        print(filename)
         # f = open(filenames[0],'r')
         self.image_widget.load_image(file_name=filename)
         self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
