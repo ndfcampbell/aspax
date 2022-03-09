@@ -73,6 +73,8 @@ class MyScene(QGraphicsScene):
         self.polyline_annotate_item.edge_color = QColor("#FF511C")
 
         self.addItem(self.polyline_annotate_item)
+        print(len(control_points))
+        self.annotation_length  = len(control_points)
 
     def add_rectItem(self,x,y,w,h):
         self.rect_annotate_item = RectItem(x=x, y=y, width=w, height=h)
@@ -102,7 +104,7 @@ class MyScene(QGraphicsScene):
                         #
                         # self.addItem(self.polyline_annotate_item)
                         self.add_polyline(coord)
-                        self.annotation_length += 1
+
                     else:
                         self.polyline_annotate_item.model.addControlPoints(np.expand_dims(coord,axis=0))
                         self.annotation_length += 1

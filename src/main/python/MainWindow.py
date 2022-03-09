@@ -825,6 +825,7 @@ class InspectXRays(QMainWindow):
         annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
         control_points  = np.loadtxt(annotation_path)
         if self.image_widget.annotation_options.display_polylines_box.isChecked():
+
             self.image_widget.image_scene.clear_poly()
             self.image_widget.image_scene.add_polyline(control_points)
 
