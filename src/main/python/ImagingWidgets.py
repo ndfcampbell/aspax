@@ -74,8 +74,11 @@ class MyScene(QGraphicsScene):
 
         self.addItem(self.polyline_annotate_item)
 
-    def add_recItem(self,control_points):
-        pass
+    def add_rectItem(self,x,y,w,h):
+        self.rect_annotate_item = RectItem(x=x, y=y, width=w, height=h)
+        self.addItem(self.rect_annotate_item)
+        self.addItem(self.rect_annotate_item.rotate_handle)
+
 
     # Function to override the QGraphicsScene mouse press behaviour, conditional on what functionality is selected
     def mousePressEvent(self, event):
@@ -155,9 +158,10 @@ class MyScene(QGraphicsScene):
                 height = self.end[1]-self.start[1]
                 rect_model = Rect(x=self.start[0],y=self.start[0],width=width,height=height)
                 if self.rect_annotate_item is None and self.draw_rect_flag:
-                    self.rect_annotate_item = RectItem(x=self.start[0],y=self.start[1],width=width,height=height)
-                    self.addItem(self.rect_annotate_item)
-                    self.addItem(self.rect_annotate_item.rotate_handle)
+                    self.add_rectItem(x=self.start[0],y=self.start[1],w=width,h=height)
+                    # self.rect_annotate_item = RectItem(x=self.start[0],y=self.start[1],width=width,height=height)
+                    # self.addItem(self.rect_annotate_item)
+                    # self.addItem(self.rect_annotate_item.rotate_handle)
         super(MyScene,self).mouseMoveEvent(event)
         self.update()
 
