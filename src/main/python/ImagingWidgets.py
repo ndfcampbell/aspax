@@ -67,12 +67,15 @@ class MyScene(QGraphicsScene):
 
 
     def add_polyline(self,control_points):
+        polyline_annotate = Polyline(control_points)
         self.polyline_annotate_item = PolylineItem(polyline_annotate, edge_width=self.edge_width,
                                                    handle_size=self.handle_size)
         self.polyline_annotate_item.edge_color = QColor("#FF511C")
 
         self.addItem(self.polyline_annotate_item)
 
+    def add_recItem(self,control_points):
+        pass
 
     # Function to override the QGraphicsScene mouse press behaviour, conditional on what functionality is selected
     def mousePressEvent(self, event):
@@ -89,12 +92,13 @@ class MyScene(QGraphicsScene):
                 if self.draw_poly_flag and event.modifiers() != Qt.ControlModifier: # If the measure distance
                     # functionality is active
                     if self.annotation_length == 0: # Draw and store first coordinate
-                        polyline_annotate = Polyline(coord)
-                        self.polyline_annotate_item = PolylineItem(polyline_annotate,edge_width=self.edge_width,handle_size=self.handle_size)
-                        self.polyline_annotate_item.edge_color = QColor("#FF511C")
-
-
-                        self.addItem(self.polyline_annotate_item)
+                        # polyline_annotate = Polyline(coord)
+                        # self.polyline_annotate_item = PolylineItem(polyline_annotate,edge_width=self.edge_width,handle_size=self.handle_size)
+                        # self.polyline_annotate_item.edge_color = QColor("#FF511C")
+                        #
+                        #
+                        # self.addItem(self.polyline_annotate_item)
+                        self.add_polyline(coord)
                         self.annotation_length += 1
                     else:
                         self.polyline_annotate_item.model.addControlPoints(np.expand_dims(coord,axis=0))
