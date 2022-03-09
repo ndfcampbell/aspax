@@ -383,6 +383,8 @@ class InspectXRays(QMainWindow):
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
         self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
+        self.image_widget.annotation_options.polyline_dropdown.activated.connect(self.show_selected_annotation_bone)
+        self.image_widget.annotation_options.polyline_dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
 
 
 
@@ -815,12 +817,16 @@ class InspectXRays(QMainWindow):
                     self.image_widget.annotation_options.rectItem_dropdown.addItem(f.split('.')[0])
 
     def show_selected_annotation_bone(self):
-        annotation_name = self.xray_selection_menu.combobox_xrayid.currentText()
+        annotation_name = self.image_widget.annotation_options.polyline_dropdown.currentText()
+        print(annotation_name)
         annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
         annotation_path = os.path.join(annotation_path,'bone')
         annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
         annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
         control_points  = np.loadtxt(annotation_path)
+        if self.image_widget.annotation_options.display_polylines_box.isChecked():
+            self.image_widget.image_scene.clear_poly()
+            self.image_widget.image_scene.add_polyline(control_points)
 
 
 
