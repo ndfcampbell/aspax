@@ -5,9 +5,15 @@ from Profiles import *
 import shutil
 import numpy as np
 import cv2
+from DataUtils import find_bone_annotations, find_joint_annotations
 
 
 # Global variables to flag what tab needs to be navigated back to after creating new scoring sheet
+import platform
+if platform.system() == "Windows":
+    DEFAULT_OUTPUT_LOC ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"#todo: change this so that people can choose what this is at installation, or maybe just store it in some metadata
+else:
+    DEFAULT_OUTPUT_LOC = "saved_data"
 review_scoring_sheet_flag = 0
 inspect_x_rays_flag = 0
 zoom_tracker = 1
@@ -38,12 +44,12 @@ class InspectXRays(QMainWindow):
         # self.merge_layouts()
         self.split_layouts()
         self.setCentralWidget(self.main_widget)
-        self.output_loc = 'saved_data'
+        self.output_loc = DEFAULT_OUTPUT_LOC
         self.connect_sub_buttons()
         self.initialise_xray_record()
         self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
         self.load_new_score_sheet()
-        self.populate_polylines()
+
 
 
 
@@ -104,7 +110,7 @@ class InspectXRays(QMainWindow):
             my_dict = load_csv(file_name)
             self.widget_score_menu.load_table_view(my_dict)
 
-        file_loc = os.path.join(self.output_loc)
+        file_loc  = os.path.join(self.output_loc)
         file_name = os.path.join(file_loc,"annotation_tracking_"+date+".csv")
         if os.path.isfile(file_name):
             my_dict = load_csv(file_name)
@@ -377,7 +383,7 @@ class InspectXRays(QMainWindow):
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
         self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
-        # self.image_widget.annotation_options.polyline_dropdown.activated.connect()
+
 
 
 
@@ -728,6 +734,8 @@ class InspectXRays(QMainWindow):
 
             print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
             self.display_image_info()
+        self.populate_polylines()
+        self.populate_rectItems()
             # self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
             # self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
 
@@ -780,12 +788,42 @@ class InspectXRays(QMainWindow):
     def populate_polylines(self):
         study_id = self.xray_selection_menu.combobox_studyid.currentText()
         target_loc = os.path.join(self.output_loc,study_id)#todo: link this to current date so that only the current
-        # xray's annotations are saved
-        for path, subdirs, files in os.walk(target_loc):
-            if path.find('joint') == -1:
-                for f in files:
-                    if f.split('.')[-1]=='txt':
-                        self.image_widget.annotation_options.polyline_dropdown.addItem(os.path.join(path,f))
+        x = find_bone_annotations(target_folder=self.output_loc,xray_id=study_id,date=self.xray_selection_menu.xray_info_box_date.text())
+
+        anatomical_structure = self.xray_selection_menu.xray_info_box_organ.text()
+        x_filtered = [f for f in x if anatomical_structure in f]
+        self.image_widget.annotation_options.polyline_dropdown.clear()
+        if len(x)>0:
+            for f in x:
+                if f.split('.')[-1] == 'txt':
+
+                    self.image_widget.annotation_options.polyline_dropdown.addItem(f.split('.')[0])
+
+    def populate_rectItems(self):
+        study_id = self.xray_selection_menu.combobox_studyid.currentText()
+        target_loc = os.path.join(self.output_loc,
+                                  study_id)  # todo: link this to current date so that only the current
+        x = find_joint_annotations(target_folder=self.output_loc, xray_id=study_id,
+                                  date=self.xray_selection_menu.xray_info_box_date.text())
+
+        anatomical_structure = self.xray_selection_menu.xray_info_box_organ.text()
+        x_filtered = [f for f in x if anatomical_structure in f]
+        self.image_widget.annotation_options.rectItem_dropdown.clear()
+        if len(x) > 0:
+            for f in x:
+                if f.split('.')[-1] == 'txt':
+                    self.image_widget.annotation_options.rectItem_dropdown.addItem(f.split('.')[0])
+
+    def show_selected_annotation_bone(self):
+        annotation_name = self.xray_selection_menu.combobox_xrayid.currentText()
+        annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
+        annotation_path = os.path.join(annotation_path,'bone')
+        annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        control_points  = np.loadtxt(annotation_path)
+
+
+
 
 
 

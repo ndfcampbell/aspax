@@ -147,6 +147,27 @@ def make_file_name(stringlist):
     return filename
 
 
+
+
+def find_bone_annotations(target_folder, xray_id,date):
+    target_loc = os.path.join(target_folder,xray_id)
+    target_loc = os.path.join(target_loc, 'bone')
+    target_loc = os.path.join(target_loc, date)
+    return os.listdir(target_loc)
+
+
+def find_joint_annotations(target_folder, xray_id,date):
+    target_loc = os.path.join(target_folder,xray_id)
+    target_loc = os.path.join(target_loc, 'joint')
+    target_loc = os.path.join(target_loc, date)
+    return os.listdir(target_loc)
+
+
+target_folder ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"
+xray_id = '27513'
+date =       '1998'
+x = find_bone_annotations(target_folder,'27513','1998')
+
 if __name__=='__main__':
     score          = 1
     xray_name      = 'cpsa222'
