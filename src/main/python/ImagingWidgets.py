@@ -65,6 +65,15 @@ class MyScene(QGraphicsScene):
         self.pixmap = self.addPixmap(img)
         self.update()
 
+
+    def add_polyline(self,control_points):
+        self.polyline_annotate_item = PolylineItem(polyline_annotate, edge_width=self.edge_width,
+                                                   handle_size=self.handle_size)
+        self.polyline_annotate_item.edge_color = QColor("#FF511C")
+
+        self.addItem(self.polyline_annotate_item)
+
+
     # Function to override the QGraphicsScene mouse press behaviour, conditional on what functionality is selected
     def mousePressEvent(self, event):
         items = self.items(event.scenePos())
