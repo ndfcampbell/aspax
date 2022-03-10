@@ -385,6 +385,8 @@ class InspectXRays(QMainWindow):
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.annotation_options.polyline_dropdown.activated.connect(self.show_selected_annotation_bone)
         self.image_widget.annotation_options.polyline_dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
+        self.image_widget.annotation_options.rectItem_dropdown.activated.connect(self.show_selected_annotation_joint)
+        self.image_widget.annotation_options.rectItem_dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
 
 
 
@@ -830,6 +832,22 @@ class InspectXRays(QMainWindow):
             self.image_widget.image_scene.add_polyline(control_points)
 
 
+    def show_selected_annotation_joint(self):
+        annotation_name = self.image_widget.annotation_options.rectItem_dropdown.currentText()
+        print(annotation_name)
+        annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
+        annotation_path = os.path.join(annotation_path,'joint')
+        annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        control_points  = np.loadtxt(annotation_path)
+        x = np.min(control_points[:,0])
+        w = np.max(control_points[:,0])-np.min(control_points[:,0])
+        y = np.min(control_points[:,1])
+        h = np.max(control_points[:,1])-np.min(control_points[:,1])
+        if self.image_widget.annotation_options.display_rectItem_box.isChecked():
+
+            self.image_widget.image_scene.clear_poly()
+            self.image_widget.image_scene.add_rectItem(x,y,w,h)
 
 
 
