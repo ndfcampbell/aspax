@@ -605,6 +605,8 @@ class InspectXRays(QMainWindow):
         if os.path.isfile(file_loc):
             df = load_csv(file_loc)
             self.widget_area_menu.load_table_view(df)
+        else:
+            self.widget_area_menu.create_table_view()
 
 
 
