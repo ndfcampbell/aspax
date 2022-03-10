@@ -1,10 +1,18 @@
 Need to review the following to see if they were solved
-(ii)  unite the save method in Menuwidget under one method for neatness
-(iii) show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
-(iv)  add the name of the annotations in the diagnostic window when displaying all annotations
-(v)   pressing clear when the rotate handle move too far away from the rectItem causes the program to crash
-(vi)  make it easier to look up the version number when using aspax
-(vii) having both a polyline and a rectItem causes issues
+(ii)   unite the save method in Menuwidget under one method for neatness
+(iii)  show the shape of the saved outline in the save message box   : extend the message box class for this: perhaps use the window class in DiagnosticWidgets
+(iv)   add the name of the annotations in the diagnostic window when displaying all annotations
+(v)    pressing clear when the rotate handle move too far away from the rectItem causes the program to crash
+(vi)   make it easier to look up the version number when using aspax
+(vii)  having both a polyline and a rectItem causes issues
+(viii) changing the xray should reset the current score sheet to what it has been previously saved as.
+()
+
+
+Annotation Tracking:
+(i)  each year should have an annotation tracking corresponding to the year, Hand file name: annotation_tracking_[date]_organ
+(ii) each time a new xray is loaded, the tracking pane should correspond to the tracking for that particular year
+
 
 
 new bugs:

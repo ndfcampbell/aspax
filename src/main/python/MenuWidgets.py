@@ -258,6 +258,9 @@ class area_menu_widget(distance_menu_widget):
 
 
     def load_table_view(self,dataframe):
+        """
+        Displays the information stored in the dictionary given by dataframe and displays it in the tableView
+        """
         # model = DataFrameModel(dataframe)
         model = StatusTableModel(dataframe)
         self.tableView.setModel(model)
@@ -268,11 +271,12 @@ class area_menu_widget(distance_menu_widget):
         save_csv(dataframe,fileName=file_loc)
 
 
-    def update_table_view(self,row_name,signal):
+    def update_table_view(self,row_name,signal,save_loc=None):
         """
         signal needs to be save or unsure and is handled by the main class
-        :param row_name:
-        :param signal:
+        :param row_name: Name of the bone being annotated
+        :param signal:   Should be wither 'Completed', 'Not Completed', 'Unsure', name of the column to be assigned the value of 1
+        :save_loc
         :return:
         """
         df = self.tableView.model()._data
@@ -287,11 +291,13 @@ class area_menu_widget(distance_menu_widget):
                     df[keys] = val
 
 
+            print("Signal form button is " +signal)
             state_array = df[signal]
             id = np.where(np.array(df['Area Name']) == row_name)
             state_array[id[0][0]] = 1.0
             df[signal] = np.array(state_array)
             self.load_table_view(df)
+            #todo: need to have a way to add the save_loc to the table
         else:
             print("no need to update this")
 

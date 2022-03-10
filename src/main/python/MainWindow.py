@@ -379,7 +379,7 @@ class InspectXRays(QMainWindow):
         self.widget_area_menu.save_button.clicked.connect(self.save_annotation)
         self.widget_score_menu.save_button.clicked.connect(self.save_scores)
         self.widget_area_menu.view_button.clicked.connect(self.display_all_current_annotations)
-        self.widget_area_menu.unsure_button.clicked.connect(self.update_tracking_annotation)
+        self.widget_area_menu.unsure_button.clicked.connect(lambda: self.update_tracking_annotation(signal='Unsure'))
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
         self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
@@ -477,26 +477,30 @@ class InspectXRays(QMainWindow):
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Bone':
             self.xray_record.save_bone_outline(bone_id=annotation_id,date=date,
                                                plineItem=self.image_widget.image_scene.polyline_annotate_item)
-            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            # self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            self.update_tracking_annotation(signal='Completed')
 
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Tissue':
             self.xray_record.save_tissue_outline(bone_id=annotation_id,date=date,
                                                plineItem=self.image_widget.image_scene.polyline_annotate_item)
-            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            # self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            self.update_tracking_annotation(signal='Completed')
 
         if self.image_widget.image_scene.rect_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Joint':
             self.xray_record.save_patch(joint_id=annotation_id,date=date,\
             rectItem=self.image_widget.image_scene.rect_annotate_item)
-            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            # self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            self.update_tracking_annotation(signal='Completed')
 
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Phantom':
             annotation_id = 'Phantom'
             self.xray_record.save_phantom_outline(bone_id=annotation_id,date=date,\
             plineItem=self.image_widget.image_scene.polyline_annotate_item)
-            self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            # self.widget_area_menu.update_table_view(row_name=area_name,signal='Completed')
+            self.update_tracking_annotation(signal='Completed')
 
         if self.image_widget.image_scene.polyline_annotate_item is not None and \
                 self.widget_area_menu.annotation_button_group.checkedButton().text()=='Landmark':
@@ -505,17 +509,13 @@ class InspectXRays(QMainWindow):
             plineItem=self.image_widget.image_scene.polyline_annotate_item)
 
 
-        file_name = 'annotation_tracking_'+str(date)+'.csv'
-        xray_id = self.xray_selection_menu.combobox_studyid.currentText()
-        file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
-        df = self.widget_area_menu.tableView.model()._data
-        save_csv(df,fileName=file_loc)
+        # file_name = 'annotation_tracking_'+str(date)+'.csv'
+        # xray_id = self.xray_selection_menu.combobox_studyid.currentText()
+        # file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
+        # df = self.widget_area_menu.tableView.model()._data
+        # save_csv(df,fileName=file_loc)
 
-
-
-
-
-    def update_tracking_annotation(self):
+    def update_tracking_annotation(self,signal="Unsure"):
         if self.xray_record is None:
             self.popupWindow = QMessageBox.question(self,'Warning!',
                                                     "No xray record loaded. Please create or load an x-ray record "
@@ -559,13 +559,55 @@ class InspectXRays(QMainWindow):
                                                level3_name=level3_name)
         area_name = level3_name+'_'+side_name
         date = dates[id[0][0]]
-        self.widget_area_menu.update_table_view(row_name=area_name,signal='Unsure')
+        self.widget_area_menu.update_table_view(row_name=area_name,signal=signal)
         df = self.widget_area_menu.tableView.model()._data
 
-        file_name = 'annotation_tracking_'+str(date)+'.csv'
+        file_name = 'annotation_tracking_'+level1_name+'_'+str(date)+'.csv'
         xray_id = self.xray_selection_menu.combobox_studyid.currentText()
         file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
         save_csv(df,fileName=file_loc)
+
+
+    def find_tracking_info(self):
+        # if self.xray_record is None:
+        #     self.popupWindow = QMessageBox.question(self,'Warning!',
+        #                                             "No xray record loaded. Please create or load an x-ray record "
+        #                                             "before "
+        #                                             "saving the "
+        #                                             "score" ,
+        #                                             QMessageBox.Ok)
+        #     return -1
+
+        # if self.widget_area_menu.line_edit_labels.text() == '':
+        #     self.popupWindow = QMessageBox.question(self,'Warning!',
+        #                                             "Please select which bone or joint you wish to save" ,
+        #                                             QMessageBox.Ok)
+        #     return -1
+
+        # if self.widget_area_menu.side_button_group.checkedButton() is None:
+        #     self.popupWindow = QMessageBox.question(self,'Warning!',
+        #                                             "Please select the L or R before saving",
+        #                                             QMessageBox.Ok)
+
+
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        filenames = np.array(self.xray_record.meta_table['file_name'])
+
+        id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())#loads up the metadata and finds which row it should extract info from
+        organ_name = self.xray_record.meta_table['organ'][id[0][0]]#name of the organ
+        date = dates[id[0][0]]
+        # side_name   = self.widget_area_menu.side_button_group.checkedButton().text()#name of the side
+        # if side_name=='N/A':
+        #     side_name = 'NA'
+        file_name = 'annotation_tracking_'+organ_name+'_'+str(date)+'.csv'
+        xray_id = self.xray_selection_menu.combobox_studyid.currentText()
+        file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
+        if os.path.isfile(file_loc):
+            df = load_csv(file_loc)
+            self.widget_area_menu.load_table_view(df)
+
+
+
 
 
     def update_image_quality_score(self):
@@ -738,6 +780,7 @@ class InspectXRays(QMainWindow):
 
             print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
             self.display_image_info()
+            self.find_tracking_info()
         self.populate_polylines()
         self.populate_rectItems()
             # self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
