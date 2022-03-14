@@ -25,10 +25,11 @@ new bugs:
 
 
 Todo(polyline viewing)
-(i)   extend the show_selected_annotation_bone method in the MainWindow.py to check if there already is a polyline that needs saving and save it as some dummy polyline. The ethod needs to prompt the user and ask them if it is
-      ok to save
-(ii)  write the same method for rectItems
-(iii) add a button that allows user to overwrite the polyline .txt files with the modified polyline. WOrkflow: view the polyline, modify it, press overwrite, the polyline gets saved undee the name being displayed
+(i)   add a button that allows user to overwrite the polyline .txt files with the modified polyline. WOrkflow: view the polyline, modify it, press overwrite, the polyline gets saved undee the name being displayed
+(ii)  link to a new method that overwrites it
+(iii) add a delete annottaion button that deletes the annotation being viewd
+(iv)  link to method where the annotation gets deleted and updates the table view for that entry saying that it has not been completed
+
 
 
 

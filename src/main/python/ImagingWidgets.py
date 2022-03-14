@@ -1,7 +1,7 @@
 
 import time
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
-    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox
+    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,QTabWidget
 
 from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
@@ -191,7 +191,8 @@ class MyScene(QGraphicsScene):
             time.sleep(0.1)
             control_points = self.polyline_annotate_item.model.control_points
             polyline_annotate = Polyline(control_points[:-1])
-            self.polyline_annotate_item = PolylineItem(polyline_annotate)
+            self.polyline_annotate_item = PolylineItem(polyline_annotate,edge_width=self.edge_width,
+                                                   handle_size=self.handle_size)
             self.polyline_annotate_item.edge_color = QColor("#FF511C")
             self.addItem(self.polyline_annotate_item)
 
@@ -405,6 +406,7 @@ class AnnotationModelOptions(QWidget):
         self.layout.addLayout(self.score_slider_layout)
         self.score_sliders = self.score_slider_layout.sliders
         self.score_sliders['Line Width'].setValue(DEFAULT_EDGE_WIDTH)
+        # self.score_sliders['Line Width'].seMinimumSize(100,30)
         self.score_sliders['Dot Size'].setValue(DEFAULT_HANDLE_SIZE)
         # for key,val in self.score_sliders.items():
         #     #val.sliderMoved[int].connect(self.save_slider_value())
@@ -426,7 +428,15 @@ class AnnotationModelOptions(QWidget):
         layout1.addWidget(polyline_box_label)
         layout1.addWidget(self.display_polylines_box)
 
+
+        self.overwrite_poly_button = QPushButton("Overwrite")
+        self.delete_poly_button = QPushButton("Delete")
         layout2 = QHBoxLayout()
+        layout2.addWidget(self.overwrite_poly_button)
+        layout2.addWidget(self.delete_poly_button)
+        # layout1.addWidget(self.overwrite_poly_button)
+
+        layout3 = QHBoxLayout()
         rectItem_label = QLabel("Rect-Items")
         rectItem_label.setMaximumSize(60,30)
         rectItem_label.setMinimumSize(60, 30)
@@ -435,18 +445,65 @@ class AnnotationModelOptions(QWidget):
         rectItem_box_label.setMaximumSize(90,30)
         rectItem_box_label.setMinimumSize(90, 30)
         self.display_rectItem_box = QCheckBox()
-        layout2.addWidget(rectItem_label)
-        layout2.addWidget(self.rectItem_dropdown)
-        layout2.addWidget(rectItem_box_label)
-        layout2.addWidget(self.display_rectItem_box)
+        layout3.addWidget(rectItem_label)
+        layout3.addWidget(self.rectItem_dropdown)
+        layout3.addWidget(rectItem_box_label)
+        layout3.addWidget(self.display_rectItem_box)
+
+        self.overwrite_rect_button = QPushButton("Overwrite")
+        self.delete_rect_button = QPushButton("Delete")
+        layout4 = QHBoxLayout()
+        layout4.addWidget(self.overwrite_rect_button)
+        layout4.addWidget(self.delete_rect_button)
 
         widget1 =  QWidget()
+        layout1.setContentsMargins(0,0,0,0)
         widget1.setLayout(layout1)
-        widget2 =  QWidget()
+
+        widget2 = QWidget()
         widget2.setLayout(layout2)
 
-        self.selection_layout.addWidget(widget1)
-        self.selection_layout.addWidget(widget2)
+        widget3 =  QWidget()
+        widget3.setLayout(layout3)
+
+        widget4 = QWidget()
+        widget4.setLayout(layout4)
+
+        layout_poly = QVBoxLayout()
+        layout_poly.addWidget(widget1)
+        layout_poly.addWidget(widget2)
+        widget_poly = QFrame()
+        widget_poly.setFrameStyle(QFrame.Box)
+        widget_poly.setContentsMargins(0,0,0,0)
+        widget_poly.setLayout(layout_poly)
+
+
+        layout_rect = QVBoxLayout()
+        layout_rect.addWidget(widget3)
+        layout_rect.addWidget(widget4)
+        widget_rect = QFrame()
+        widget_rect.setFrameStyle(QFrame.Box)
+        widget_rect.setContentsMargins(0,0,0,0)
+        widget_rect.setLayout(layout_rect)
+
+        # widget_poly.setStyleSheet("border: 1px solid black; margin: 0px; padding: 0px;")
+
+
+
+
+
+        tabs = QTabWidget()
+        # tabs.setMinimumWidth(1000)
+        # tabs.setMaximumWidth(1000)
+        tabs.addTab(widget_poly,'Polylines')
+        tabs.addTab(widget_rect,'Rectangle')
+        self.selection_layout.addWidget(tabs)
+        # self.selection_layout.addWidget(widget1)
+        # self.selection_layout.addWidget(widget2)
+        # self.selection_layout.addWidget(widget_poly)
+        # self.selection_layout.addWidget(widget3)
+        # self.selection_layout.addWidget(widget4)
+        self.selection_layout.setContentsMargins(0,0,0,0)
         self.layout.addLayout(self.selection_layout)
 
 
