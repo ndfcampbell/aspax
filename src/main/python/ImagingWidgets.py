@@ -1,7 +1,7 @@
 
-import time
+import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
-    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,QTabWidget
+    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,QTabWidget,QMessageBox, QLineEdit
 
 from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
@@ -431,6 +431,7 @@ class AnnotationModelOptions(QWidget):
 
         self.overwrite_poly_button = QPushButton("Overwrite")
         self.delete_poly_button = QPushButton("Delete")
+        # self.poly_loc_line_edit = QLineEdit()
         layout2 = QHBoxLayout()
         layout2.addWidget(self.overwrite_poly_button)
         layout2.addWidget(self.delete_poly_button)
@@ -505,9 +506,23 @@ class AnnotationModelOptions(QWidget):
         # self.selection_layout.addWidget(widget4)
         self.selection_layout.setContentsMargins(0,0,0,0)
         self.layout.addLayout(self.selection_layout)
+        self.delete_poly_button.clicked.connect(self.delete_selected_poly)
 
 
+    def delete_selected_poly(self):
+        annotation_name = self.polyline_dropdown.currentText()
+        # print(annotation_name)
 
+        annotation_path = os.path.join("", annotation_name+'.txt')
+        # popupWindow = QMessageBox.question(self, 'Warning!',
+        #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
+        #                                         QMessageBox.Ok)
+        qm = QMessageBox
+        ret = qm.question(self, '', "Are you sure to reset all the values?", qm.Yes | qm.No)
+        if  ret == qm.Yes:
+            print("deleting " +annotation_path)
+        else:
+            print("keeping " + annotation_path)
 
 
     def get_slider_value(self):

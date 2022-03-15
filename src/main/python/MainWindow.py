@@ -387,6 +387,7 @@ class InspectXRays(QMainWindow):
         self.image_widget.annotation_options.polyline_dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
         self.image_widget.annotation_options.rectItem_dropdown.activated.connect(self.show_selected_annotation_joint)
         self.image_widget.annotation_options.rectItem_dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
+        # self.image_widget.annotation_options.delete_poly_button.clicked.connect(self.delete_selected_annotation_bone)
 
 
 
@@ -865,7 +866,7 @@ class InspectXRays(QMainWindow):
 
     def show_selected_annotation_bone(self):
         annotation_name = self.image_widget.annotation_options.polyline_dropdown.currentText()
-        print(annotation_name)
+        # print(annotation_name)
         annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
         annotation_path = os.path.join(annotation_path,'bone')
         annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
@@ -879,7 +880,7 @@ class InspectXRays(QMainWindow):
 
     def show_selected_annotation_joint(self):
         annotation_name = self.image_widget.annotation_options.rectItem_dropdown.currentText()
-        print(annotation_name)
+        # print(annotation_name)
         annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
         annotation_path = os.path.join(annotation_path,'joint')
         annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
@@ -894,6 +895,44 @@ class InspectXRays(QMainWindow):
             self.image_widget.image_scene.clear_poly()
             self.image_widget.image_scene.add_rectItem(x,y,w,h)
 
+
+    def delete_selected_annotation_bone(self):
+        annotation_name = self.image_widget.annotation_options.polyline_dropdown.currentText()
+        # print(annotation_name)
+        annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
+        annotation_path = os.path.join(annotation_path,'joint')
+        annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
+        # annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        # popupWindow = QMessageBox.question(self, 'Warning!',
+        #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
+        #                                         QMessageBox.Ok)
+        self.image_widget.annotation_options.delete_selected_poly(file_loc=annotation_path)
+        # qm = QMessageBox
+        # ret = qm.question(self, '', "Are you sure to reset all the values?", qm.Yes | qm.No)
+        # if  ret == qm.Yes:
+        #     print("deleting " +annotation_path)
+        # else:
+        #     print("keeping " + annotation_path)
+        # if QMessageBox.Ok:
+
+        # if os.path.isfile(filename):
+        #     self.msg = QMessageBox()
+        #     self.msg.setIcon(QMessageBox.Information)
+        #     self.msg.setText("Saved annotation under")
+        #     self.msg.setInformativeText(organ)
+        #     self.msg.setDetailedText("Save location \n"+filename)
+        #     self.msg.setStandardButtons(QMessageBox.Ok)
+        #     self.msg.show()
+        # os.remove(annotation_path)
+        # control_points  = np.loadtxt(annotation_path)
+        # x = np.min(control_points[:,0])
+        # w = np.max(control_points[:,0])-np.min(control_points[:,0])
+        # y = np.min(control_points[:,1])
+        # h = np.max(control_points[:,1])-np.min(control_points[:,1])
+        # if self.image_widget.annotation_options.display_rectItem_box.isChecked():
+        #
+        #     self.image_widget.image_scene.clear_poly()
+        #     self.image_widget.image_scene.add_rectItem(x,y,w,h)
 
 
 
