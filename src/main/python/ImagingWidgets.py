@@ -398,6 +398,8 @@ class AnnotationModelOptions(QWidget):
         self.init_score_slider() #initialises the score sliders for dsicrete scales
         self.init_select_polylines()
         self.setLayout(self.layout)
+        self.delete_poly_button.clicked.connect(self.delete_selected_poly)
+        self.delete_rect_button.clicked.connect(self.delete_selected_rect)
 
 
     def init_score_slider(self):
@@ -431,7 +433,7 @@ class AnnotationModelOptions(QWidget):
 
         self.overwrite_poly_button = QPushButton("Overwrite")
         self.delete_poly_button = QPushButton("Delete")
-        # self.poly_loc_line_edit = QLineEdit()
+
         layout2 = QHBoxLayout()
         layout2.addWidget(self.overwrite_poly_button)
         layout2.addWidget(self.delete_poly_button)
@@ -471,6 +473,9 @@ class AnnotationModelOptions(QWidget):
         widget4.setLayout(layout4)
 
         layout_poly = QVBoxLayout()
+        self.poly_loc_line_edit = QLineEdit()
+        self.poly_loc_line_edit.setReadOnly(True)
+        layout_poly.addWidget(self.poly_loc_line_edit)
         layout_poly.addWidget(widget1)
         layout_poly.addWidget(widget2)
         widget_poly = QFrame()
@@ -480,6 +485,8 @@ class AnnotationModelOptions(QWidget):
 
 
         layout_rect = QVBoxLayout()
+        self.rect_loc_line_edit = QLineEdit()
+        self.rect_loc_line_edit.setReadOnly(True)
         layout_rect.addWidget(widget3)
         layout_rect.addWidget(widget4)
         widget_rect = QFrame()
@@ -506,24 +513,50 @@ class AnnotationModelOptions(QWidget):
         # self.selection_layout.addWidget(widget4)
         self.selection_layout.setContentsMargins(0,0,0,0)
         self.layout.addLayout(self.selection_layout)
-        self.delete_poly_button.clicked.connect(self.delete_selected_poly)
+
 
 
     def delete_selected_poly(self):
         annotation_name = self.polyline_dropdown.currentText()
         # print(annotation_name)
-
-        annotation_path = os.path.join("", annotation_name+'.txt')
+        annotation_path = self.poly_loc_line_edit.text()
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
         # popupWindow = QMessageBox.question(self, 'Warning!',
         #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
         #                                         QMessageBox.Ok)
         qm = QMessageBox
-        ret = qm.question(self, '', "Are you sure to reset all the values?", qm.Yes | qm.No)
-        if  ret == qm.Yes:
-            print("deleting " +annotation_path)
-        else:
-            print("keeping " + annotation_path)
+        ret = qm.question(self, '', "Are you sure you want to delete "+annotation_name, qm.Yes | qm.No)
+        if os.path.isfile(annotation_path):
+            if  ret == qm.Yes:
+                print("deleting " +annotation_path)
 
+                self.polyline_dropdown.removeItem(self.polyline_dropdown.currentIndex())
+                os.remove(annotation_path)
+            else:
+                print("keeping " + annotation_path)
+        else:
+            print("file not present")
+
+
+    def delete_selected_rect(self):
+        annotation_name = self.rectItem_dropdown.currentText()
+        # print(annotation_name)
+        annotation_path = self.rect_loc_line_edit.text()
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        # popupWindow = QMessageBox.question(self, 'Warning!',
+        #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
+        #                                         QMessageBox.Ok)
+        if os.path.isfile(annotation_path):
+            qm = QMessageBox
+            ret = qm.question(self, '', "Are you sure you want to delete "+annotation_name, qm.Yes | qm.No)
+            if  ret == qm.Yes:
+                print("deleting " +annotation_path)
+                self.rectItem_dropdown.removeItem(self.rectItem_dropdown.currentIndex())
+                os.remove(annotation_path)
+            else:
+                print("keeping " + annotation_path)
+        else:
+            print("file not present")
 
     def get_slider_value(self):
         my_dict  = self.score_slider_layout.get_slider_values()

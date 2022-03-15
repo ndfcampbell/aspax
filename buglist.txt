@@ -29,6 +29,7 @@ Todo(polyline viewing)
 (ii)  link to a new method that overwrites it
 (iii) add a delete annottaion button that deletes the annotation being viewd
 (iv)  link to method where the annotation gets deleted and updates the table view for that entry saying that it has not been completed
+(v)   saving a new polyline should add to the list of polylines: add a call to populate_polyline at the end of the save annotations call
 
 
 

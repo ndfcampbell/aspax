@@ -27,7 +27,7 @@ xray_image = 0
 from MenuWidgets import area_menu_widget,score_menu_widget, \
     xray_selection_menu, XrayDataCreationDialog,  XRayCreationWindow, XrayData, NameSignature,output_annotation_name,\
     save_csv, load_csv
-
+from PyQt5.QtGui import QFont, QFontMetrics
 from ImagingWidgets import ImageHandler
 from DiagnosticWidgets import PlotWindow
 
@@ -508,7 +508,8 @@ class InspectXRays(QMainWindow):
 
             self.xray_record.save_landmark(landmark_id=annotation_id,date=date,\
             plineItem=self.image_widget.image_scene.polyline_annotate_item)
-
+        self.populate_polylines()
+        self.populate_rectItems()
 
         # file_name = 'annotation_tracking_'+str(date)+'.csv'
         # xray_id = self.xray_selection_menu.combobox_studyid.currentText()
@@ -838,31 +839,44 @@ class InspectXRays(QMainWindow):
     def populate_polylines(self):
         study_id = self.xray_selection_menu.combobox_studyid.currentText()
         target_loc = os.path.join(self.output_loc,study_id)#todo: link this to current date so that only the current
-        x = find_bone_annotations(target_folder=self.output_loc,xray_id=study_id,date=self.xray_selection_menu.xray_info_box_date.text())
+        _loc,x = find_bone_annotations(target_folder=self.output_loc,xray_id=study_id,date=self.xray_selection_menu.xray_info_box_date.text())
+        self.image_widget.annotation_options.poly_loc_line_edit.setText(_loc)
 
         anatomical_structure = self.xray_selection_menu.xray_info_box_organ.text()
         x_filtered = [f for f in x if anatomical_structure in f]
         self.image_widget.annotation_options.polyline_dropdown.clear()
+        maxlen = 0
+        fm = QFontMetrics(self.image_widget.annotation_options.polyline_dropdown.view().font())
         if len(x)>0:
             for f in x:
                 if f.split('.')[-1] == 'txt':
 
                     self.image_widget.annotation_options.polyline_dropdown.addItem(f.split('.')[0])
+                    if maxlen<len(f.split('.')[0]): maxlen= fm.width(f.split('.')[0])
+            print("font length")
+            print(maxlen)
+            self.image_widget.annotation_options.polyline_dropdown.view().setMinimumWidth(maxlen)#todo: determine the width of the pixel
 
     def populate_rectItems(self):
         study_id = self.xray_selection_menu.combobox_studyid.currentText()
         target_loc = os.path.join(self.output_loc,
                                   study_id)  # todo: link this to current date so that only the current
-        x = find_joint_annotations(target_folder=self.output_loc, xray_id=study_id,
+        _loc,x = find_joint_annotations(target_folder=self.output_loc, xray_id=study_id,
                                   date=self.xray_selection_menu.xray_info_box_date.text())
+        self.image_widget.annotation_options.rect_loc_line_edit.setText(_loc)
 
         anatomical_structure = self.xray_selection_menu.xray_info_box_organ.text()
         x_filtered = [f for f in x if anatomical_structure in f]
         self.image_widget.annotation_options.rectItem_dropdown.clear()
+        maxlen=0
         if len(x) > 0:
             for f in x:
                 if f.split('.')[-1] == 'txt':
                     self.image_widget.annotation_options.rectItem_dropdown.addItem(f.split('.')[0])
+                    if maxlen<len(f.split('.')[0]): maxlen= len(f.split('.')[0])
+            fm = self.image_widget.annotation_options.rectItem_dropdown.view().font()
+            # self.image_widget.annotation_options.rectItem_dropdown.view().setMinimumWidth(maxlen*fm.pixelSize())#todo: determine the width of the pixel
+
 
     def show_selected_annotation_bone(self):
         annotation_name = self.image_widget.annotation_options.polyline_dropdown.currentText()
@@ -871,11 +885,12 @@ class InspectXRays(QMainWindow):
         annotation_path = os.path.join(annotation_path,'bone')
         annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
         annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
-        control_points  = np.loadtxt(annotation_path)
-        if self.image_widget.annotation_options.display_polylines_box.isChecked():
+        if os.path.isfile(annotation_path):
+            control_points  = np.loadtxt(annotation_path)
+            if self.image_widget.annotation_options.display_polylines_box.isChecked():
 
-            self.image_widget.image_scene.clear_poly()
-            self.image_widget.image_scene.add_polyline(control_points)
+                self.image_widget.image_scene.clear_poly()
+                self.image_widget.image_scene.add_polyline(control_points)
 
 
     def show_selected_annotation_joint(self):
@@ -885,15 +900,16 @@ class InspectXRays(QMainWindow):
         annotation_path = os.path.join(annotation_path,'joint')
         annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
         annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
-        control_points  = np.loadtxt(annotation_path)
-        x = np.min(control_points[:,0])
-        w = np.max(control_points[:,0])-np.min(control_points[:,0])
-        y = np.min(control_points[:,1])
-        h = np.max(control_points[:,1])-np.min(control_points[:,1])
-        if self.image_widget.annotation_options.display_rectItem_box.isChecked():
+        if os.path.isfile(annotation_path):
+            control_points  = np.loadtxt(annotation_path)
+            x = np.min(control_points[:,0])
+            w = np.max(control_points[:,0])-np.min(control_points[:,0])
+            y = np.min(control_points[:,1])
+            h = np.max(control_points[:,1])-np.min(control_points[:,1])
+            if self.image_widget.annotation_options.display_rectItem_box.isChecked():
 
-            self.image_widget.image_scene.clear_poly()
-            self.image_widget.image_scene.add_rectItem(x,y,w,h)
+                self.image_widget.image_scene.clear_poly()
+                self.image_widget.image_scene.add_rectItem(x,y,w,h)
 
 
     def delete_selected_annotation_bone(self):
