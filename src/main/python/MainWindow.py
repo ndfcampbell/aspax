@@ -10,10 +10,10 @@ from DataUtils import find_bone_annotations, find_joint_annotations
 
 # Global variables to flag what tab needs to be navigated back to after creating new scoring sheet
 import platform
-if platform.system() == "Windows":
-    DEFAULT_OUTPUT_LOC ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"#todo: change this so that people can choose what this is at installation, or maybe just store it in some metadata
-else:
-    DEFAULT_OUTPUT_LOC = "saved_data"
+# if platform.system() == "Windows":
+#     DEFAULT_OUTPUT_LOC ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"#todo: change this so that people can choose what this is at installation, or maybe just store it in some metadata
+# else:
+DEFAULT_OUTPUT_LOC = "saved_data"
 review_scoring_sheet_flag = 0
 inspect_x_rays_flag = 0
 zoom_tracker = 1
