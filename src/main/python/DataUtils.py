@@ -163,10 +163,10 @@ def find_joint_annotations(target_folder, xray_id,date):
     return target_loc,os.listdir(target_loc)
 
 
-target_folder ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"
-xray_id = '27513'
-date =       '1998'
-x = find_bone_annotations(target_folder,'27513','1998')
+# target_folder ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"
+# xray_id = '27513'
+# date =       '1998'
+# x = find_bone_annotations(target_folder,'27513','1998')
 
 if __name__=='__main__':
     score          = 1

@@ -21,7 +21,9 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 import scipy.ndimage as ndi
 from extract_patches.core import extract_patches
-
+import time
+import tensorflow as tf
+import tensorflow_addons as tfa
 
 class initialize_shape_model(object):
     def __init__(self,image):
@@ -66,7 +68,9 @@ class huo_method(object):
         (iii) flood filling in horizontal direction to get complete hand mask
         :return: numpy array same size as the image
         """
-
+        print("==================================================================")
+        print("Finding hand mask using otsu thresholding and flood filling")
+        t1 = time.time()
         im = np.zeros(self.image.shape)
         im[100:-100,200:-200] = self.image[100:-100,200:-200]
         im =  im.astype(np.uint8)
@@ -108,6 +112,7 @@ class huo_method(object):
 
 
         self._bin_filled_image = binary_filled
+        print("time taken = {:}".format(time.time()-t1))
         return binary_filled
 
 
@@ -121,6 +126,8 @@ class huo_method(object):
         representing the midpoint of the fingers
         :return: numpy array [self.Nfingers,N,2] self.Nfingers peaks represented by N 2-d points
         """
+        t1 = time.time()
+
         pixel_width = 0.1
         sigmas = np.arange(20,55,step=5) #todo: change this to reflect pizel sizes
         n_peaks = self.nFingers
@@ -132,11 +139,19 @@ class huo_method(object):
         midl_len    = 0
         sliding_steps = np.arange(0,self.image.shape[0] - 100,10)
         k =0
+        print("=================================================================")
+        print("Finding finger midlines")
         for sigma in sigmas:
+            print("gaussian filter with sigma ={:}".format(sigma))
+            print("-----------------------------------------------------------------")
+            t_gauss = time.time()
             gaussian_filt = ndi.gaussian_filter(self.image* self._bin_filled_image.astype(np.float),sigma=sigma)
+            print("time taken to apply filter={:}".format(time.time() - t_gauss))
             if k==0:
                 self._gaussian_fltrd_init = gaussian_filt
+            t_peak = time.time()
             recovered_peaks = find_peaks_horizontal(gaussian_filt,n_peaks,startInd=0,endInd=self.image.shape[0]-100)
+            print("time taken to find peak={:}".format(time.time()-t_peak))
             midl_len = recovered_peaks.shape[0]
                     #i += 1
             if midl_len > final_peaks.shape[0]:
@@ -176,39 +191,27 @@ class huo_method(object):
 
         k =0
         for sigma in sigmas:
+            t_gauss = time.time()
             gaussian_filt = ndi.gaussian_filter(self.image* self._bin_filled_image.astype(np.float),sigma=sigma)
+            print("time taken to apply filter={:}".format(time.time() - t_gauss))
             if k==0:
                 self._gaussian_fltrd = gaussian_filt
+            t11 = time.time()
+
             recovered_peaks = find_peaks_horizontal(gaussian_filt,n_peaks,startInd=0,endInd=end_ind)
+            print("time taken to find peak={:}".format(time.time() - t11))
             midl_len = recovered_peaks.shape[0]
                     #i += 1
             if midl_len > final_peaks.shape[0]:
                 final_peaks = recovered_peaks
                 self._gaussian_fltrd = gaussian_filt
             k+=1
-
+        print("time taken = {:}".format(time.time() - t1))
         self._finger_midpoints = final_peaks
 
         ndiscr = self._finger_midpoints_init.shape[1]
 
-        # if _plot:
-        #     fig,ax = plt.subplots()
-        #     ax.imshow(self.image,cmap='Greys_r')
-        # x = np.concatenate((self._finger_midpoints[:,0],self._finger_midpoints_init[:,0]))
-        # if self.nFingers==10:
-        #     midpoints_init = np.concatenate((self._finger_midpoints_init[:,1:5],self._finger_midpoints_init[:,7:]),
-        #                                     axis=1)
-        # elif self.nFingers==5:
-        #     midpoints_init = self._finger_midpoints_init[:,1:5]
-        # for l in range(self.nPhanlanges):
-        #     y = np.concatenate((self._finger_midpoints[:,l+1],midpoints_init[:,l]))
-        #     cs = CubicSpline(x,y)
-        #     xnew = np.arange(np.min(x),np.max(x),ndiscr)
-        #     ynew = cs(xnew)
-        #     #self._finger_midpoints_init[:,l+1] = ynew
-        #
-        #     if _plot:
-        #         ax.plot(ynew,xnew)
+
 
         if self._debug_flag:
             fig,axes = plt.subplots(nrows=2,figsize=(24,12))
@@ -488,7 +491,8 @@ class huo_method(object):
         maxx = np.int(np.max(cs.x))+50
         miny = np.int(np.min(cs(cs.x)))-50
         maxy = np.int(np.max(cs(cs.x)))+50
-
+        print("------------------------------------------------------")
+        print("applying sobel features")
         sobelx = cv2.Sobel(im_blur,cv2.CV_32F,1,0,ksize=ksize)
         sobelxx = cv2.Sobel(sobelx,cv2.CV_32F,1,0,ksize=ksize)
         sobelxy = cv2.Sobel(sobelx,cv2.CV_32F,0,1,ksize=ksize)
@@ -564,15 +568,24 @@ class huo_method(object):
         further increase blob response
         :return:
         """
+
         self._phalanges_features = []
+        print("==================================================")
         for cs in self._phalanges:
+            print("finding phalange features")
+            t1 = time.time()
             out = self._extract_joint_feature(cs,_plot=_plot)
             self._phalanges_features = self._phalanges_features+[out]
+            print("time taken = {:}".format(time.time() - t1))
 
         self._thumbs_features = []
+        print("==================================================")
         for cs in self._thumbs:
+            print("finding thumb features")
+            t1 = time.time()
             out = self._extract_joint_feature(cs,_plot=_plot)
             self._thumbs_features = self._thumbs_features + [out]
+            print("time taken = {:}".format(time.time() - t1))
 
 
 
@@ -587,6 +600,7 @@ class huo_method(object):
         joint_types         = ['DIP','PIP','MCP']
         if _plot: fig,ax = plt.subplots(nrows=10,ncols = 3)
         k = 0
+        print("locating patches")
         for phalanx,features in zip(self._phalanges,self._phalanges_features):
             if k/4 <1:
                 side_name   = 'L'
@@ -723,10 +737,12 @@ class huo_method(object):
         return joint_patch_library,joint_loc_library
 
     def __call__(self,_plot=False):
+        t1 = time.time()
         self.extract_hand_mask(_plot=_plot)
         self.get_finger_midlines(_plot=_plot)
         self.extract_joint_feature(_plot=_plot)
         self.locate_joints()
+        print("total time taken={:}".format(time.time()-t1))
 
 def find_peaks_horizontal(gaussian_filt,n_peaks,startInd,endInd):
     sliding_steps = np.arange(startInd,endInd,10)
@@ -842,15 +858,15 @@ def test_joint_locator():
 
 if __name__=='__main__':
     # imLoc  = locations.LABELLED_XRAY_LOC_RAW
-    imLoc = "C:\\Users\\amr62\Documents\\aspax_studies_small\\aspax_studies_small\\29471"
+    imLoc = "/home/amr62/Documents/data/anymised_24052021/results"
 
-    imNames = ["29471_1978_hands.jpg"] #os.listdir(imLoc)
+    imNames = ["27513_1998_hands.jpg"] #os.listdir(imLoc)
 
 
     for imName in imNames:
         im   = cv2.imread(os.path.join(imLoc,imName),0)
         huo   = huo_method(image=im ,nFingers=10)
-        bin_mask = huo.extract_hand_mask()
+        # bin_mask = huo.extract_hand_mask()
         huo(_plot=False)
 
         ksize=5
@@ -872,10 +888,21 @@ if __name__=='__main__':
             # cv2.imwrite(file_name,val)
 
 
+        for key, val in huo._joint_patch_library.items():
+            print(key)
 
-
-
-
-
-
+        sigmas = np.arange(20,55,step=5)
+        im = huo.image
+        truncate = 4.0
+        for sigma in sigmas:
+            k_size = 2*int(truncate*sigma+0.5)+1
+            print("kernel size = {:}".format(k_size))
+            t_gauss = time.time()
+            gaussian_filt = ndi.gaussian_filter(huo.image * huo._bin_filled_image.astype(np.float),sigma=sigma)
+            print("Scipy time taken to apply filter={:}".format(time.time() - t_gauss))
+            print("------------------------------------------------------------------")
+            t_gauss = time.time()
+            t_gaussian_filt = tfa.image.gaussian_filter2d(huo.image * huo._bin_filled_image.astype(np.float),
+                                                          filter_shape=[k_size,k_size],sigma=sigma)
+            print("Tensorflow time taken to apply filter={:}".format(time.time() - t_gauss))
 

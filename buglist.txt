@@ -13,7 +13,9 @@ Annotation Tracking:
 (i)  each year should have an annotation tracking corresponding to the year, Hand file name: annotation_tracking_[date]_organ
 (ii) each time a new xray is loaded, the tracking pane should correspond to the tracking for that particular year
 
-
+Annotation functionality for the joint cnn locator:
+(i)  huo_method needs to output the locations of the patches in terms of x,y,w,h so as to initialisea rectItem in the UI
+(ii) need to think whether to precompute the patches and then correct or to compute on the go, currently this is taking a lot of time
 
 new bugs:
 (i) (a)   when creating an xray,one cannot enter a text entry for the date other the image will not load. this relates to INspecteXrays.load_selected_xrays: changed the line that was causing trouble, will check again.
