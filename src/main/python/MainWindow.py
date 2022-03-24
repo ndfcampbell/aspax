@@ -821,7 +821,8 @@ class InspectXRays(QMainWindow):
 
         for rect in rects:
             x = np.loadtxt(rect)
-            self.display_window.plot(np.append(x[:, 0], x[0, 0]), np.append(x[:, 1], x[0, 1]))
+            self.display_window.plot_with_labels(np.append(x[:, 0], x[0, 0]), np.append(x[:, 1], x[0, 1]),
+                                                 label=rect.split('/')[-1])
 
         for poly in polys:
             x = np.loadtxt(poly)
