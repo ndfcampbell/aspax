@@ -23,7 +23,10 @@ import scipy.ndimage as ndi
 from extract_patches.core import extract_patches
 import time
 import tensorflow as tf
+from MenuWidgets import NameSignature
+tf.compat.v1.disable_v2_behavior()
 import tensorflow_addons as tfa
+from astropy.convolution import Gaussian2DKernel
 
 class initialize_shape_model(object):
     def __init__(self,image):
@@ -595,6 +598,7 @@ class huo_method(object):
         is calculated. use prior knowledge on bone length to get the actual location of joints.
         :return: tbd
         """
+        t1 = time.time()
         joint_patch_library = {}
         joint_loc_library   = {}
         joint_types         = ['DIP','PIP','MCP']
@@ -611,7 +615,7 @@ class huo_method(object):
 
 
 
-            mask,model = self._generate_mask_from_curve(phalanx)
+            # mask,model = self._generate_mask_from_curve(phalanx)
 
             kern_height = int(10 / 0.11)
             kern_width = int(5 / 0.11)
@@ -623,8 +627,8 @@ class huo_method(object):
 
             joint_blob = cv2.filter2D(abs_features,-1,kernel)
         # phalanx = [0]
-            joint_blob_vals_spline = ndi.interpolation.map_coordinates(joint_blob,[phalanx.x,phalanx(phalanx.x)],
-                                                                       order=1)
+        #     joint_blob_vals_spline = ndi.interpolation.map_coordinates(joint_blob,[phalanx.x,phalanx(phalanx.x)],
+        #                                                                order=1)
 
 
             mask,model = huo._generate_mask_from_curve(phalanx)
@@ -640,9 +644,13 @@ class huo_method(object):
             # print(peaks)
             prom_idx = sorted(np.argsort(peaks[1]['prominences'])[-3:])
             peak_idx = peaks[0][prom_idx]
+            print("locations found to be prominent")
+
             x_locs = phalanx.x[peak_idx]
+            print(x_locs)
 
             y_locs = phalanx(x_locs)
+            print(y_locs)
 
             Size = 120
             keypoints = [cv2.KeyPoint(y_locs[0],x_locs[0],120)]
@@ -652,12 +660,15 @@ class huo_method(object):
             mrSize = self._mrSize
             patches = extract_patches(keypoints,im,PATCH_SIZE,mrSize,'cv2')
             keypoints = [cv2.KeyPoint(y_locs[2],x_locs[2],120)]
+
             patches = patches+ extract_patches(keypoints,im,PATCH_SIZE+20,mrSize,'cv2')
             for i in range(0,3):
                 joint_name = joint_types[i]
-                idx        = joint_name + '_' + finger_name + '_' + side_name
+                idx = 'HANDS'+'_' + side_name+'_'+joint_name+ finger_name
+                # idx        = joint_name + '_' + finger_name + '_' + side_name
                 joint_patch_library[idx] = patches[i]
-                joint_loc_library[idx]   = np.array(x_locs[i],y_locs[i])
+                joint_loc_library[idx]   = np.array([x_locs[i],y_locs[i]])
+                print(joint_loc_library[idx])
 
             if _plot:
                 for i in range(0,3):
@@ -734,6 +745,7 @@ class huo_method(object):
 
         self._joint_patch_library = joint_patch_library
         self._joint_loc_library   = joint_loc_library
+        print("found joint patches in {:}s".format(time.time()-t1))
         return joint_patch_library,joint_loc_library
 
     def __call__(self,_plot=False):
@@ -858,7 +870,32 @@ def test_joint_locator():
 
 if __name__=='__main__':
     # imLoc  = locations.LABELLED_XRAY_LOC_RAW
-    imLoc = "/home/amr62/Documents/data/anymised_24052021/results"
+    folders = ['27513','29471']
+    imLoc   = "/home/adwaye/Documents/Data"
+    patch_size = 220
+    for f in folders[0:1]:
+        current_folder = os.path.join(imLoc,f)
+        files = [file for file in os.listdir(current_folder) if 'hands' in file ]
+        for file in files[0:1]:
+            signature = NameSignature(file)
+            im = cv2.imread(os.path.join(current_folder,file),0)
+            huo = huo_method(image=im,nFingers=10)
+            huo(_plot=False)
+            for key,val in huo._joint_loc_library.items():
+                output_loc = os.path.join(current_folder)
+                output_loc  = os.path.join(output_loc,'joint')
+                output_loc = os.path.join(output_loc,signature.year)
+                ymid = val[0]
+                xmid = val[1]
+                patch_array = np.array([[xmid + patch_size//2,ymid - patch_size//2],
+                                        [xmid - patch_size//2,ymid - patch_size//2],
+                                        [xmid - patch_size//2,ymid + patch_size//2],
+                                        [xmid + patch_size//2,ymid + patch_size//2]
+                                        ])
+                output_filename = os.path.join(output_loc,key)
+                np.savetxt(output_filename,patch_array)
+
+
 
     imNames = ["27513_1998_hands.jpg"] #os.listdir(imLoc)
 
@@ -879,12 +916,12 @@ if __name__=='__main__':
         # for sigma in sigmas:
         #     Gassian_filt = ndi.gaussian_filter(im*bin_mask,sigma=2)
 
-        patches = huo.locate_joints(_plot=True)
+        # patches = huo.locate_joints(_plot=True)
         outloc = '/home/amr62/Documents/data/joints'
-        for keys,val in huo._joint_patch_library.items():
-            joint_name = imName.split(sep='.')[0]+'_'+keys+'.png'
-            file_name  = os.path.join(outloc,joint_name)
-            print('saving patch at '+file_name)
+        # for keys,val in huo._joint_patch_library.items():
+        #     joint_name = imName.split(sep='.')[0]+'_'+keys+'.png'
+        #     file_name  = os.path.join(outloc,joint_name)
+        #     print('saving patch at '+file_name)
             # cv2.imwrite(file_name,val)
 
 
@@ -894,15 +931,38 @@ if __name__=='__main__':
         sigmas = np.arange(20,55,step=5)
         im = huo.image
         truncate = 4.0
-        for sigma in sigmas:
-            k_size = 2*int(truncate*sigma+0.5)+1
-            print("kernel size = {:}".format(k_size))
-            t_gauss = time.time()
-            gaussian_filt = ndi.gaussian_filter(huo.image * huo._bin_filled_image.astype(np.float),sigma=sigma)
-            print("Scipy time taken to apply filter={:}".format(time.time() - t_gauss))
-            print("------------------------------------------------------------------")
-            t_gauss = time.time()
-            t_gaussian_filt = tfa.image.gaussian_filter2d(huo.image * huo._bin_filled_image.astype(np.float),
-                                                          filter_shape=[k_size,k_size],sigma=sigma)
-            print("Tensorflow time taken to apply filter={:}".format(time.time() - t_gauss))
+
+
+
+
+        # for sigma in sigmas:
+        #     k_size = 2*int(truncate*sigma+0.5)+1
+        #     print("=================================================================")
+        #     print("kernel size = {:}".format(k_size))
+        #     t_gauss = time.time()
+        #     gaussian_filt = ndi.gaussian_filter(huo.image * huo._bin_filled_image.astype(np.float),sigma=sigma)
+        #     print("Scipy time taken to apply filter={:}".format(time.time() - t_gauss))
+        #     print("------------------------------------------------------------------")
+        #     t_gauss = time.time()
+        #     t_gaussian_filt = tfa.image.gaussian_filter2d(huo.image * huo._bin_filled_image.astype(np.float),
+        #                                                   filter_shape=[k_size,k_size],sigma=sigma)
+        #     print("Tensorflow time taken to apply filter={:}".format(time.time() - t_gauss))
+
+
+
+
+        #
+        # max_size = 401
+        # t_im     = tf.constant(np.expand_dims(np.expand_dims(huo.image,0),3),dtype =tf.float64)
+        # t_kern   = tf.compat.v1.placeholder(shape=None,dtype=tf.float64)
+        # t_conv   = tf.nn.conv2d(input=t_im,filters=t_kern,padding="SAME",strides=1)
+        # with tf.compat.v1.Session() as sess:
+        #     for sigma in sigmas:
+        #         kern = Gaussian2DKernel(x_stddev=sigma)
+        #         kern = np.expand_dims(np.expand_dims(kern,2),3)
+        #         x = sess.run(t_conv,feed_dict={t_kern:kern})
+
+
+
+
 
