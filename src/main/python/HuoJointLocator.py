@@ -871,68 +871,79 @@ def test_joint_locator():
 if __name__=='__main__':
     # imLoc  = locations.LABELLED_XRAY_LOC_RAW
     folders = ['27513','29471']
-    imLoc   = "/home/adwaye/Documents/Data"
+    imLoc   = "/home/adwaye/Documents/Data/aspax_studies_annot"
+    folders = os.listdir(imLoc)
+    # folders = folders.sort()
+
     patch_size = 220
-    for f in folders[0:1]:
+    image_list = np.loadtxt("/home/adwaye/Documents/Data/files_annotated.txt",dtype='str')
+    for f in folders:
         current_folder = os.path.join(imLoc,f)
         files = [file for file in os.listdir(current_folder) if 'hands' in file ]
-        for file in files[0:1]:
-            signature = NameSignature(file)
-            im = cv2.imread(os.path.join(current_folder,file),0)
-            huo = huo_method(image=im,nFingers=10)
-            huo(_plot=False)
-            for key,val in huo._joint_loc_library.items():
-                output_loc = os.path.join(current_folder)
-                output_loc  = os.path.join(output_loc,'joint')
-                output_loc = os.path.join(output_loc,signature.year)
-                ymid = val[0]
-                xmid = val[1]
-                patch_array = np.array([[xmid + patch_size//2,ymid - patch_size//2],
-                                        [xmid - patch_size//2,ymid - patch_size//2],
-                                        [xmid - patch_size//2,ymid + patch_size//2],
-                                        [xmid + patch_size//2,ymid + patch_size//2]
-                                        ])
-                output_filename = os.path.join(output_loc,key)
-                np.savetxt(output_filename,patch_array)
+        for file in files:
+            if np.sum(image_list==file) ==0:
+                signature = NameSignature(file)
+                im = cv2.imread(os.path.join(current_folder,file),0)
+                try:
+                    huo = huo_method(image=im,nFingers=10)
+                    huo(_plot=False)
+                    for key,val in huo._joint_loc_library.items():
+                        output_loc = os.path.join(current_folder)
+                        output_loc  = os.path.join(output_loc,'joint')
+                        output_loc = os.path.join(output_loc,signature.year)
+                        ymid = val[0]
+                        xmid = val[1]
+                        patch_array = np.array([[xmid + patch_size//2,ymid - patch_size//2],
+                                                [xmid - patch_size//2,ymid - patch_size//2],
+                                                [xmid - patch_size//2,ymid + patch_size//2],
+                                                [xmid + patch_size//2,ymid + patch_size//2]
+                                                ])
+                        output_filename = os.path.join(output_loc,key)
+                        np.savetxt(output_filename,patch_array)
 
+                    image_list+=[file]
+                    np.savetxt("/home/adwaye/Documents/Data/files_annotated.txt",np.array(image_list),fmt='%s')
+                except:
+                    print('error in method')
 
-
-    imNames = ["27513_1998_hands.jpg"] #os.listdir(imLoc)
-
-
-    for imName in imNames:
-        im   = cv2.imread(os.path.join(imLoc,imName),0)
-        huo   = huo_method(image=im ,nFingers=10)
-        # bin_mask = huo.extract_hand_mask()
-        huo(_plot=False)
-
-        ksize=5
-        # huo._extract_joint_feature(cs=huo._phalanges[1],_plot=True,ksize=ksize)
-        # huo._extract_joint_feature(cs=huo._thumbs[1],_plot=True,ksize=ksize)
-        # huo._extract_joint_feature(cs=huo._phalanges[2],_plot=True,ksize=ksize)
-
-
-        #huo.plot_fingers()
-        # for sigma in sigmas:
-        #     Gassian_filt = ndi.gaussian_filter(im*bin_mask,sigma=2)
-
-        # patches = huo.locate_joints(_plot=True)
-        outloc = '/home/amr62/Documents/data/joints'
-        # for keys,val in huo._joint_patch_library.items():
-        #     joint_name = imName.split(sep='.')[0]+'_'+keys+'.png'
-        #     file_name  = os.path.join(outloc,joint_name)
-        #     print('saving patch at '+file_name)
-            # cv2.imwrite(file_name,val)
-
-
-        for key, val in huo._joint_patch_library.items():
-            print(key)
-
-        sigmas = np.arange(20,55,step=5)
-        im = huo.image
-        truncate = 4.0
-
-
+    #
+    #
+    # imNames = ["27513_1998_hands.jpg"] #os.listdir(imLoc)
+    #
+    #
+    # for imName in imNames:
+    #     im   = cv2.imread(os.path.join(imLoc,imName),0)
+    #     huo   = huo_method(image=im ,nFingers=10)
+    #     # bin_mask = huo.extract_hand_mask()
+    #     huo(_plot=False)
+    #
+    #     ksize=5
+    #     # huo._extract_joint_feature(cs=huo._phalanges[1],_plot=True,ksize=ksize)
+    #     # huo._extract_joint_feature(cs=huo._thumbs[1],_plot=True,ksize=ksize)
+    #     # huo._extract_joint_feature(cs=huo._phalanges[2],_plot=True,ksize=ksize)
+    #
+    #
+    #     #huo.plot_fingers()
+    #     # for sigma in sigmas:
+    #     #     Gassian_filt = ndi.gaussian_filter(im*bin_mask,sigma=2)
+    #
+    #     # patches = huo.locate_joints(_plot=True)
+    #     outloc = '/home/amr62/Documents/data/joints'
+    #     # for keys,val in huo._joint_patch_library.items():
+    #     #     joint_name = imName.split(sep='.')[0]+'_'+keys+'.png'
+    #     #     file_name  = os.path.join(outloc,joint_name)
+    #     #     print('saving patch at '+file_name)
+    #         # cv2.imwrite(file_name,val)
+    #
+    #
+    #     for key, val in huo._joint_patch_library.items():
+    #         print(key)
+    #
+    #     sigmas = np.arange(20,55,step=5)
+    #     im = huo.image
+    #     truncate = 4.0
+    #
+    #
 
 
         # for sigma in sigmas:
