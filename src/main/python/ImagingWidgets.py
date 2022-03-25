@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxL
 
 from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
-from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
+from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH, BaseRectItem
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import Slider
@@ -82,6 +82,10 @@ class MyScene(QGraphicsScene):
         self.addItem(self.rect_annotate_item)
         self.addItem(self.rect_annotate_item.rotate_handle)
 
+    def add_rectItemBase(self,x,y,w,h):
+        self.rect_annotate_item = BaseRectItem(x=x, y=y, width=w, height=h)
+        self.addItem(self.rect_annotate_item)
+        # self.addItem(self.rect_annotate_item.rotate_handle)
 
     # Function to override the QGraphicsScene mouse press behaviour, conditional on what functionality is selected
     def mousePressEvent(self, event):
@@ -178,8 +182,10 @@ class MyScene(QGraphicsScene):
             self.polyline_annotate_item=None
             self.annotation_length     = 0
         if self.rect_annotate_item is not None:
+
             self.removeItem(self.rect_annotate_item)
-            self.removeItem(self.rect_annotate_item.rotate_handle)
+            if type(self.rect_annotate_item) is RectItem:
+                self.removeItem(self.rect_annotate_item.rotate_handle)
             self.rect_annotate_item=None
             self.start     = None
             self.end       = None
@@ -419,7 +425,7 @@ class ImageHandler(QWidget):
             self.joint_annotator_panel.joint_dropdown.addItem(label_name)
             self.joint_annotator_panel.joint_name_qline.setText(label_name)
             self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()] = profiler
-            self.image_scene.add_rectItem(1000,1000,220,220)
+            self.image_scene.add_rectItemBase(1000,1000,220,220)
         else:
             qm = QMessageBox
             ret = qm.question(self,'',"Finished Annotating this image. Save all annotations?" ,
@@ -755,9 +761,6 @@ class JointAnnotatorPanel(QWidget):
 
 
 
-
-    def prev_annotation(self):
-        pass
 
 
 

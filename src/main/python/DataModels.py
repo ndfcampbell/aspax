@@ -168,6 +168,28 @@ class Rect(Geometry):
             self._x, self._y, self._width, self._height = \
                 points[0][0], points[0][1], abs(points[1][0] - points[0][0]), abs(points[1][1] - points[0][1])
 
+    @property
+    def bounding_points(self):
+        x1 = self._x
+        y1 = self._y
+        x2 = self._x+self._width
+        y2 =self._y
+        x3 = self._x+self._width
+        y3 =self._y+self._height
+        x4 = self._x
+        y4 =self._y+self._height
+        theta = 0
+
+
+
+        coords   = np.array([[x1, y1], [x2, y2],[x3,y3],[x4,y4]])
+        # mean_pos = np.mean(coords,axis=0)
+        mean_pos = np.array([self._x + self._width / 2, self._y + self._height / 2])
+        coords = coords - mean_pos
+        rotation_matrix = np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
+        coords_rot = (rotation_matrix@coords.transpose()).transpose() + mean_pos
+        return coords_rot
+
     def toPolies(self):
         return np.array([])
 
