@@ -50,6 +50,8 @@ class HandJointAnnotationProfiler(object):
         self.graphics_type = RectItem
         self.output_loc = output_loc
         self.load_data()
+        self.current_index = 0
+        self.annot_dict = {}
 
 
     def load_data(self):
@@ -88,6 +90,24 @@ class HandJointAnnotationProfiler(object):
 
     def init_next_label(self):
         pass
+
+
+    def __call__(self):
+        if self.current_index<len(self.label_names):
+            current_label = self.label_names[self.current_index]
+            # rect_annotate_item = RectItem(x=1000,y=1000,width=220,height=220)
+            xmid=1000
+            ymid=1000
+            patch_size = 220
+            self.annot_dict[current_label] = np.array([[xmid + patch_size//2,ymid - patch_size//2],
+                                                [xmid - patch_size//2,ymid - patch_size//2],
+                                                [xmid - patch_size//2,ymid + patch_size//2],
+                                                [xmid + patch_size//2,ymid + patch_size//2]
+                                                ])
+            self.current_index+=1
+
+
+
 
 
 

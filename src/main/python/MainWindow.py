@@ -37,6 +37,7 @@ class InspectXRays(QMainWindow):
         super(InspectXRays,self).__init__()
         self.ctx = ctx
         self._panels = []
+        self.output_loc = DEFAULT_OUTPUT_LOC
         self.initialise_left_panel()   #initialises self.menu_tabs and adds it to self._panels
         self.initialise_right_panel()  #initialises self.image_scene and adds it to self._panels
 
@@ -44,7 +45,7 @@ class InspectXRays(QMainWindow):
         # self.merge_layouts()
         self.split_layouts()
         self.setCentralWidget(self.main_widget)
-        self.output_loc = DEFAULT_OUTPUT_LOC
+
         self.connect_sub_buttons()
         self.initialise_xray_record()
         self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
@@ -123,7 +124,7 @@ class InspectXRays(QMainWindow):
         # Creating toolbar
 
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
-        self.image_widget = ImageHandler(self.ctx.image_handler_icons)
+        self.image_widget = ImageHandler(self.ctx.image_handler_icons,self.output_loc)
         self._panels = self._panels + [self.image_widget]
 
 
@@ -136,6 +137,7 @@ class InspectXRays(QMainWindow):
         if dlg.exec_():
             folder_names = dlg.selectedFiles()
             self.output_loc = os.path.join(os.sep,folder_names[0])
+            self.image_widget.output_loc = self.output_loc
             if not os.path.isdir(self.output_loc):
                 os.makedirs(self.output_loc)
             self.xray_selection_menu.wd_info.setText(self.output_loc)
@@ -172,6 +174,7 @@ class InspectXRays(QMainWindow):
 
         folder_names = response
         self.output_loc = os.path.join(os.sep,folder_names)
+        self.image_widget.output_loc = self.output_loc
         if not os.path.isdir(self.output_loc):
             os.makedirs(self.output_loc)
         self.xray_selection_menu.wd_info.setText(self.output_loc)
@@ -182,6 +185,7 @@ class InspectXRays(QMainWindow):
 
     def change_wd(self):
         self.output_loc = self.xray_selection_menu.wd_info.text()
+        self.image_widget.output_loc = self.output_loc
         if not os.path.isdir(self.output_loc):
             os.makedirs(self.output_loc)
         # self.xray_selection_menu.wd_info.setText(self.output_loc)
@@ -383,10 +387,12 @@ class InspectXRays(QMainWindow):
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
         self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
+        # self.image_widget.toolbar.buttons['Annotate'].triggered.connect(self.trigger_annotation_mode)
         self.image_widget.annotation_options.polyline_dropdown.activated.connect(self.show_selected_annotation_bone)
         self.image_widget.annotation_options.polyline_dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
         self.image_widget.annotation_options.rectItem_dropdown.activated.connect(self.show_selected_annotation_joint)
         self.image_widget.annotation_options.rectItem_dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
+
         # self.image_widget.annotation_options.delete_poly_button.clicked.connect(self.delete_selected_annotation_bone)
 
 
@@ -951,7 +957,8 @@ class InspectXRays(QMainWindow):
         #     self.image_widget.image_scene.clear_poly()
         #     self.image_widget.image_scene.add_rectItem(x,y,w,h)
 
-
+    # def trigger_annotation_mode(self):
+    #     self.image_widget.trigger_annotation_mode(output_loc=self.output_loc)
 
 
 

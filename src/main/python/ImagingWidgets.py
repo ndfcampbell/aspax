@@ -10,7 +10,7 @@ from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_ED
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import Slider
-
+from AnnotationProfiles import HandJointAnnotationProfiler
 
 from Utils import _NP
 
@@ -202,8 +202,9 @@ class MyScene(QGraphicsScene):
 # Class to handle the x-ray image - including zooming, contrasts, annotating etc.
 class ImageHandler(QWidget):
 
-    def __init__(self,icon_library):
+    def __init__(self,icon_library,output_loc):
         super().__init__()
+        self.output_loc = output_loc
         self.scaling_factor = 1.1
         self._empty = True
         self.image_view = MyView()
@@ -281,7 +282,13 @@ class ImageHandler(QWidget):
             self.joint_annotator_panel = JointAnnotatorPanel()
             self.joint_annotator_panel.setMaximumSize(800,200)
             self.joint_annotator_panel.setMinimumSize(800,200)
+            self.joint_annotator_panel.output_loc = self.output_loc
+            self.joint_annotator_panel.load_profilers()
             self.tabs.addTab(self.joint_annotator_panel,'Joint Annotator')
+
+
+            self.joint_annotator_panel.start_button.clicked.connect(self.start_annotation)
+            self.joint_annotator_panel.reset_button.clicked.connect(self.reset_annotation)
         else:
             self.tabs.removeTab(1)
 
@@ -379,6 +386,56 @@ class ImageHandler(QWidget):
             self.zoom_tracker = self.zoom_tracker * self.zoom_out_scaling_factor
             self.layout.addWidget(self.image_view)
             self.update()
+
+    def start_annotation(self):
+        self.joint_annotator_panel.next_button.clicked.connect(self.next_annotation)
+        self.joint_annotator_panel.next_button.clicked.connect(self.prev_annotation)
+        self.joint_annotator_panel.joint_name_qline.setText("Click on Next to start")
+
+    def reset_annotation(self):
+        self.joint_annotator_panel.clicked.disconnect(self.next_annotation)
+        self.joint_annotator_panel.clicked.disconnect(self.prev_annotation)
+        self.joint_annotator_panel.joint_name_qline.setText("")
+        self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText(
+        )] = HandJointAnnotationProfiler
+        #todo: need to remove all the rectItems and possibly reinitialise the image
+
+    def next_annotation(self):
+
+
+
+        profiler = self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()]
+        if profiler.current_index<len(profiler.label_names):
+            if profiler.current_index>0:
+
+                bounding_points = self.image_scene.rect_annotate_item.model.bounding_points
+
+                profiler.annot_dict[profiler.label_names[profiler.current_index]] = \
+                    bounding_points
+                self.image_scene.clear_poly()
+            profiler()
+            label_name = profiler.label_names[profiler.current_index-1]
+            print(label_name)
+            self.joint_annotator_panel.joint_dropdown.addItem(label_name)
+            self.joint_annotator_panel.joint_name_qline.setText(label_name)
+            self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()] = profiler
+            self.image_scene.add_rectItem(1000,1000,220,220)
+        else:
+            qm = QMessageBox
+            ret = qm.question(self,'',"Finished Annotating this image. Save all annotations?" ,
+                              qm.Yes | qm.No)
+
+            if ret == qm.Yes:
+                print("saving shit ")
+                print(profiler.annot_dict)
+            else:
+                print("exiting now ")
+        # self.profiler_dicts[self.profile_dropdown.currentText()].label_names()
+
+    def prev_annotation(self):
+        pass
+
+
 
 
 class ImagingToolbar(QToolBar):
@@ -597,10 +654,12 @@ class JointAnnotatorPanel(QWidget):
         # self.layout = QHBoxLayout()
         self.init()
 
+        self.output_loc = '/'
 
     def init(self):
         self.init_annotator_panel()
         self.setLayout(self.layout)
+        # self.connect_buttons()
         # self.delete_poly_button.clicked.connect(self.delete_selected_poly)
         # self.delete_rect_button.clicked.connect(self.delete_selected_rect)
 
@@ -609,6 +668,7 @@ class JointAnnotatorPanel(QWidget):
         profile_label = QLabel('Annotation Profile')
         self.profile_dropdown = QComboBox()
         self.reset_button     = QPushButton('Reset')
+        self.start_button = QPushButton('Start')
 
         self.layout = QGridLayout()
         joint_label = QLabel("Current Joint")
@@ -625,7 +685,8 @@ class JointAnnotatorPanel(QWidget):
         self.joint_dropdown = QComboBox()
         self.layout.addWidget(profile_label,0,0)
         self.layout.addWidget(self.profile_dropdown,0,1)
-        self.layout.addWidget(self.reset_button,0,2)
+        self.layout.addWidget(self.start_button,0,2)
+        self.layout.addWidget(self.reset_button,0,3)
 
         self.layout.addWidget(joint_label,1,0)
         self.layout.addWidget(self.joint_name_qline,1,1)
@@ -633,7 +694,6 @@ class JointAnnotatorPanel(QWidget):
         self.layout.addWidget(self.next_button,1,3)
         self.layout.addWidget(joint_list_label,2,0)
         self.layout.addWidget(self.joint_dropdown,2,1)
-
 
 
 
@@ -685,6 +745,22 @@ class JointAnnotatorPanel(QWidget):
 
 
         return my_dict
+
+    def load_profilers(self):
+        self.profiler_dicts = {}
+
+        self.profiler_dicts['Hand-Finger-Joint-Profiler'] = HandJointAnnotationProfiler(output_loc=self.output_loc)
+        self.profile_dropdown.addItem('Hand-Finger-Joint-Profiler')
+
+
+
+
+
+    def prev_annotation(self):
+        pass
+
+
+
 
 class score_sliders(QVBoxLayout):
     """
