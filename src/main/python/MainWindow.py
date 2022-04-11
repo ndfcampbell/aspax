@@ -1,3 +1,5 @@
+import os.path
+
 from PyQt5.QtWidgets import *
 
 
@@ -744,9 +746,10 @@ class InspectXRays(QMainWindow):
         if self.xray_selection_menu.combobox_studyid.currentText() is not None:
 
             meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
-            self.xray_record = XrayData(image_name=None,xray_id=None,acquisition_date=None,meta_loc=meta_loc)
-            self.display_xrays()
-            self.load_selected_xrays()
+            if os.path.isfile(meta_loc):
+                self.xray_record = XrayData(image_name=None,xray_id=None,acquisition_date=None,meta_loc=meta_loc)
+                self.display_xrays()
+                self.load_selected_xrays()
 
     def load_selected_xrays(self):
         """
