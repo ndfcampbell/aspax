@@ -1,14 +1,18 @@
-
+import cv2
 import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
-    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,QTabWidget,QMessageBox, QLineEdit
+    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,\
+    QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout
 
-from PyQt5.QtGui import QColor,QPixmap, QFont
+from PyQt5.QtGui import QColor,QPixmap, QFont, QImage
 from PyQt5.QtCore import Qt
 from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import Slider
+import pydicom
+import scipy.io as sio
+
 
 
 from Utils import _NP
@@ -267,12 +271,50 @@ class ImageHandler(QWidget):
         # self.toolbar.buttons['Draw Rect'].triggered.connect(self.image_scene.clear_poly)
 
     def load_image(self, file_name):
+        image_extensions = ['png', 'jpeg', 'jpg','JPEG','JPG','PNG']
+        mat_extensions = ['mat']
+        dicom_extensions = ['dicom']
         self.image_filename = file_name
-        self.pixmap          = QPixmap()
-        self.pixmap.load(file_name)
+        file_ext = file_name.split('.')[-1]
+        is_image = [ele for ele in image_extensions if (ele in file_ext)]
+        is_mat = [ele for ele in mat_extensions if (ele in file_ext)]
+        is_dicom = [ele for ele in dicom_extensions if (ele in file_ext)]
+
+
+
+        if bool(is_image):
+            self.pixmap          = QPixmap()
+            self.pixmap.load(file_name)
+        elif bool(is_dicom):
+            pass #todo: this needs to be implemented and tested
+        elif bool(is_mat):
+            self.matfile = sio.loadmat(file_name)
+            self.matfile_select = MatfileOptions()
+            self.matfile_select.load_keys(self.matfile)
+            self.matfile_select.show()
+            self.matfile_select.box.accepted.connect(self.load_array_from_matfile)
+            self.matfile_select.box.accepted.connect(self.matfile_select.close)
+
+
+
 
         self.get_image_dimensions()
         self.display_image(self.pixmap)
+
+    def load_array_from_matfile(self):
+        key = self.matfile_select.combo.currentText()
+
+        img = self.matfile[key]
+        scaled_img = ((img-np.min(img))/np.max(img))*255
+        cv2.imwrite('temp_file.png',scaled_img)
+        self.pixmap = QPixmap()
+        self.pixmap.load('temp_file.png')
+        # w = img.shape[1]
+        # h = img.shape[0]
+        # img2 = np.require(img,np.uint8,'C')
+        # image = QImage(img2,w,h,QImage.Format_RGB32)
+        # self.pixmap = QPixmap.fromImage(img)
+        print("pixmap created")
 
     def display_image(self, img):
         self.image_scene.clear()
@@ -565,6 +607,43 @@ class AnnotationModelOptions(QWidget):
         return my_dict
 
 
+class MatfileOptions(QDialog):
+    def __init__(self):
+        super(MatfileOptions,self).__init__()
+        self.initialise_layout()
+
+    def initialise_layout(self):
+        label = QLabel("Select key")
+        self.combo = QComboBox()
+        # self.combo.addItems(["option1", "option2", "option3"])
+        self.box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel,
+            centerButtons=True
+        )
+
+        self.box.rejected.connect(self.reject)
+
+        lay = QGridLayout(self)
+        lay.addWidget(label, 0, 0)
+        lay.addWidget(self.combo, 0, 1)
+
+        lay.addWidget(self.box, 1, 0, 1, 2)
+
+        self.resize(640, 240)
+
+    def load_keys(self,matfile):
+        for keys,val in matfile.items():
+            self.combo.addItem(keys)
+
+    # def _accept(self):
+    #     output_text = self.combo.currentText()
+    #     self.accept()
+    #     return output_text
+
+
+
+
+
 
 
 class score_sliders(QVBoxLayout):
@@ -635,8 +714,8 @@ class score_sliders(QVBoxLayout):
 def main():
     app = QApplication([])
     window = QMainWindow()
-
-    my_frame_widget = AnnotationModelOptions()
+    my_frame_widget = MatfileOptions()
+    # my_frame_widget = AnnotationModelOptions()
     layout = QVBoxLayout()
     layout.addWidget(my_frame_widget)
     window.setCentralWidget(my_frame_widget)
