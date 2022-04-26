@@ -29,7 +29,7 @@ import csv
 
 
 class distance_menu_widget(QWidget):
-    def __init__(self,name='Distance',joint_list="config/joint_list.txt"):
+    def __init__(self,joint_list,name='Distance'):
         super(distance_menu_widget,self).__init__()
         self.name = name
         self.font_header = QFont('Android Roboto', 15)
