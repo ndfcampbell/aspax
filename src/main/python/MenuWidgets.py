@@ -158,8 +158,8 @@ class distance_menu_widget(QWidget):
 
 
 class area_menu_widget(distance_menu_widget):
-    def __init__(self,name='Area'):
-        super(area_menu_widget,self).__init__(name=name)
+    def __init__(self,joint_list,name='Area'):
+        super(area_menu_widget,self).__init__(name=name,joint_list=joint_list)
 
     def init(self):
         self.init_output() #output box for Area- has a qlineitem and aqpushbutton('Measure)
@@ -319,7 +319,7 @@ class score_menu_widget(distance_menu_widget):
 
 
         self.damage_areas    = damage_areas
-        super(score_menu_widget,self).__init__(name=name)
+        super(score_menu_widget,self).__init__(name=name,joint_list="")
 
 
     def init(self):
