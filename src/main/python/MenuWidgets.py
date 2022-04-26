@@ -37,9 +37,13 @@ class distance_menu_widget(QWidget):
         self.font_text = QFont('Android Roboto', 10)
         self.font_button = QFont('Android Roboto', 10)
         self.layout      = QVBoxLayout()
-        text_file = open(joint_list,"r")
-        lines = text_file.readline().split(',')
-        text_file.close()
+        try:
+            text_file = open(joint_list,"r")
+            lines = text_file.readline().split(',')
+            text_file.close()
+        except FileNotFoundError:
+            lines = ['MCP1','MC1','MC2','MC3','MC4','MC5']
+
         self.bones_joints_list = lines
 
         self.init()
