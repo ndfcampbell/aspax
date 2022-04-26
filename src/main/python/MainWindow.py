@@ -94,7 +94,10 @@ class InspectXRays(QMainWindow):
     def load_new_score_sheet(self):
         # profile_loc = os.path.join('score_profiles',str(self.xray_selection_menu.score_selector.currentText())+'.h5')
         profile_loc = self.ctx.score_profiles[str(self.xray_selection_menu.score_selector.currentText())]
-        profile = load_profile(profile_loc)
+        try:
+            profile = load_profile(profile_loc)
+        except:
+            profile = {}
         profile['score_technique'] = str(self.xray_selection_menu.score_selector.currentText())
         self.menu_tabs.removeTab(1)
         self.widget_score_menu = score_menu_widget(profile=profile)
