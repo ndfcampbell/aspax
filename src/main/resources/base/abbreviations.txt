@@ -1,0 +1,15 @@
+MC,Meta Carpal
+PP,Proximal Phalanx
+MP,Middle Phalanx
+DP,Distal Phalanx
+DIP,Distal Inter Phalangeal
+PIP,Proximal Inter Phalangeal
+MCP,Metacarpophalangeal
+IP,Inter Phalangeal
+CMC,Carpometacarpal
+UCP,Ulnocarpal Joint
+DRUJ,Distal Radioulnal Joint
+RCP,RadioCarpal joint
+STT,Scaphotrapeziotrapezoidal joint
+SLCJ,Scaphoid Lunate Capitate joint (Y shaped)
+LTJ,Lunate Triquetrum
