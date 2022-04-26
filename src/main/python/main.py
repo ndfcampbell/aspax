@@ -8,7 +8,7 @@ from MainWindow import InspectXRays
 #from Utils import *
 from PyQt5.QtWidgets import QMainWindow
 import sys,os
-config_folder = "Resources/config"
+config_folder = "config"
 
 
 class AppContext(ApplicationContext):
