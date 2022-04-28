@@ -814,7 +814,8 @@ class InspectXRays(QMainWindow):
 
     def display_all_current_annotations(self):
         im_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
-        date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+        # date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+        date = self.xray_selection_menu.xray_info_box_date.text()
         im_name = self.xray_selection_menu.combobox_xrayid.currentText()
         # self.xray_record.meta_table[]
         joint_loc = os.path.join(self.xray_record.save_loc, 'joint')
