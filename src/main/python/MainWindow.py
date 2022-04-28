@@ -826,10 +826,12 @@ class InspectXRays(QMainWindow):
         self.display_window = PlotWindow()
 
         for rect in rects:
+            print(rect)
             x = np.loadtxt(rect)
             self.display_window.plot(np.append(x[:, 0], x[0, 0]), np.append(x[:, 1], x[0, 1]))
 
         for poly in polys:
+            print(poly)
             x = np.loadtxt(poly)
             self.display_window.plot(x[:, 0], x[:, 1])
 
