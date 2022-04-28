@@ -821,8 +821,8 @@ class InspectXRays(QMainWindow):
         joint_loc = os.path.join(joint_loc, date)
         bones_loc = os.path.join(self.xray_record.save_loc, 'bone')
         bones_loc = os.path.join(bones_loc, date)
-        rects = [os.path.join(joint_loc, f) for f in os.listdir(joint_loc)]
-        polys = [os.path.join(bones_loc, f) for f in os.listdir(bones_loc)]
+        rects = [os.path.join(joint_loc, f) for f in os.listdir(joint_loc) if f.split('.')[-1]=='txt']
+        polys = [os.path.join(bones_loc, f) for f in os.listdir(bones_loc) if f.split('.')[-1]=='txt']
         self.display_window = PlotWindow()
 
         for rect in rects:
