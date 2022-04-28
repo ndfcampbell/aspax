@@ -824,7 +824,8 @@ class InspectXRays(QMainWindow):
         rects = [os.path.join(joint_loc, f) for f in os.listdir(joint_loc) if f.split('.')[-1]=='txt']
         polys = [os.path.join(bones_loc, f) for f in os.listdir(bones_loc) if f.split('.')[-1]=='txt']
         self.display_window = PlotWindow()
-
+        print("rectitems:")
+        print("rects")
         for rect in rects:
             print(rect)
             x = np.loadtxt(rect)
