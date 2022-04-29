@@ -39,6 +39,7 @@ class InspectXRays(QMainWindow):
         super(InspectXRays,self).__init__()
         self.ctx = ctx
         self._panels = []
+        self.output_loc = DEFAULT_OUTPUT_LOC
         self.initialise_left_panel()   #initialises self.menu_tabs and adds it to self._panels
         self.initialise_right_panel()  #initialises self.image_scene and adds it to self._panels
 
@@ -46,7 +47,7 @@ class InspectXRays(QMainWindow):
         # self.merge_layouts()
         self.split_layouts()
         self.setCentralWidget(self.main_widget)
-        self.output_loc = DEFAULT_OUTPUT_LOC
+
         self.connect_sub_buttons()
         self.initialise_xray_record()
         self.xray_selection_menu.wd_info.setText(os.path.abspath(self.output_loc))
