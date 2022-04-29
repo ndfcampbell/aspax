@@ -44,7 +44,7 @@ class AppContext(ApplicationContext):
             "Clear Label":QIcon(self.get_resource(os.path.join("images","clear-icon-3.png"))),
             "Good Image Quality": QIcon(self.get_resource(os.path.join("images", "like_button_blue.png"))),
             "Bad Image Quality": QIcon(self.get_resource(os.path.join("images", "dislike_button_blue.png"))),
-            "Annotate": QIcon(self.get_resource(os.path.join("images", "tap.png")))
+            "Annotate": QIcon(self.get_resource(os.path.join("images", "EditPen.png")))
         }
 
 
