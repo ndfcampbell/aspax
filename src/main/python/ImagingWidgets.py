@@ -1,15 +1,16 @@
 
 import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
-    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,QTabWidget,QMessageBox, QLineEdit
+    QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,\
+    QTabWidget,QMessageBox, QLineEdit,QGridLayout
 
 from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
-from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
+from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH, BaseRectItem
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import Slider
-
+from AnnotationProfiles import HandJointAnnotationProfiler
 
 from Utils import _NP
 
@@ -81,6 +82,10 @@ class MyScene(QGraphicsScene):
         self.addItem(self.rect_annotate_item)
         self.addItem(self.rect_annotate_item.rotate_handle)
 
+    def add_rectItemBase(self,x,y,w,h):
+        self.rect_annotate_item = BaseRectItem(x=x, y=y, width=w, height=h)
+        self.addItem(self.rect_annotate_item)
+        # self.addItem(self.rect_annotate_item.rotate_handle)
 
     # Function to override the QGraphicsScene mouse press behaviour, conditional on what functionality is selected
     def mousePressEvent(self, event):
@@ -177,8 +182,10 @@ class MyScene(QGraphicsScene):
             self.polyline_annotate_item=None
             self.annotation_length     = 0
         if self.rect_annotate_item is not None:
+
             self.removeItem(self.rect_annotate_item)
-            self.removeItem(self.rect_annotate_item.rotate_handle)
+            if type(self.rect_annotate_item) is RectItem:
+                self.removeItem(self.rect_annotate_item.rotate_handle)
             self.rect_annotate_item=None
             self.start     = None
             self.end       = None
@@ -201,8 +208,9 @@ class MyScene(QGraphicsScene):
 # Class to handle the x-ray image - including zooming, contrasts, annotating etc.
 class ImageHandler(QWidget):
 
-    def __init__(self,icon_library):
+    def __init__(self,icon_library,output_loc):
         super().__init__()
+        self.output_loc = output_loc
         self.scaling_factor = 1.1
         self._empty = True
         self.image_view = MyView()
@@ -220,15 +228,22 @@ class ImageHandler(QWidget):
         self.toolbar = ImagingToolbar(icon_library)
         self.layout.addWidget(self.toolbar)
 
+
+        self.tabs = QTabWidget()
         self.annotation_options = AnnotationModelOptions()
+
         horizontal_dock = QHBoxLayout()
         horizontal_dock.addWidget(self.annotation_options,50)
+
         horizontal_widget = QWidget()
-        horizontal_widget.setMinimumSize(800,200)
-        horizontal_widget.setMaximumSize(800,200)
+        horizontal_widget.setMinimumSize(1600,200)
+        horizontal_widget.setMaximumSize(1600,200)
 
         horizontal_widget.setLayout(horizontal_dock)
-        self.layout.addWidget(horizontal_widget)
+        self.tabs.addTab(horizontal_widget,"View Annotations")
+        self.tabs.setMinimumSize(1600,220)
+        self.tabs.setMaximumSize(1600,220)
+        self.layout.addWidget(self.tabs)
         self.layout.addWidget(self.image_view)
         self.setLayout(self.layout)
         self.icons = icon_library
@@ -262,9 +277,28 @@ class ImageHandler(QWidget):
         for key,val in self.annotation_options.score_sliders.items():
             #val.sliderMoved[int].connect(self.save_slider_value())
             val.valueChanged[int].connect(self.update_annotation_dimensions)
+        self.toolbar.buttons['Annotate'].setCheckable(True)
+        self.toolbar.buttons['Annotate'].triggered.connect(self.trigger_annotation_mode)
 
         #.triggered.connect(self.image_scene.clear_poly)
         # self.toolbar.buttons['Draw Rect'].triggered.connect(self.image_scene.clear_poly)
+
+    def trigger_annotation_mode(self):
+        if self.toolbar.buttons['Annotate'].isChecked():
+            self.joint_annotator_panel = JointAnnotatorPanel()
+            self.joint_annotator_panel.setMaximumSize(800,200)
+            self.joint_annotator_panel.setMinimumSize(800,200)
+            self.joint_annotator_panel.output_loc = self.output_loc
+            self.joint_annotator_panel.load_profilers()
+            self.tabs.addTab(self.joint_annotator_panel,'Joint Annotator')
+
+
+            self.joint_annotator_panel.start_button.clicked.connect(self.start_annotation)
+            self.joint_annotator_panel.reset_button.clicked.connect(self.reset_annotation)
+        else:
+            self.tabs.removeTab(1)
+
+
 
     def load_image(self, file_name):
         self.image_filename = file_name
@@ -358,6 +392,56 @@ class ImageHandler(QWidget):
             self.zoom_tracker = self.zoom_tracker * self.zoom_out_scaling_factor
             self.layout.addWidget(self.image_view)
             self.update()
+
+    def start_annotation(self):
+        self.joint_annotator_panel.next_button.clicked.connect(self.next_annotation)
+        self.joint_annotator_panel.next_button.clicked.connect(self.prev_annotation)
+        self.joint_annotator_panel.joint_name_qline.setText("Click on Next to start")
+
+    def reset_annotation(self):
+        self.joint_annotator_panel.clicked.disconnect(self.next_annotation)
+        self.joint_annotator_panel.clicked.disconnect(self.prev_annotation)
+        self.joint_annotator_panel.joint_name_qline.setText("")
+        self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText(
+        )] = HandJointAnnotationProfiler
+        #todo: need to remove all the rectItems and possibly reinitialise the image
+
+    def next_annotation(self):
+
+
+
+        profiler = self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()]
+        if profiler.current_index<len(profiler.label_names):
+            if profiler.current_index>0:
+
+                bounding_points = self.image_scene.rect_annotate_item.model.bounding_points
+
+                profiler.annot_dict[profiler.label_names[profiler.current_index]] = \
+                    bounding_points
+                self.image_scene.clear_poly()
+            profiler()
+            label_name = profiler.label_names[profiler.current_index-1]
+            print(label_name)
+            self.joint_annotator_panel.joint_dropdown.addItem(label_name)
+            self.joint_annotator_panel.joint_name_qline.setText(label_name)
+            self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()] = profiler
+            self.image_scene.add_rectItemBase(1000,1000,220,220)
+        else:
+            qm = QMessageBox
+            ret = qm.question(self,'',"Finished Annotating this image. Save all annotations?" ,
+                              qm.Yes | qm.No)
+
+            if ret == qm.Yes:
+                print("saving shit ")
+                print(profiler.annot_dict)
+            else:
+                print("exiting now ")
+        # self.profiler_dicts[self.profile_dropdown.currentText()].label_names()
+
+    def prev_annotation(self):
+        pass
+
+
 
 
 class ImagingToolbar(QToolBar):
@@ -567,6 +651,120 @@ class AnnotationModelOptions(QWidget):
 
 
 
+class JointAnnotatorPanel(QWidget):
+    def __init__(self,name='Score',profile={}):
+
+
+
+        super(JointAnnotatorPanel,self).__init__()
+        # self.layout = QHBoxLayout()
+        self.init()
+
+        self.output_loc = '/'
+
+    def init(self):
+        self.init_annotator_panel()
+        self.setLayout(self.layout)
+        # self.connect_buttons()
+        # self.delete_poly_button.clicked.connect(self.delete_selected_poly)
+        # self.delete_rect_button.clicked.connect(self.delete_selected_rect)
+
+    def init_annotator_panel(self):
+
+        profile_label = QLabel('Annotation Profile')
+        self.profile_dropdown = QComboBox()
+        self.reset_button     = QPushButton('Reset')
+        self.start_button = QPushButton('Start')
+
+        self.layout = QGridLayout()
+        joint_label = QLabel("Current Joint")
+        # joint_label.setMaximumSize(100, 30)
+        # joint_label.setMinimumSize(100, 30)
+        self.joint_name_qline = QLineEdit()
+        self.joint_name_qline.setReadOnly(True)
+        self.previous_button = QPushButton('Prev')
+        self.next_button     = QPushButton('Next')
+
+        joint_list_label = QLabel("Previous Joints")
+        joint_label.setMaximumSize(60,30)
+        joint_label.setMinimumSize(60,30)
+        self.joint_dropdown = QComboBox()
+        self.layout.addWidget(profile_label,0,0)
+        self.layout.addWidget(self.profile_dropdown,0,1)
+        self.layout.addWidget(self.start_button,0,2)
+        self.layout.addWidget(self.reset_button,0,3)
+
+        self.layout.addWidget(joint_label,1,0)
+        self.layout.addWidget(self.joint_name_qline,1,1)
+        self.layout.addWidget(self.previous_button,1,2)
+        self.layout.addWidget(self.next_button,1,3)
+        self.layout.addWidget(joint_list_label,2,0)
+        self.layout.addWidget(self.joint_dropdown,2,1)
+
+
+
+
+    def delete_selected_poly(self):
+        annotation_name = self.polyline_dropdown.currentText()
+        # print(annotation_name)
+        annotation_path = self.poly_loc_line_edit.text()
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        # popupWindow = QMessageBox.question(self, 'Warning!',
+        #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
+        #                                         QMessageBox.Ok)
+        qm = QMessageBox
+        ret = qm.question(self, '', "Are you sure you want to delete "+annotation_name, qm.Yes | qm.No)
+        if os.path.isfile(annotation_path):
+            if  ret == qm.Yes:
+                print("deleting " +annotation_path)
+
+                self.polyline_dropdown.removeItem(self.polyline_dropdown.currentIndex())
+                os.remove(annotation_path)
+            else:
+                print("keeping " + annotation_path)
+        else:
+            print("file not present")
+
+
+    def delete_selected_rect(self):
+        annotation_name = self.rectItem_dropdown.currentText()
+        # print(annotation_name)
+        annotation_path = self.rect_loc_line_edit.text()
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        # popupWindow = QMessageBox.question(self, 'Warning!',
+        #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
+        #                                         QMessageBox.Ok)
+        if os.path.isfile(annotation_path):
+            qm = QMessageBox
+            ret = qm.question(self, '', "Are you sure you want to delete "+annotation_name, qm.Yes | qm.No)
+            if  ret == qm.Yes:
+                print("deleting " +annotation_path)
+                self.rectItem_dropdown.removeItem(self.rectItem_dropdown.currentIndex())
+                os.remove(annotation_path)
+            else:
+                print("keeping " + annotation_path)
+        else:
+            print("file not present")
+
+    def get_slider_value(self):
+        my_dict  = self.score_slider_layout.get_slider_values()
+
+
+        return my_dict
+
+    def load_profilers(self):
+        self.profiler_dicts = {}
+
+        self.profiler_dicts['Hand-Finger-Joint-Profiler'] = HandJointAnnotationProfiler(output_loc=self.output_loc)
+        self.profile_dropdown.addItem('Hand-Finger-Joint-Profiler')
+
+
+
+
+
+
+
+
 class score_sliders(QVBoxLayout):
     """
     For discrete scores
@@ -636,7 +834,7 @@ def main():
     app = QApplication([])
     window = QMainWindow()
 
-    my_frame_widget = AnnotationModelOptions()
+    my_frame_widget = JointAnnotatorPanel()
     layout = QVBoxLayout()
     layout.addWidget(my_frame_widget)
     window.setCentralWidget(my_frame_widget)

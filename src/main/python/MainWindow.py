@@ -128,7 +128,7 @@ class InspectXRays(QMainWindow):
         # Creating toolbar
 
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
-        self.image_widget = ImageHandler(self.ctx.image_handler_icons)
+        self.image_widget = ImageHandler(self.ctx.image_handler_icons,self.output_loc)
         self._panels = self._panels + [self.image_widget]
 
 
@@ -141,6 +141,7 @@ class InspectXRays(QMainWindow):
         if dlg.exec_():
             folder_names = dlg.selectedFiles()
             self.output_loc = os.path.join(os.sep,folder_names[0])
+            self.image_widget.output_loc = self.output_loc
             if not os.path.isdir(self.output_loc):
                 os.makedirs(self.output_loc)
             self.xray_selection_menu.wd_info.setText(self.output_loc)
@@ -177,6 +178,7 @@ class InspectXRays(QMainWindow):
 
         folder_names = response
         self.output_loc = os.path.join(os.sep,folder_names)
+        self.image_widget.output_loc = self.output_loc
         if not os.path.isdir(self.output_loc):
             os.makedirs(self.output_loc)
         self.xray_selection_menu.wd_info.setText(self.output_loc)
@@ -187,6 +189,7 @@ class InspectXRays(QMainWindow):
 
     def change_wd(self):
         self.output_loc = self.xray_selection_menu.wd_info.text()
+        self.image_widget.output_loc = self.output_loc
         if not os.path.isdir(self.output_loc):
             os.makedirs(self.output_loc)
         # self.xray_selection_menu.wd_info.setText(self.output_loc)

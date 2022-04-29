@@ -63,6 +63,16 @@ class PlotWindow(QtWidgets.QWidget):
         # refresh canvas
         self.canvas.draw()
 
+    def plot_with_labels(self,x,y,label):
+        self.ax.plot(x,y,'-',color='lightgreen')
+
+        self.ax.annotate(label,
+            xy=(np.mean(x),np.mean(y) ), xycoords='data')
+            # xytext=(-15, 25), textcoords='figure points',
+            # arrowprops=dict(facecolor='black', shrink=0.05),
+            # horizontalalignment='right', verticalalignment='bottom')
+        self.canvas.draw()
+
 
 
 
