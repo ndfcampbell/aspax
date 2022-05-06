@@ -724,7 +724,9 @@ class InspectXRays(QMainWindow):
             # #print(file_loc)
             # file_loc = os.path.join(file_loc,date)
             # file_name = os.path.join(file_loc,self.widget_score_menu.score_technique+'.csv')
+
             file_name = self.make_score_path()
+            print("saving at "+file_name)
             self.widget_score_menu.save_table_view(file_loc=file_name)
 
 
