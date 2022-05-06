@@ -122,6 +122,14 @@ class InspectXRays(QMainWindow):
             my_dict = load_csv(file_name)
             self.widget_area_menu.load_table_view(my_dict)
 
+        print("looking for score path")
+        score_path = self.make_score_path()
+        if os.path.isfile(score_path):
+            print("found score path at "+score_path)
+            my_dict = load_csv(score_path)
+            self.widget_score_menu.load_table_view(my_dict)
+        else:
+            print("did not find csv at "+score_path)
 
 
     def initialise_right_panel(self):
@@ -397,7 +405,6 @@ class InspectXRays(QMainWindow):
         self.image_widget.annotation_options.rectItem_dropdown.activated.connect(self.show_selected_annotation_joint)
         self.image_widget.annotation_options.rectItem_dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
         # self.image_widget.annotation_options.delete_poly_button.clicked.connect(self.delete_selected_annotation_bone)
-
 
 
 
