@@ -130,6 +130,8 @@ class InspectXRays(QMainWindow):
             self.widget_score_menu.load_table_view(my_dict)
         else:
             print("did not find csv at "+score_path)
+        score_path = self.make_score_path()
+        self.widget_score_menu.tableView_lineEdit.setText(score_path)
 
 
     def initialise_right_panel(self):
@@ -394,6 +396,7 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu.combobox_xrayid.activated.connect(self.load_selected_xrays)
         self.xray_selection_menu.combobox_xrayid.currentIndexChanged.connect(self.load_selected_xrays)
         self.xray_selection_menu.score_selector.currentIndexChanged.connect(self.load_new_score_sheet)
+        self.xray_selection_menu.score_selector.activated.connect(self.load_new_score_sheet)
         self.widget_area_menu.save_button.clicked.connect(self.save_annotation)
         self.widget_score_menu.save_button.clicked.connect(self.save_scores)
         self.widget_area_menu.view_button.clicked.connect(self.display_all_current_annotations)
