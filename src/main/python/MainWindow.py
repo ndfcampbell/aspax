@@ -800,7 +800,7 @@ class InspectXRays(QMainWindow):
 
         self.populate_polylines()#adds the polyline saved for the selected xray in the annotation_options tab
         self.populate_rectItems()#adds the polyline saved for the selected xray in the annotation_options tab
-        self.display_image_info()
+        # self.display_image_info()
 
 
         score_path = self.make_score_path()
