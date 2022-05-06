@@ -517,8 +517,8 @@ class InspectXRays(QMainWindow):
 
             self.xray_record.save_landmark(landmark_id=annotation_id,date=date,\
             plineItem=self.image_widget.image_scene.polyline_annotate_item)
-        self.populate_polylines()
-        self.populate_rectItems()
+        self.populate_polylines()#adds the polyline saved for the selected xray in the annotation_options tab
+        self.populate_rectItems()#adds the polyline saved for the selected xray in the annotation_options tab
 
         # file_name = 'annotation_tracking_'+str(date)+'.csv'
         # xray_id = self.xray_selection_menu.combobox_studyid.currentText()
@@ -711,12 +711,13 @@ class InspectXRays(QMainWindow):
                                                     QMessageBox.Ok)
         else:
             # date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
-            date = self.xray_selection_menu.xray_info_box_date.text()
-            #self.xray_record.meta_table[]
-            file_loc = os.path.join(self.xray_record.save_loc,'scores')
-            #print(file_loc)
-            file_loc = os.path.join(file_loc,date)
-            file_name = os.path.join(file_loc,self.widget_score_menu.score_technique+'.csv')
+            # date = self.xray_selection_menu.xray_info_box_date.text()
+            # #self.xray_record.meta_table[]
+            # file_loc = os.path.join(self.xray_record.save_loc,'scores')
+            # #print(file_loc)
+            # file_loc = os.path.join(file_loc,date)
+            # file_name = os.path.join(file_loc,self.widget_score_menu.score_technique+'.csv')
+            file_name = self.make_score_path()
             self.widget_score_menu.save_table_view(file_loc=file_name)
 
 
@@ -796,11 +797,28 @@ class InspectXRays(QMainWindow):
             print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
             self.display_image_info()
             self.find_tracking_info()
-        self.populate_polylines()
-        self.populate_rectItems()
-            # self.xray_selection_menu.xray_info_box_date.setText(str(dates[id[0][0]]))
-            # self.xray_selection_menu.xray_info_box_organ.setText(organs[id[0][0]])
 
+
+        self.populate_polylines()#adds the polyline saved for the selected xray in the annotation_options tab
+        self.populate_rectItems()#adds the polyline saved for the selected xray in the annotation_options tab
+
+
+        score_path = self.make_score_path()
+        self.widget_score_menu.tableView_lineEdit.setText(score_path)
+
+        if os.path.isfile(score_path):
+            my_dict = load_csv(score_path)
+            self.widget_score_menu.load_table_view(my_dict)
+
+
+    def make_score_path(self):
+        meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
+        score_path = os.path.join(meta_loc,'scores')
+        date = self.xray_selection_menu.xray_info_box_date.text()
+        score_path = os.path.join(score_path,date)
+        score_path = os.path.join(score_path,self.widget_score_menu.score_technique + '.csv')
+
+        return score_path
 
     def display_image_info(self):
         dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
@@ -846,10 +864,6 @@ class InspectXRays(QMainWindow):
 
         im = cv2.imread(os.path.join(im_loc,im_name))
         self.display_window.imshow(im)
-
-
-
-
         self.display_window.show()
 
 

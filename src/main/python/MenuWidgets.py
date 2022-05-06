@@ -301,7 +301,7 @@ class area_menu_widget(distance_menu_widget):
             state_array[id[0][0]] = 1.0
             df[signal] = np.array(state_array)
             self.load_table_view(df)
-            #todo: need to have a way to add the save_loc to the table
+            #todo: need to have a way to add the save_loc to the table: this needs to be set when loading an xray
         else:
             print("no need to update this")
 
@@ -394,9 +394,10 @@ class score_menu_widget(distance_menu_widget):
 
 
 
-    def load_table_view(self,dataframe):
+    def load_table_view(self,my_dict):
+        # output
         # model = DataFrameModel(dataframe)
-        model = DictionaryTableModel(dataframe)
+        model = DictionaryTableModel(my_dict)
         self.tableView.setModel(model)
 
     def save_table_view(self,file_loc):
@@ -404,7 +405,6 @@ class score_menu_widget(distance_menu_widget):
         save_csv(dataframe,fileName=file_loc)
 
     def save_slider_value(self):
-        #todo: the popup window here does not disappear right away after resetting the scores
         scores = []
         for key,val in self.score_sliders.items():
             scores += [int(val.value())]
