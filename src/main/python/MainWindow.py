@@ -710,7 +710,8 @@ class InspectXRays(QMainWindow):
                                                     "score" ,
                                                     QMessageBox.Ok)
         else:
-            date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+            # date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+            date = self.xray_selection_menu.xray_info_box_date.text()
             #self.xray_record.meta_table[]
             file_loc = os.path.join(self.xray_record.save_loc,'scores')
             #print(file_loc)
