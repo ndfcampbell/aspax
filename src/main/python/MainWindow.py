@@ -789,17 +789,6 @@ class InspectXRays(QMainWindow):
         # image_name = self.xray_record.meta_table['file_name'][id[0][0]]#.to_numpy()[0]
         image_name = self.xray_selection_menu.combobox_xrayid.currentText()
 
-        try:#todo: remove use of try except and try to use if id non empty
-            image_quality_array = np.array(self.xray_record.meta_table['image_quality'])
-            image_qual_bool     = bool(int(float(image_quality_array[id[0][0]])))
-            print(image_qual_bool)
-            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(image_qual_bool)
-            self.image_widget.toolbar.buttons['Bad Image Quality'].setChecked(not image_qual_bool)
-        except KeyError:
-            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
-            print("No image quality info present in metadata")
-
-        #print(image_name)
         if os.path.isfile(os.path.join(meta_loc,image_name)):
             self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
 
@@ -818,6 +807,19 @@ class InspectXRays(QMainWindow):
         if os.path.isfile(score_path):
             my_dict = load_csv(score_path)
             self.widget_score_menu.load_table_view(my_dict)
+
+        try:#todo: remove use of try except and try to use if id non empty
+            image_quality_array = np.array(self.xray_record.meta_table['image_quality'])
+            image_qual_bool     = bool(int(float(image_quality_array[id[0][0]])))
+            print(image_qual_bool)
+            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(image_qual_bool)
+            self.image_widget.toolbar.buttons['Bad Image Quality'].setChecked(not image_qual_bool)
+        except KeyError:
+            self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
+            print("No image quality info present in metadata")
+
+        #print(image_name)
+
 
 
     def make_score_path(self):
