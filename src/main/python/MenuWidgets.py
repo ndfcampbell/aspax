@@ -272,6 +272,9 @@ class area_menu_widget(distance_menu_widget):
 
     def save_table_view(self,file_loc):
         dataframe = self.tableView.model()._data
+        for keys,val in df.items():
+            print(keys)
+
         save_csv(dataframe,fileName=file_loc)
 
 
