@@ -367,6 +367,7 @@ class InspectXRays(QMainWindow):
         acquisition_date = self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].text()
         Xray_id          = self.create_xray_window.xray_creation_options.qline_edits['Study id'].text()
         organ_name       = self.create_xray_window.xray_creation_options.qline_edits['Body Part'].text()
+
         self.xray_record.add_xray(image_name=filename.split('/')[-1],xray_id=Xray_id,acquisition_date=acquisition_date,
                              save_loc=self.output_loc,
                              organ_name=organ_name)
@@ -799,6 +800,7 @@ class InspectXRays(QMainWindow):
 
         self.populate_polylines()#adds the polyline saved for the selected xray in the annotation_options tab
         self.populate_rectItems()#adds the polyline saved for the selected xray in the annotation_options tab
+        self.display_image_info()
 
 
         score_path = self.make_score_path()
