@@ -468,7 +468,7 @@ class InspectXRays(QMainWindow):
                                                     QMessageBox.Ok)
 
 
-        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'])
         filenames = np.array(self.xray_record.meta_table['file_name'])
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
@@ -557,7 +557,7 @@ class InspectXRays(QMainWindow):
                                                     QMessageBox.Ok)
 
 
-        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'])
         filenames = np.array(self.xray_record.meta_table['file_name'])
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
@@ -609,7 +609,7 @@ class InspectXRays(QMainWindow):
         #                                             QMessageBox.Ok)
 
 
-        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'])
         filenames = np.array(self.xray_record.meta_table['file_name'])
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())#loads up the metadata and finds which row it should extract info from
@@ -643,7 +643,7 @@ class InspectXRays(QMainWindow):
 
 
 
-        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'])
         filenames = np.array(self.xray_record.meta_table['file_name'])
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
@@ -680,7 +680,7 @@ class InspectXRays(QMainWindow):
 
 
 
-        dates     = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        dates     = np.array(self.xray_record.meta_table['acquisition_date'])
         filenames = np.array(self.xray_record.meta_table['file_name'])
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
@@ -834,7 +834,7 @@ class InspectXRays(QMainWindow):
         return score_path
 
     def display_image_info(self):
-        dates = np.array(self.xray_record.meta_table['acquisition_date'],dtype=np.int)
+        dates = np.array(self.xray_record.meta_table['acquisition_date'])
         file_names = np.array(self.xray_record.meta_table['file_name'])
         organs     = np.array(self.xray_record.meta_table['organ'])
         #
