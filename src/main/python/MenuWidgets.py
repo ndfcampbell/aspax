@@ -7,7 +7,7 @@ from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage
     QPolygonF, QPalette, QGradient, QLinearGradient
 from PyQt5.QtCore import *
 
-
+from extra_widgets import LabeledSlider
 
 
 
@@ -692,9 +692,10 @@ class score_sliders(QVBoxLayout):
 
             slider_label_layout  = QHBoxLayout()
             scores = np.arange(rng[0],rng[1]+1)
+            slider_label_layout.setSpacing(score_slider.tickInterval())
             for score in scores:
                 slider_label_layout.addWidget(QLabel(str(score)))
-                slider_label_layout.setSpacing(tick_spacing)
+
             slider_layout.addLayout(slider_label_layout)
             layout.addLayout(slider_layout)
             self.sliders[damage] = score_slider

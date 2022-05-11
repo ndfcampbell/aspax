@@ -1,16 +1,19 @@
-
+import cv2
 import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
     QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,\
-    QTabWidget,QMessageBox, QLineEdit,QGridLayout
+    QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout
 
-from PyQt5.QtGui import QColor,QPixmap, QFont
+from PyQt5.QtGui import QColor,QPixmap, QFont, QImage
 from PyQt5.QtCore import Qt
 from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH, BaseRectItem
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import Slider
-from AnnotationProfiles import HandJointAnnotationProfiler
+import pydicom
+import scipy.io as sio
+
+
 
 from Utils import _NP
 
@@ -250,6 +253,7 @@ class ImageHandler(QWidget):
         self.activate_toolbar()
         self.zoom_tracker  = 1.0
         self.zoom_out_scaling_factor = 1.0
+        self.pixel_width = [0.1,0.1]
 
         #replace with a connect toolbar
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
@@ -301,12 +305,80 @@ class ImageHandler(QWidget):
 
 
     def load_image(self, file_name):
+        """
+        reads the file_name and passes it to a QPixmap object which is then used
+        sets self.pixmap
+        calls self.display_image(self.pixmap) which displays the image in the scene
+        :param file_name: full path of file containing the image
+                          if image is a regular image file, the Pixmap is created by reading it
+                          if image is a dicom, the pixel_array property of the dicom gets loaded
+                          by passing it to the correct image format
+                          if image is a mat file, creats a matfiledialog which allows the user to select
+                          the desired array that has the image data
+        :return:
+        """
+        image_extensions = ['png', 'jpeg', 'jpg','JPEG','JPG','PNG']
+        mat_extensions = ['mat']
+        dicom_extensions = ['dicom','dcm' ]
         self.image_filename = file_name
-        self.pixmap          = QPixmap()
-        self.pixmap.load(file_name)
+        file_ext = file_name.split('.')[-1]
+        is_image = [ele for ele in image_extensions if (ele in file_ext)]
+        is_mat = [ele for ele in mat_extensions if (ele in file_ext)]
+        is_dicom = [ele for ele in dicom_extensions if (ele in file_ext)]
+
+
+
+        if bool(is_image):
+            self.pixmap          = QPixmap()
+            self.pixmap.load(file_name)
+        elif bool(is_dicom):
+            self.dicom_file = pydicom.read_file(file_name)
+            cvImg = self.dicom_file.pixel_array
+            cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
+            cvImgX = np.array([cvImg,cvImg,cvImg]).astype(np.uint32)
+            cvImgX = np.transpose(cvImgX,[1,2,0])
+            height,width,depth = cvImgX.shape
+            a = cvImgX.copy()
+            b = (255 << 24 | a[:,:,0] << 16 | a[:,:,1] << 8 | a[:,:,2]).flatten()
+            bytesPerLine = 3 * width
+            qImg = QImage(b, width, height, QImage.Format_RGBA8888)
+            self.pixmap = QPixmap(qImg)
+
+
+        elif bool(is_mat):
+            self.matfile = sio.loadmat(file_name)
+            self.matfile_select = MatfileOptions()#creates a dialog that allows one to select which element from the
+            # matfile to load
+            self.matfile_select.load_keys(self.matfile)
+            self.matfile_select.show()
+            self.matfile_select.box.accepted.connect(self.load_array_from_matfile)
+            self.matfile_select.box.accepted.connect(self.matfile_select.close)
+
+
+
 
         self.get_image_dimensions()
         self.display_image(self.pixmap)
+
+    def load_array_from_matfile(self):
+        """
+        connects to self.matfile_select.box.accepted, creates self.pixmap from the array corresponding to the key
+        appearinng in the dropdown in matfile_select
+        :return:
+        """
+        key = self.matfile_select.combo.currentText()
+
+        img = self.matfile[key]
+        scaled_img = ((img-np.min(img))/np.max(img))*255
+        cv2.imwrite('temp_file.png',scaled_img)
+        self.pixmap = QPixmap()
+        self.pixmap.load('temp_file.png')
+        # w = img.shape[1]
+        # h = img.shape[0]
+        # img2 = np.require(img,np.uint8,'C')
+        # image = QImage(img2,w,h,QImage.Format_RGB32)
+        # self.pixmap = QPixmap.fromImage(img)
+        print("pixmap created")
 
     def display_image(self, img):
         self.image_scene.clear()
@@ -318,9 +390,6 @@ class ImageHandler(QWidget):
         self.image_scene.update()
 
     def update_annotation_dimensions(self):
-
-
-
         size_dict = self.annotation_options.get_slider_value()
         self.image_scene.handle_size=size_dict['Dot Size']
         self.image_scene.edge_width = size_dict['Line Width']
@@ -679,6 +748,79 @@ class AnnotationModelOptions(QWidget):
 
 
         return my_dict
+
+class MatfileOptions(QDialog):
+    def __init__(self):
+        super(MatfileOptions,self).__init__()
+        self.initialise_layout()
+
+    def initialise_layout(self):
+        label = QLabel("Select key")
+        self.combo = QComboBox()
+        # self.combo.addItems(["option1", "option2", "option3"])
+        self.box = QDialogButtonBox(
+            QDialogButtonBox.Ok | QDialogButtonBox.Cancel,
+            centerButtons=True
+        )
+
+        self.box.rejected.connect(self.reject)
+
+        lay = QGridLayout(self)
+        lay.addWidget(label, 0, 0)
+        lay.addWidget(self.combo, 0, 1)
+
+        lay.addWidget(self.box, 1, 0, 1, 2)
+
+        self.resize(640, 240)
+
+    def load_keys(self,matfile):
+        for keys,val in matfile.items():
+            self.combo.addItem(keys)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
