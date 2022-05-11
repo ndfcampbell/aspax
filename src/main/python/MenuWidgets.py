@@ -403,8 +403,14 @@ class score_menu_widget(distance_menu_widget):
     def load_table_view(self,my_dict):
         # output
         # model = DataFrameModel(dataframe)
+        for key, val in my_dict.items():
+            if key != 'Joint Name':
+                val = np.array(val).astype(np.float)
+                my_dict[key] = val
         model = DictionaryTableModel(my_dict)
+
         self.tableView.setModel(model)
+
 
     def save_table_view(self,file_loc):
         dataframe = self.tableView.model()._data
