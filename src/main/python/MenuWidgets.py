@@ -680,23 +680,26 @@ class score_sliders(QVBoxLayout):
             label.setMinimumWidth(min_label_width)
             layout.addWidget(label)
 
-            slider_layout = QVBoxLayout()
+            slider_layout = QGridLayout()
             score_slider   = Slider()
             score_slider.setStyleSheet("QSlider::handle:horizontal {background-color: #16CCB1;}")
             score_slider.setOrientation(Qt.Horizontal)
             score_slider.setRange(rng[0],rng[1])
             score_slider.setTickInterval(1)
+            score_slider.setSingleStep(1)
+            slider_layout.setHorizontalSpacing(score_slider.tickInterval())
             score_slider.setTickPosition(QSlider.TicksBelow)
-            slider_layout.addWidget(score_slider)
+
 
 
             slider_label_layout  = QHBoxLayout()
             scores = np.arange(rng[0],rng[1]+1)
-            slider_label_layout.setSpacing(score_slider.tickInterval())
-            for score in scores:
-                slider_label_layout.addWidget(QLabel(str(score)))
 
-            slider_layout.addLayout(slider_label_layout)
+            for score in scores:
+                slider_layout.addWidget(QLabel(str(score)),0,int(score),Qt.AlignHCenter)
+
+            slider_layout.addWidget(score_slider,1,0,1,rng[1]-rng[0]+1,Qt.AlignBottom)
+            # slider_layout.addLayout(slider_label_layout)
             layout.addLayout(slider_layout)
             self.sliders[damage] = score_slider
             self.addLayout(layout)
