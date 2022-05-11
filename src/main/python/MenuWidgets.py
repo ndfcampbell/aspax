@@ -312,6 +312,9 @@ class area_menu_widget(distance_menu_widget):
 
 class score_menu_widget(distance_menu_widget):
     def __init__(self,name='Score',profile={}):
+        print("-----------------")
+        print(profile)
+        print("-----------------")
         damage_types         = profile.pop('damage_types',['Destruction','Proliferation'])
         self.damage_types    = damage_types
         if type(self.damage_types) is np.ndarray:
@@ -662,8 +665,10 @@ class score_sliders(QVBoxLayout):
         min_label_width = self.opt_kwargs.pop('label_minimum_width',110)
         tick_spacing    = self.opt_kwargs.pop('tick_spacing',30)
         slider_gap      = self.opt_kwargs.pop('slider_gap',130)
+        # print(self.damage_types)
         for damage,rng in zip(self.damage_types,self.damage_ranges):
             layout = QHBoxLayout()
+            # print(damage)
             label  = QLabel(damage)
             label.setFont(self.font_text)
             label.setMinimumWidth(min_label_width)
