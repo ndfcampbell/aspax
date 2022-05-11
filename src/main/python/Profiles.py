@@ -43,27 +43,29 @@ def load_profile(profile_loc):
 
 
 if __name__=='__main__':
-    names              = ['Steinbrocker','PsA-MSS','VdH-PsA','Ratingen']
-    damage_types_array = [['Damage'],
-                          ['Erosion','JSN'],
-                          ['Erosion','JSN'],
-                          ['Destruction','Proliferation']
-                          ]
-    damage_scores_array = [[(0,4)],
-                           [(0,5),(0,5)],
-                           [(0,3),(0,4)],
-                           [(0,5),(0,5)],
-                           ]
-    damage_areas = []
-    for name in names:
-        area_loc  = "config"
-        text_file = open(os.path.join(name+'_areas.txt'))
-        lines     = text_file.readline().split(",")
-        damage_areas+=[lines]
-        text_file.close()
-    for name,damage_types,damage_scores,damage_area in zip(names,damage_types_array,damage_scores_array,damage_areas):
-        create_profile(name,damage_types,damage_scores,damage_areas=damage_area,loc = "./")
-
+    # outloc = '/home/adwaye/PycharmProjects/aspax/config'
+    # names              = ['Steinbrocker','PsA-MSS','VdH-PsA','Ratingen']
+    # damage_types_array = [['Damage'],
+    #                       ['Erosion','JSN'],
+    #                       ['Erosion','JSN'],
+    #                       ['Destruction','Proliferation']
+    #                       ]
+    # damage_scores_array = [[(0,4)],
+    #                        [(0,5),(0,5)],
+    #                        [(0,3),(0,4)],
+    #                        [(0,5),(0,5)],
+    #                        ]
+    # damage_areas = []
+    # for name in names:
+    #     area_loc  = "config"
+    #     text_file = open(os.path.join(name+'_areas.txt'))
+    #     lines     = text_file.readline().split(",")
+    #     damage_areas+=[lines]
+    #     text_file.close()
+    # for name,damage_types,damage_scores,damage_area in zip(names,damage_types_array,damage_scores_array,damage_areas):
+    #     create_profile(name,damage_types,damage_scores,damage_areas=damage_area,loc = "./")
+    name = 'Monitor'
+    damage_types = ['s-vdH_Erosion','s-vdH_JSN','ratingen_osteoProlif']
 
 
 
