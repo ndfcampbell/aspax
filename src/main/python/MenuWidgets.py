@@ -1,6 +1,6 @@
 import os
 import shutil
-
+import time
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
@@ -173,6 +173,7 @@ class area_menu_widget(distance_menu_widget):
         self.init_save_discard() #initialises the buttons for the save and discard methods
         self.init_table_view()
 
+
     def init_save_discard(self):
         self.save_discard_layout = QHBoxLayout()
         self.save_discard_layout.addSpacing(290)
@@ -312,9 +313,9 @@ class area_menu_widget(distance_menu_widget):
 
 class score_menu_widget(distance_menu_widget):
     def __init__(self,name='Score',profile={}):
-        print("-----------------")
-        print(profile)
-        print("-----------------")
+        # print("-----------------")
+        # print(profile)
+        # print("-----------------")
         damage_types         = profile.pop('damage_types',['Destruction','Proliferation'])
         self.damage_types    = damage_types
         if type(self.damage_types) is np.ndarray:
@@ -329,6 +330,7 @@ class score_menu_widget(distance_menu_widget):
 
 
         self.damage_areas    = damage_areas
+        self.damage_dict = {}
         super(score_menu_widget,self).__init__(name=name,joint_list="")
 
 
@@ -338,6 +340,7 @@ class score_menu_widget(distance_menu_widget):
         self.init_score_slider() #initialises the score sliders for dsicrete scales
         self.init_save_discard() ##initialises the buttons for the save and discard methods
         self.init_table_view()
+        self.connect_buttons()
 
     def init_score_slider(self):
         score_slider_layout = score_sliders(score_name=self.score_technique,damage_types=self.damage_types,
@@ -346,7 +349,10 @@ class score_menu_widget(distance_menu_widget):
         self.score_sliders = score_slider_layout.sliders
         for key,val in self.score_sliders.items():
             #val.sliderMoved[int].connect(self.save_slider_value())
-            val.valueChanged[int].connect(self.save_slider_value)
+            # val.valueChanged[int].connect(self.store_slider_value)
+            val.sliderReleased.connect(self.store_slider_value)
+            # val.mousePressEvent.connect(self.store_slider_value)
+
 
     def init_label_selection(self):
         label_layout = QHBoxLayout()
@@ -416,6 +422,68 @@ class score_menu_widget(distance_menu_widget):
         dataframe = self.tableView.model()._data
         save_csv(dataframe,fileName=file_loc)
 
+    def store_slider_value(self):
+        scores = []
+        for key,val in self.score_sliders.items():
+            scores += [int(val.value())]
+        self.scores_bool = np.sum(scores) > 0
+        if self.side_button_group.checkedButton() is None:
+
+
+            if self.scores_bool:
+                self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                            "Please select a side to allocate the score" ,
+                                                            QMessageBox.Ok)
+
+                for key,val in self.score_sliders.items():
+                    val.setValue(0)
+                    val.update()
+
+
+        else:
+            for keys,val in self.score_sliders.items():
+
+                self.damage_dict[keys] = val.value()
+            print(self.damage_dict)
+            # time.sleep(0.5)
+            self.update_table()
+
+
+    def update_table(self):
+        scores = []
+        for key,val in self.score_sliders.items():
+            scores += [int(val.value())]
+        self.scores_bool = np.sum(scores) > 0
+
+
+            #val.update()
+        if self.side_button_group.checkedButton() is None:
+
+
+            if self.scores_bool:
+                self.popupWindow = QMessageBox.question(self,'Warning!',
+                                                            "Please select a side to allocate the score" ,
+                                                            QMessageBox.Ok)
+
+                for key,val in self.score_sliders.items():
+                    val.setValue(0)
+                    val.update()
+
+
+        else:
+
+            df = self.tableView.model()._data
+
+            for keys,val in self.damage_dict.items():
+                row_name = str(self.score_area_box.currentText())+'_'+self.side_button_group.checkedButton().text()
+                col_name = keys
+                score_array = df[col_name]
+                id = np.where(np.array(df['Joint Name'])==row_name)
+                score_array[id[0][0]] = val
+                df[col_name] = np.array(score_array).astype(np.float32)
+            self.load_table_view(df)
+
+
     def save_slider_value(self):
         scores = []
         for key,val in self.score_sliders.items():
@@ -449,6 +517,33 @@ class score_menu_widget(distance_menu_widget):
                 score_array[id[0][0]] = val.value()
                 df[col_name] = np.array(score_array).astype(np.float32)
             self.load_table_view(df)
+
+    def load_slider_value(self):
+        if self.side_button_group.checkedButton() is None:
+            print('no side selected')
+        else:
+            df = self.tableView.model()._data
+
+            for key,val in self.score_sliders.items():
+                print(key)
+                array = df[key].ravel()
+                row_name = str(self.score_area_box.currentText()) + '_' + self.side_button_group.checkedButton().text()
+                id = np.where(np.array(df['Joint Name']) == row_name)
+                self.damage_dict[key] = array[id]
+        # time.sleep(0.5)
+        self.update_sliders()
+                # val.setValue(array[id])
+                # val.update()
+
+    def update_sliders(self):
+        for key,val in self.score_sliders.items():
+            val.setValue(self.damage_dict[key])
+
+    def connect_buttons(self):
+        for button in self.side_buttons:
+            if button.text()!='N/A':
+                button.clicked.connect(self.load_slider_value)
+        self.score_area_box.currentTextChanged.connect(self.load_slider_value)
 
 
 
@@ -625,28 +720,30 @@ class Slider(QtWidgets.QSlider): # Class creating a changed slider
     # Reference code below in this class: https://stackoverflow.com/questions/52689047/moving-qslider-to-mouse-click-position
     def mousePressEvent(self, event):
         super(Slider, self).mousePressEvent(event)
-        if event.button() == Qt.LeftButton:
-            val = self.pixelPosToRangeValue(event.pos())
-            self.setValue(val)
+        # if event.button() == Qt.LeftButton:
+        #     val = self.pixelPosToRangeValue(event.pos())
+        #     self.setValue(val)
+        pass
 
     def pixelPosToRangeValue(self, pos):
-        opt = QtWidgets.QStyleOptionSlider()
-        self.initStyleOption(opt)
-        gr = self.style().subControlRect(QtWidgets.QStyle.CC_Slider, opt, QtWidgets.QStyle.SC_SliderGroove, self)
-        sr = self.style().subControlRect(QtWidgets.QStyle.CC_Slider, opt, QtWidgets.QStyle.SC_SliderHandle, self)
-
-        if self.orientation() == Qt.Horizontal:
-            sliderLength = sr.width()
-            sliderMin = gr.x()
-            sliderMax = gr.right() - sliderLength + 1
-        else:
-            sliderLength = sr.height()
-            sliderMin = gr.y()
-            sliderMax = gr.bottom() - sliderLength + 1;
-        pr = pos - sr.center() + sr.topLeft()
-        p = pr.x() if self.orientation() == Qt.Horizontal else pr.y()
-        return QtWidgets.QStyle.sliderValueFromPosition(self.minimum(), self.maximum(), p - sliderMin,
-                                               sliderMax - sliderMin, opt.upsideDown)
+        pass
+        # opt = QtWidgets.QStyleOptionSlider()
+        # self.initStyleOption(opt)
+        # gr = self.style().subControlRect(QtWidgets.QStyle.CC_Slider, opt, QtWidgets.QStyle.SC_SliderGroove, self)
+        # sr = self.style().subControlRect(QtWidgets.QStyle.CC_Slider, opt, QtWidgets.QStyle.SC_SliderHandle, self)
+        #
+        # if self.orientation() == Qt.Horizontal:
+        #     sliderLength = sr.width()
+        #     sliderMin = gr.x()
+        #     sliderMax = gr.right() - sliderLength + 1
+        # else:
+        #     sliderLength = sr.height()
+        #     sliderMin = gr.y()
+        #     sliderMax = gr.bottom() - sliderLength + 1;
+        # pr = pos - sr.center() + sr.topLeft()
+        # p = pr.x() if self.orientation() == Qt.Horizontal else pr.y()
+        # return QtWidgets.QStyle.sliderValueFromPosition(self.minimum(), self.maximum(), p - sliderMin,
+        #                                        sliderMax - sliderMin, opt.upsideDown)
 
 
 class score_sliders(QVBoxLayout):
@@ -682,6 +779,7 @@ class score_sliders(QVBoxLayout):
 
             slider_layout = QGridLayout()
             score_slider   = Slider()
+            score_slider.setPageStep(0)
             score_slider.setStyleSheet("QSlider::handle:horizontal {background-color: #16CCB1;}")
             score_slider.setOrientation(Qt.Horizontal)
             score_slider.setRange(rng[0],rng[1])
