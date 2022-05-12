@@ -548,7 +548,7 @@ class ImageHandler(QWidget):
 class ImagingToolbar(QToolBar):
     def __init__(self,icon_lib):
         super(ImagingToolbar,self).__init__()
-        self.setStyleSheet("background-color: rgb(22,204,177);")
+        # self.setStyleSheet("background-color: rgb(22,204,177);")
         # action_icon_names   = [os.path.join("icons",f) for f in ["draw_poly.png","draw_rect.png","zoom_out.png",
         #                                                     "zoom_in.png",
         #                                          "undo.png",

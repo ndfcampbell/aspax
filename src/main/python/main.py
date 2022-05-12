@@ -13,11 +13,13 @@ config_folder = "config"
 
 class AppContext(ApplicationContext):
     def run(self):
+        self.main_window.setStyleSheet(open(self.stylesheet,"r").read())
         self.main_window.show()
         return self.app.exec_()
 
     @cached_property
     def main_window(self):
+
         return InspectXRays(self)#ImageHandler(self.image_handler_icons)#(self)
 
     @cached_property
@@ -34,6 +36,10 @@ class AppContext(ApplicationContext):
                 'Monitor-Hands':os.path.join(config_folder,"Monitor_hands.h5"),
                 'Monitor-Feet':os.path.join(config_folder,"Monitor_feet.h5")
         }
+
+    @cached_property
+    def stylesheet(self):
+        return self.get_resource(os.path.join(config_folder,"style.qss"))
 
     @cached_property
     def image_handler_icons(self):

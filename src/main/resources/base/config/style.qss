@@ -1,0 +1,70 @@
+QPushButton {
+   background-color: #8b0000;
+   color: #ffffff;
+   border-radius: 5px;
+   border-style: none;
+   height: 25px;
+}
+
+QWidget{
+    background-color: #282a36;
+    color: #f8f8f2;
+
+
+}
+
+
+QPushButton{
+
+    border: 0.4px solid #f8f8f2;
+    border-style: inset;
+
+    }
+
+
+QLineEdit{
+    background-color: #555169;
+    color: #f8f8f2;
+    border: 0.4px solid #f8f8f2;
+    border-style: inset;
+
+    }
+
+QComboBox{
+    background-color: #555169;
+    color: #f8f8f2;
+    border: 0.4px solid #f8f8f2;
+    border-style: inset;
+
+}
+
+QTableView{
+    background-color: #f8f8f2;
+    color: #282a36;
+}
+
+QToolBar{
+    background-color: rgb(98, 114, 164);
+
+
+}
+
+QPushButton{
+    background-color: #555169;
+
+}
+
+QPushButton:pressed{
+    background-color: #9d95c7;
+
+}
+
+
+QToolButton{
+    background-color: #555169;
+    /*border: 0.5px solid #f8f8f2;
+    border-style: inset;*/
+
+
+
+}
