@@ -413,6 +413,8 @@ class InspectXRays(QMainWindow):
         self.image_widget.annotation_options.polyline_dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
         self.image_widget.annotation_options.rectItem_dropdown.activated.connect(self.show_selected_annotation_joint)
         self.image_widget.annotation_options.rectItem_dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
+        self.image_widget.toolbar.buttons['Clear Label'].triggered.connect(self.clear_neasurement)
+        self.widget_area_menu.output_button.clicked.connect(self.measure_poly)
         # self.image_widget.annotation_options.delete_poly_button.clicked.connect(self.delete_selected_annotation_bone)
 
 
@@ -943,6 +945,31 @@ class InspectXRays(QMainWindow):
 
                 self.image_widget.image_scene.clear_poly()
                 self.image_widget.image_scene.add_polyline(control_points)
+
+
+    def clear_neasurement(self):
+        self.widget_area_menu.output_box.setText('0mm')
+
+    def measure_poly(self):
+        if self.image_widget.image_scene.annotation_length>2:
+            # self.image_widget.pixel_width = [0.1,0.2]
+            array = self.image_widget.image_scene.polyline_annotate_item.control_points
+            scaling = np.expand_dims(self.image_widget.pixel_width,0)
+            diffs = np.diff(array,axis=0)
+            # print(diffs.shape)
+            # print(diffs)
+            # print('=====pixel spacing:')
+            # print((scaling*diffs).shape)
+            # print(scaling*diffs)
+            distance = np.sqrt(np.sum(np.square(scaling*diffs)))
+            self.widget_area_menu.output_box.setText('{:.4f} mm'.format(distance))
+
+        if self.image_widget.image_scene.rect_annotate_item is not None:
+            h = self.image_widget.image_scene.rect_annotate_item.model.height*self.image_widget.pixel_width[0]
+            w = self.image_widget.image_scene.rect_annotate_item.model.width*self.image_widget.pixel_width[1]
+            area = h*w
+            self.widget_area_menu.output_box.setText('{:.2f} mm sq.'.format(area))
+
 
 
     def show_selected_annotation_joint(self):

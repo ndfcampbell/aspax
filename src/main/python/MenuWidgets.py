@@ -64,9 +64,11 @@ class distance_menu_widget(QWidget):
         """
         self.output_box_layout = QHBoxLayout()
         self.output_box_layout.setContentsMargins(0,0,0,0)
-        self.output_box = BoxDistanceArea()
+        self.output_box = QLineEdit()
+        # self.output_box = BoxDistanceArea()
         self.output_box.setText("0mm")
-        self.output_box.add_to_layout(self.output_box_layout)
+        # self.output_box.add_to_layout(self.output_box_layout)
+        self.output_box_layout.addWidget(self.output_box)
 
         self.output_button = QPushButton("Measure")
         self.output_button.setStyleSheet("background-color: #666666; color: white")
