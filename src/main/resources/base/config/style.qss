@@ -125,3 +125,31 @@ background: #eee;
 border: 1px solid #aaa;
 border-radius: 4px;
 }
+
+
+
+QTabBar::tab {
+  background: #555169;
+  border-right: 1px solid lightgray;
+
+  min-height: 30px;
+   border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+
+
+}
+
+QTabBar::tab:selected { background-color: #282a36;
+    color: #f8f8f2;
+    border-right: 1px solid #282a36;
+
+    border-left: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+
+    min-height: 30px;
+
+    }
+
+QTabWidget::pane {border: 1px solid #282a36;}
+
+
