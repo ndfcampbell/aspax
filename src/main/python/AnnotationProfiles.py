@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxL
 
 from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
-from GraphicsItems import PolylineItem,RectItem,BaseRectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
+from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import load_csv, save_csv
@@ -47,8 +47,7 @@ class HandJointAnnotationProfiler(object):
             for joint in ['DIP','PIP','MCP','CMC']:
                 label_names += ['HANDS_L_' + joint + k]
         self.label_names = label_names
-        self.graphics_type = BaseRectItem
-        self.organ_name = 'joint'
+        self.graphics_type = RectItem
         self.output_loc = output_loc
         self.load_data()
         self.current_index = 0

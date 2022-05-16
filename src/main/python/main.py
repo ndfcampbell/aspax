@@ -8,7 +8,6 @@ from MainWindow import InspectXRays
 #from Utils import *
 from PyQt5.QtWidgets import QMainWindow
 import sys,os
-config_folder = "config"
 
 
 class AppContext(ApplicationContext):
@@ -22,15 +21,15 @@ class AppContext(ApplicationContext):
 
     @cached_property
     def joint_list(self):
-        return self.get_resource(os.path.join(config_folder,"joint_list.txt"))
+        return self.get_resource(os.path.join("config","joint_list.txt"))
 
     @cached_property
     def score_profiles(self):
 
-        return {'PsA-MSS':  os.path.join(config_folder,"PsA-MSS.h5"),
-                'Ratingen':  os.path.join(config_folder,"Ratingen.h5"),
-                'Steinbrocker':  os.path.join(config_folder,"Steinbrocker.h5"),
-                'VdH-PsA':  os.path.join(config_folder,"VdH-PsA.h5")
+        return {'PsA-MSS':  os.path.join("config","PsA-MSS.h5"),
+                'Ratingen':  os.path.join("config","Ratingen.h5"),
+                'Steinbrocker':  os.path.join("config","Steinbrocker.h5"),
+                'VdH-PsA':  os.path.join("config","VdH-PsA.h5")
         }
 
     @cached_property
@@ -45,7 +44,7 @@ class AppContext(ApplicationContext):
             "Clear Label":QIcon(self.get_resource(os.path.join("images","clear-icon-3.png"))),
             "Good Image Quality": QIcon(self.get_resource(os.path.join("images", "like_button_blue.png"))),
             "Bad Image Quality": QIcon(self.get_resource(os.path.join("images", "dislike_button_blue.png"))),
-            "Annotate": QIcon(self.get_resource(os.path.join("images", "EditPen.png")))
+            "Annotate": QIcon(self.get_resource(os.path.join("images", "tap.png")))
         }
 
 

@@ -404,10 +404,12 @@ class InspectXRays(QMainWindow):
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
         self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
+        # self.image_widget.toolbar.buttons['Annotate'].triggered.connect(self.trigger_annotation_mode)
         self.image_widget.annotation_options.polyline_dropdown.activated.connect(self.show_selected_annotation_bone)
         self.image_widget.annotation_options.polyline_dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
         self.image_widget.annotation_options.rectItem_dropdown.activated.connect(self.show_selected_annotation_joint)
         self.image_widget.annotation_options.rectItem_dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
+
         # self.image_widget.annotation_options.delete_poly_button.clicked.connect(self.delete_selected_annotation_bone)
 
 
@@ -871,7 +873,8 @@ class InspectXRays(QMainWindow):
         for rect in rects:
             print(rect)
             x = np.loadtxt(rect)
-            self.display_window.plot(np.append(x[:, 0], x[0, 0]), np.append(x[:, 1], x[0, 1]))
+            self.display_window.plot_with_labels(np.append(x[:, 0], x[0, 0]), np.append(x[:, 1], x[0, 1]),
+                                                 label=rect.split('/')[-1])
 
         for poly in polys:
             print(poly)
@@ -997,7 +1000,8 @@ class InspectXRays(QMainWindow):
         #     self.image_widget.image_scene.clear_poly()
         #     self.image_widget.image_scene.add_rectItem(x,y,w,h)
 
-
+    # def trigger_annotation_mode(self):
+    #     self.image_widget.trigger_annotation_mode(output_loc=self.output_loc)
 
 
 

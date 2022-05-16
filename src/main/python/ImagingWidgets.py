@@ -220,7 +220,7 @@ class ImageHandler(QWidget):
         self.image_view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.image_view.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self.image_scene = MyScene()
-        # self.load_image('CPSA0019h2011.png')
+        self.load_image('CPSA0019h2011.png')
         # self.load_image('johncena.jpg')
         self.layout = QVBoxLayout()
         self.image_view.setScene(self.image_scene)
@@ -403,7 +403,7 @@ class ImageHandler(QWidget):
         self.joint_annotator_panel.clicked.disconnect(self.prev_annotation)
         self.joint_annotator_panel.joint_name_qline.setText("")
         self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText(
-        )] = HandJointAnnotationProfiler()
+        )] = HandJointAnnotationProfiler
         #todo: need to remove all the rectItems and possibly reinitialise the image
 
     def next_annotation(self):
@@ -411,41 +411,21 @@ class ImageHandler(QWidget):
 
 
         profiler = self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()]
-        date = self.annotation_options.poly_loc_line_edit.text().split('/')[-1]
-        id = self.annotation_options.poly_loc_line_edit.text().split('/')[-3]
-
-        output_folder = os.path.join(self.output_loc,id)
-        output_folder = os.path.join(output_folder,profiler.organ_name)
-        output_folder = os.path.join(output_folder,date)
         if profiler.current_index<len(profiler.label_names):
             if profiler.current_index>0:
-                if self.image_scene.rect_annotate_item is None:
-                    qm = QMessageBox
-                    ret = qm.question(self,'',"No annotations draw, please draw an annotation",
-                                      qm.Yes | qm.No)
-                else:
 
-                    bounding_points = self.image_scene.rect_annotate_item.model.bounding_points
+                bounding_points = self.image_scene.rect_annotate_item.model.bounding_points
 
-                    profiler.annot_dict[profiler.label_names[profiler.current_index]] = \
-                        bounding_points
-                    index = self.joint_annotator_panel.joint_dropdown.currentIndex()
-                    label_name = profiler.label_names[profiler.current_index - 1]
-                    print(label_name)
-                    organ_name = self.joint_annotator_panel.joint_dropdown.itemText(index+1)
-
-                    path = os.path.join(output_folder,label_name + '.txt')
-                    print(path)
-                    np.savetxt(path,bounding_points)
-                    self.image_scene.clear_poly()
+                profiler.annot_dict[profiler.label_names[profiler.current_index]] = \
+                    bounding_points
+                self.image_scene.clear_poly()
             profiler()
             label_name = profiler.label_names[profiler.current_index-1]
             print(label_name)
             self.joint_annotator_panel.joint_dropdown.addItem(label_name)
             self.joint_annotator_panel.joint_name_qline.setText(label_name)
             self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()] = profiler
-
-            # self.image_scene.add_rectItemBase(1000,1000,220,220)
+            self.image_scene.add_rectItemBase(1000,1000,220,220)
         else:
             qm = QMessageBox
             ret = qm.question(self,'',"Finished Annotating this image. Save all annotations?" ,
@@ -453,19 +433,7 @@ class ImageHandler(QWidget):
 
             if ret == qm.Yes:
                 print("saving shit ")
-                profiler = self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()]
-                date = self.annotation_options.poly_loc_line_edit.text().split('/')[-1]
-                id = self.annotation_options.poly_loc_line_edit.text().split('/')[-3]
-
-                output_folder = os.path.join(self.output_loc,id)
-                output_folder = os.path.join(output_folder,profiler.organ_name)
-                output_folder = os.path.join(output_folder,date)
-                for key, val in profiler.items():
-                    path = os.path.join(output_folder,key+'.txt')
-                    np.savetxt(path,item)
-
-
-
+                print(profiler.annot_dict)
             else:
                 print("exiting now ")
         # self.profiler_dicts[self.profile_dropdown.currentText()].label_names()
