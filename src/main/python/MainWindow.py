@@ -110,7 +110,9 @@ class InspectXRays(QMainWindow):
         self.menu_tabs.addTab(self.widget_score_menu,self.widget_score_menu.score_technique)
         self.connect_sub_buttons()
 
-        date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+
+
+        date, organ = self._get_image_info()
         #self.xray_record.meta_table[]
         file_loc = os.path.join(self.output_loc,'scores')
         #print(file_loc)
@@ -217,6 +219,7 @@ class InspectXRays(QMainWindow):
     def open_study_creator(self):
         #print('function triggered')
         filename = self.xray_selection_menu.temp_name
+        print('filename fed to mainwindow is ')
         print(filename)
         # f = open(filenames[0],'r')
         self.image_widget.load_image(file_name=filename)
@@ -228,7 +231,9 @@ class InspectXRays(QMainWindow):
         # if QMessageBox.Yes:
         self.create_xray_window = XRayCreationWindow()
         self.create_xray_window.show()
-        self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+        self.name_sig = NameSignature(filename)
+
+        # self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
         #print(self.name_sig.year)
         self.create_xray_window.xray_creation_options.save_button.clicked.connect(
             lambda:self.create_xray_data(filename))
@@ -257,7 +262,8 @@ class InspectXRays(QMainWindow):
             if QMessageBox.Yes:
                 self.create_xray_window = XRayCreationWindow()
                 self.create_xray_window.show()
-                self.name_sig  = NameSignature(fileName=filenames[0].split('/')[-1].split('.')[0])
+                # self.name_sig  = NameSignature(fileName=filenames[0].split('/')[-1].split('.')[0])
+                self.name_sig = NameSignature(fileName=filenames[0].split('/')[-1])
                 #print(self.name_sig.year)
                 self.create_xray_window.xray_creation_options.save_button.clicked.connect(
                     lambda:self.create_xray_data(filenames[0]))
@@ -286,7 +292,8 @@ class InspectXRays(QMainWindow):
         self.create_xray_window = XRayCreationWindow()
 
         self.create_xray_window.show()
-        self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+        # self.name_sig  = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+        self.name_sig = NameSignature(fileName=filename)
         #print(self.name_sig.year)
         self.create_xray_window.xray_creation_options.save_button.clicked.connect(
             lambda:self.add_xray_to_study(filename))
@@ -322,7 +329,8 @@ class InspectXRays(QMainWindow):
                 self.create_xray_window = XRayCreationWindow()
 
                 self.create_xray_window.show()
-                self.name_sig  = NameSignature(fileName=filenames[0].split('/')[-1].split('.')[0])
+                # self.name_sig  = NameSignature(fileName=filenames[0].split('/')[-1].split('.')[0])
+                self.name_sig = NameSignature(fileName=filenames[0].split('/')[-1])
                 #print(self.name_sig.year)
                 self.create_xray_window.xray_creation_options.save_button.clicked.connect(
                     lambda:self.add_xray_to_study(filenames[0]))
@@ -766,7 +774,6 @@ class InspectXRays(QMainWindow):
                 self.xray_selection_menu.combobox_xrayid.addItem(it)
             meta_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
             self.xray_record = XrayData(image_name=None,xray_id=None,acquisition_date=None,meta_loc=meta_loc)
-            # self.initialise_xray_record()
             self.load_selected_xrays()
 
     def initialise_xray_record(self):
@@ -810,7 +817,7 @@ class InspectXRays(QMainWindow):
 
         self.populate_polylines()#adds the polyline saved for the selected xray in the annotation_options tab
         self.populate_rectItems()#adds the polyline saved for the selected xray in the annotation_options tab
-        # self.display_image_info()
+
 
 
         score_path = self.make_score_path()
@@ -842,6 +849,23 @@ class InspectXRays(QMainWindow):
         score_path = os.path.join(score_path,self.widget_score_menu.score_technique + '.csv')
 
         return score_path
+
+
+    def _get_image_info(self):
+        dates = np.array(self.xray_record.meta_table['acquisition_date'])
+        file_names = np.array(self.xray_record.meta_table['file_name'])
+        organs     = np.array(self.xray_record.meta_table['organ'])
+        #
+        #
+        id =np.where(file_names==self.xray_selection_menu.combobox_xrayid.currentText())
+        if len(id)!=0:
+            date = str(dates[id[0][0]])
+            organ = str( organs[id[0][0]] )
+
+        else:
+            date=""
+            organ=""
+        return date, organ
 
     def display_image_info(self):
         dates = np.array(self.xray_record.meta_table['acquisition_date'])

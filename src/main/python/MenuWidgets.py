@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
     QPolygonF, QPalette, QGradient, QLinearGradient
 from PyQt5.QtCore import *
+import pydicom
 
 from extra_widgets import LabeledSlider
 
@@ -1075,7 +1076,7 @@ class xray_selection_menu(QWidget):
             caption='Select a file'
         )
         self.temp_name = response[0]
-        print("file name is")
+        print("file fed to xrayselectionmenu is")
         print(response)
         return response
 
@@ -1403,23 +1404,44 @@ class   XrayData(object):
 #extracts year,id and organ information from a saved filename
 class NameSignature(object):
     def __init__(self,fileName):
-        if len(fileName.split('.'))==2:
-            fileName = fileName.split('.')[0]
+
         self.year  = ''
         self.organ = ''
         self.id    = ''
         self.verify(fileName)
 
     def verify(self,fileName):
-        if len(fileName)==13 and (fileName[-5]=='h' or fileName[-5]=='f'):
-            self.year  = fileName[-4:]
-            self.organ = 'FEET' if fileName[-5]=='f' else 'HANDS'
-            self.id    = fileName[:8]
-        elif len(fileName.split('_'))==3:
-            splits     = fileName.split('_')
+        print('filename fed to name signature is')
+        print(fileName)
+        fileName_ = os.path.split(fileName)[-1].split('.')[0]
+        print('splits are')
+        print(fileName.split('.'))
+        if len(fileName_)==13 and (fileName_[-5]=='h' or fileName_[-5]=='f'):
+            self.year  = fileName_[-4:]
+            self.organ = 'FEET' if fileName_[-5]=='f' else 'HANDS'
+            self.id    = fileName_[:8]
+        elif len(fileName_.split('_'))==3:
+            splits     = fileName_.split('_')
             self.year  = splits[1]
             self.organ = splits[2].upper()
             self.id    = splits[0]
+        elif fileName.split('.')[-1]=='dcm':
+            dcm = pydicom.read_file(fileName)
+            try:
+                datestring = dcm.AcquisitionDate
+                self.year = datestring[6:8]+'-'+datestring[4:6]+'-'+datestring[0:4]
+            except AttributeError:
+                print("cannot find acquisition date")
+
+            try:
+                self.organ = dcm.BodyPartExamined
+            except AttributeError:
+                print("cannot find body part examined")
+            try:
+                self.id = dcm.PatientID
+            except AttributeError:
+                print("cannot find patient id")
+
         else:
             print("case for such a filename nor created yet, please extend the class to")
 
