@@ -334,7 +334,8 @@ class ImageHandler(QWidget):
         elif bool(is_dicom):
             self.dicom_file = pydicom.read_file(file_name)
             cvImg = self.dicom_file.pixel_array
-            cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
+            cvImg = self.normalise(cvImg)
+            # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
             cvImgX = np.array([cvImg,cvImg,cvImg]).astype(np.uint32)
             cvImgX = np.transpose(cvImgX,[1,2,0])
             height,width,depth = cvImgX.shape
@@ -359,6 +360,30 @@ class ImageHandler(QWidget):
 
         self.get_image_dimensions()
         self.display_image(self.pixmap)
+
+    def window(self):
+        #todo: create a window function and link it to some sliders in Imaging widget
+        pass
+
+    def normalise(self, image):
+        image = ((image - np.min(image)) / np.max(image)) * 255
+        return image
+
+
+    def equalise(self,image):
+        # from http://www.janeriksolem.net/histogram-equalization-with-python-and.html
+
+        # get image histogram
+        number_bins =256
+        image_histogram, bins = np.histogram(image.flatten(), number_bins, density=True)
+        cdf = image_histogram.cumsum()  # cumulative distribution function
+        cdf = 255 * cdf / cdf[-1]  # normalize
+
+        # use linear interpolation of cdf to find new pixel values
+        image_equalized = np.interp(image.flatten(), bins[:-1], cdf)
+
+        return image_equalized.reshape(image.shape)
+
 
     def load_array_from_matfile(self):
         """
