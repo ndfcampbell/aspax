@@ -9,9 +9,9 @@ from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as Navigatio
 from matplotlib.figure import Figure
 import cv2
 from sys import platform
-if platform=="linux" or platform =="linux2":
-    import os
-    os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
+# if platform=="linux" or platform =="linux2":
+#     import os
+#     os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
 
 class PlotWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
