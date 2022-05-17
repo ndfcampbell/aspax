@@ -1,39 +1,73 @@
-QPushButton {
-   background-color: #8b0000;
-   color: #ffffff;
-   border-radius: 5px;
-   border-style: none;
-   height: 25px;
-}
-
-
-QPushButton{
-
-    border: 0.4px solid #f8f8f2;
-    border-style: inset;
-
-    }
-
-
-QPushButton:pressed{
-    background-color: #9d95c7;
-
-}
-
-
-QPushButton:checked{
-    background-color: #9d95c7;
-
-}
+*{
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: Normal;}
 
 
 QWidget{
     background-color: #282a36;
     color: #f8f8f2;
+}
 
+
+QPushButton {
+   background-color: #8b0000;
+   color: #ffffff;
+   border-radius: 5px;
+   min-width: 80px;
+   max-width: 150px;
+   height: 25px;
+}
+
+
+
+
+
+QPushButton:pressed{
+    background-color: red;
+}
+
+
+
+
+QPushButton:checked{
+background-color:red;
+}
+
+
+QTableView{
+    gridline-color: rgb(120,120,120);
+    background-color: #f8f8f2;
+    color: #282a36;
+}
+
+QTableView QTableCornerButton::section
+{
+    background-color: #555169;
+    border: 1px solid rgb(120,120,120);
 
 }
 
+QHeaderView::section
+{
+    background-color: #555169;
+    padding: 4px;
+    font-size: 10pt;
+    border-style: none;
+    border-bottom: 1px solid rgb(120,120,120);
+    border-right: 1px solid rgb(120,120,120);
+}
+
+QHeaderView::section:horizontal
+{
+    border-top: 1px solid #fffff8;
+
+}
+
+QHeaderView::section:vertical
+{
+    border-left: 1px solid #fffff8;
+}
 
 
 
@@ -54,23 +88,16 @@ QComboBox{
 
 }
 
-QTableView{
-    background-color: #f8f8f2;
-    color: #282a36;
-}
+
 
 QToolBar{
-    background-color: rgb(98, 114, 164);
-
-
-}
-
-QPushButton{
     background-color: #555169;
 
+    border-top: 1px solid  rgb(120,120,120);
+    border-bottom: 1px solid rgb(30,30,30);
+
+
 }
-
-
 
 QToolButton{
     background-color: #555169;
@@ -83,7 +110,7 @@ QToolButton{
 
 QSlider::groove:horizontal {
 border: 1px solid #bbb;
-background: white;
+background: rgb(10,10,10);
 height: 10px;
 border-radius: 4px;
 }
@@ -91,15 +118,14 @@ border-radius: 4px;
 QSlider::sub-page:horizontal {
 background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
     stop: 0 #66e, stop: 1 #bbf);
-background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
-    stop: 0 #bbf, stop: 1 #55f);
+background: #8b0000;
 border: 1px solid #777;
 height: 10px;
 border-radius: 4px;
 }
 
 QSlider::add-page:horizontal {
-background: #fff;
+background: rgb(50,50,50);
 border: 1px solid #777;
 height: 10px;
 border-radius: 4px;
@@ -140,28 +166,61 @@ border-radius: 4px;
 
 
 
-QTabBar::tab {
-  background: #555169;
-  border-right: 1px solid lightgray;
 
-  min-height: 30px;
-   border-top-right-radius: 5px;
-            border-top-left-radius: 5px;
+
+
+QTabWidget::pane {
+    position: absolute;
+    top: -1px;
+    border-top: 1px solid  rgb(120,120,120);
+    border-left: 1px solid  rgb(120,120,120);
+    border-bottom: 1px solid rgb(30,30,30);
+    border-right: 1px solid rgb(30,30,30);
 
 
 }
 
-QTabBar::tab:selected { background-color: #282a36;
+
+
+QTabBar::tab { background-color: #555169;
     color: #f8f8f2;
     border-right: 1px solid #282a36;
 
-    border-left: 1px solid lightgray;
-    border-top: 1px solid lightgray;
+    border-left: 1px solid rgb(120,120,120);
+    border-right: 1px solid rgb(120,120,120);
+    border-top: 1px solid rgb(120,120,120);
 
     min-height: 30px;
+    padding: 0px 5px 0px 5px ;
+
 
     }
 
-QTabWidget::pane {border: 1px solid #282a36;}
+
+QTabBar::tab:hover {
+  background: rgb(40,40,40);
+}
 
 
+
+
+
+QTabBar::tab:selected {
+  background-color: #282a36;
+    border-left: 1px solid rgb(120,120,120);
+    border-right: 1px solid rgb(120,120,120);
+    border-top: 1px solid rgb(120,120,120);
+    border-bottom: 3px solid #282a36;
+    min-height: 30px;
+
+}
+
+
+QGraphicsView{
+background-color: #44475a;
+border:none
+}
+
+QMessageBox::Ok {
+    color: white;
+}

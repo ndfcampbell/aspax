@@ -93,7 +93,7 @@ class distance_menu_widget(QWidget):
         self.side_button_group,self.side_buttons = make_buttons_from_list(titles=['L','R','N/A'])
 
         for button in self.side_buttons:
-            button.setStyleSheet("background-color: #999999; color: white")
+            # button.setStyleSheet("background-color: #999999; color: white")
             button.setFont(self.font_button)
             button.setMaximumSize(30,30)
             button.setMinimumSize(30,30)
@@ -210,7 +210,6 @@ class area_menu_widget(distance_menu_widget):
         self.annotation_type_buttons[1].setChecked(True)
 
         for button in self.annotation_type_buttons:
-            button.setStyleSheet("background-color: #999999; color: white")
             button.setFont(self.font_button)
             button.setMaximumSize(80,30)
             button.setMinimumSize(80,30)
