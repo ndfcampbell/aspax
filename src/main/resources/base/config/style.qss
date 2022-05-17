@@ -6,6 +6,27 @@ QPushButton {
    height: 25px;
 }
 
+
+QPushButton{
+
+    border: 0.4px solid #f8f8f2;
+    border-style: inset;
+
+    }
+
+
+QPushButton:pressed{
+    background-color: #9d95c7;
+
+}
+
+
+QPushButton:checked{
+    background-color: #9d95c7;
+
+}
+
+
 QWidget{
     background-color: #282a36;
     color: #f8f8f2;
@@ -14,12 +35,7 @@ QWidget{
 }
 
 
-QPushButton{
 
-    border: 0.4px solid #f8f8f2;
-    border-style: inset;
-
-    }
 
 
 QLineEdit{
@@ -54,10 +70,6 @@ QPushButton{
 
 }
 
-QPushButton:pressed{
-    background-color: #9d95c7;
-
-}
 
 
 QToolButton{
