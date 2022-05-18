@@ -3,7 +3,7 @@ import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
     QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,\
     QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout
-
+from AnnotationProfiles import *
 from PyQt5.QtGui import QColor,QPixmap, QFont, QImage
 from PyQt5.QtCore import Qt
 from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH, BaseRectItem
@@ -243,9 +243,12 @@ class ImageHandler(QWidget):
         horizontal_widget.setMaximumSize(1600,200)
 
         horizontal_widget.setLayout(horizontal_dock)
+
+
         self.tabs.addTab(horizontal_widget,"View Annotations")
         self.tabs.setMinimumSize(1600,220)
         self.tabs.setMaximumSize(1600,220)
+        self.load_windowing()
         self.layout.addWidget(self.tabs)
         self.layout.addWidget(self.image_view)
         self.setLayout(self.layout)
@@ -331,9 +334,11 @@ class ImageHandler(QWidget):
         if bool(is_image):
             self.pixmap          = QPixmap()
             self.pixmap.load(file_name)
+            self.raw_data = cv2.imread(file_name,0)
         elif bool(is_dicom):
             self.dicom_file = pydicom.read_file(file_name)
             cvImg = self.dicom_file.pixel_array
+            self.raw_data = cvImg
             cvImg = self.normalise(cvImg)
             # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
             cvImgX = np.array([cvImg,cvImg,cvImg]).astype(np.uint32)
@@ -344,6 +349,7 @@ class ImageHandler(QWidget):
             bytesPerLine = 3 * width
             qImg = QImage(b, width, height, QImage.Format_RGBA8888)
             self.pixmap = QPixmap(qImg)
+
 
 
         elif bool(is_mat):
@@ -360,10 +366,38 @@ class ImageHandler(QWidget):
 
         self.get_image_dimensions()
         self.display_image(self.pixmap)
+        # self.load_windowing()
 
-    def window(self):
-        #todo: create a window function and link it to some sliders in Imaging widget
-        pass
+
+    def load_windowing(self):
+
+        self.image_processor = Window_Sliders(None)
+        self.tabs.addTab(self.image_processor,"Manipulate Image")
+        self.image_processor.window_slider.valueChanged.connect(self.window_image)
+        self.image_processor.level_slider.valueChanged.connect(self.window_image)
+
+
+
+
+
+    def window_image(self):
+        window,level = self.image_processor.get_window_levels()
+        cvImg = self.raw_data.copy()
+        upper_bound  = level+window
+        lower_bound  = level-window
+        cvImg[np.where(cvImg>upper_bound)] = upper_bound
+        cvImg[np.where(cvImg < lower_bound)] = lower_bound
+        cvImg = self.normalise(cvImg)
+        # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
+        cvImgX = np.array([cvImg, cvImg, cvImg]).astype(np.uint32)
+        cvImgX = np.transpose(cvImgX, [1, 2, 0])
+        height, width, depth = cvImgX.shape
+        a = cvImgX.copy()
+        b = (255 << 24 | a[:, :, 0] << 16 | a[:, :, 1] << 8 | a[:, :, 2]).flatten()
+        bytesPerLine = 3 * width
+        qImg = QImage(b, width, height, QImage.Format_RGBA8888)
+        self.pixmap = QPixmap(qImg)
+        self.display_image(self.pixmap)
 
     def normalise(self, image):
         image = ((image - np.min(image)) / np.max(image)) * 255
@@ -394,6 +428,7 @@ class ImageHandler(QWidget):
         key = self.matfile_select.combo.currentText()
 
         img = self.matfile[key]
+        self.raw_data = img
         scaled_img = ((img-np.min(img))/np.max(img))*255
         cv2.imwrite('temp_file.png',scaled_img)
         self.pixmap = QPixmap()
@@ -496,8 +531,7 @@ class ImageHandler(QWidget):
         self.joint_annotator_panel.clicked.disconnect(self.next_annotation)
         self.joint_annotator_panel.clicked.disconnect(self.prev_annotation)
         self.joint_annotator_panel.joint_name_qline.setText("")
-        self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText(
-        )] = HandJointAnnotationProfiler()
+        self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()] = HandJointAnnotationProfiler()
         #todo: need to remove all the rectItems and possibly reinitialise the image
 
     def next_annotation(self):
@@ -960,7 +994,55 @@ class JointAnnotatorPanel(QWidget):
 
 
 
+class Window_Sliders(QWidget):
+    def __init__(self,pixel_array=None):
+        super(Window_Sliders, self).__init__()
+        self.initialise(pixel_array)
 
+    def initialise(self,pixel_array):
+        if pixel_array is None:
+            self.min_pix = 500
+            self.max_pix = 6000
+        else:
+
+            self.min_pix = np.min(pixel_array)
+            self.max_pix = np.max(pixel_array)
+        min_pix = self.min_pix
+        max_pix = self.max_pix
+        tick_interval = int((max_pix-min_pix)/100)
+        slider_initial_pos = 50*tick_interval
+        layout = QGridLayout()
+        level_label = QLabel('Level')
+        window_label = QLabel('Window')
+
+        self.level_slider = QSlider()
+        self.level_slider.setOrientation(Qt.Horizontal)
+        self.level_slider.setRange(int(min_pix), int(max_pix))
+        self.level_slider.setTickInterval(tick_interval)
+        self.level_slider.setSliderPosition(slider_initial_pos)
+
+
+        self.window_slider = QSlider()
+        self.window_slider.setOrientation(Qt.Horizontal)
+
+        tick_interval = int((max_pix/2) / 100)
+        self.window_slider.setRange(0, int(max_pix/2))
+        self.level_slider.setTickInterval(tick_interval)
+        self.window_slider.setSliderPosition(tick_interval*100)
+
+        layout.addWidget(level_label, 0, 0)
+        layout.addWidget(self.level_slider, 0, 1)
+        layout.addWidget(window_label, 1, 0)
+        layout.addWidget(self.window_slider, 1, 1)
+        # self.level_slider.valueChanged.connect(self.change_window_slider_vals)
+        self.setLayout(layout)
+
+
+    def get_window_levels(self):
+        window = self.window_slider.value()
+        level  = self.level_slider.value()
+
+        return window,level
 
 
 
