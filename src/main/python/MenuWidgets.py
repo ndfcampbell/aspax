@@ -1411,11 +1411,10 @@ class NameSignature(object):
         self.verify(fileName)
 
     def verify(self,fileName):
-        print('filename fed to name signature is')
-        print(fileName)
+
         fileName_ = os.path.split(fileName)[-1].split('.')[0]
-        print('splits are')
-        print(fileName.split('.'))
+
+
         if len(fileName_)==13 and (fileName_[-5]=='h' or fileName_[-5]=='f'):
             self.year  = fileName_[-4:]
             self.organ = 'FEET' if fileName_[-5]=='f' else 'HANDS'
@@ -1459,17 +1458,19 @@ class XrayStudy(object):#todo: finish this class so I can initialise a study fro
             os.makedirs(save_loc)
         if os.path.isfile(filename):
             print('extracting id from the filename')
-            name_sig   = NameSignature(fileName=filename.split('/')[-1].split('.')[0])
+            name_sig   = NameSignature(fileName=filename)
             self.id    = name_sig.id
             year       = name_sig.year
             organ_name = name_sig.organ
-            xray       = XrayData(image_name=filename.split('/')[-1],xray_id=self.id,acquisition_date=year,
+            xray       = XrayData(image_name=os.path.split(filename)[-1],xray_id=self.id,acquisition_date=year,
                                        organ_name=organ_name,save_loc=self.output_loc)
             dest_loc   = os.path.join(self.output_loc,self.id)
-            shutil.copyfile(filename,os.path.join(dest_loc,filename.split('/')[-1] ) )
+            shutil.copyfile(filename,os.path.join(dest_loc,os.path.split(filename)[-1] ) )
 
-            self.x_ray_list = []
-            self.meta_data  = []#xray.meta_table
+            self.x_ray_list = [xray]
+            self.meta_data  = xray.meta_table
+            print("metatable initialised as")
+            print(self.meta_data)
 
         elif len(filename.split('.'))==1:
             print('assuming that the filename is the id')
@@ -1478,7 +1479,39 @@ class XrayStudy(object):#todo: finish this class so I can initialise a study fro
             self.meta_data = {}
 
 
+    def load_xrays_from_list(self,file_list):
+        for f in file_list:
 
+            #            if f.split('/')[-1]!=self.meta_data['file_name'][0]:
+            name_sig = NameSignature(fileName=f)
+            if name_sig.id == self.id:
+                year = name_sig.year
+
+                organ_name = name_sig.organ
+                xray = XrayData(image_name=os.path.split(f)[-1], xray_id=self.id, acquisition_date=year,
+                                organ_name=organ_name, save_loc=self.output_loc)
+                dest_loc = os.path.join(self.output_loc, self.id)
+
+                shutil.copyfile(f, os.path.join(dest_loc, os.path.split(f)[-1]))
+                self.x_ray_list += [xray]
+                if len(self.x_ray_list) == 1:
+                    self.meta_data = {'acquisition_date': [year],
+                                      'xray_id': [self.id],
+                                      'organ': [organ_name],
+                                      'file_name': [os.path.split(f)[-1]],
+                                      'image_quality': [1]}
+
+                else:
+                    print('appending the metadata')
+                    # dates    = self.meta_data['acquisition_date']
+                    # xray_ids =
+                    self.meta_data['acquisition_date'].append(year)
+                    self.meta_data['xray_id'].append(self.id)
+                    self.meta_data['organ'].append(organ_name)
+                    self.meta_data['file_name'].append(os.path.split(f)[-1])
+                    self.meta_data['image_quality'].append(1)
+        print(self.meta_data)
+        self.save_metadata()
 
 
     def load_xrays_from_loc(self,loc):
@@ -1486,37 +1519,10 @@ class XrayStudy(object):#todo: finish this class so I can initialise a study fro
         # xrays to tge save_loc
         #study_loc
         #-------->/xray_id/xray1,xray2 etc
-        files    = [os.path.join(loc,f) for f in os.listdir(loc) if f.split('.')[-1]=='jpg' or f.split('.')[-1]=='png']
+        files    = [os.path.join(loc,f) for f in os.listdir(loc) if f.split('.')[-1]=='jpg' or f.split('.')[-1]=='png' or f.split('.')[-1]=='dcm']
         x_ray_id = self.id
+        self.load_xrays_from_list(files)
 
-        for f in files:
-#            if f.split('/')[-1]!=self.meta_data['file_name'][0]:
-            name_sig  = NameSignature(fileName=f.split('/')[-1].split('.')[0])
-            if name_sig.id == self.id:
-                year       = name_sig.year
-                print(year)
-                organ_name = name_sig.organ
-                xray       = XrayData(image_name=f.split('/')[-1],xray_id=self.id,acquisition_date=year,
-                                organ_name=organ_name,save_loc=self.output_loc)
-                dest_loc   =  os.path.join(self.output_loc,self.id)
-
-                shutil.copyfile(f,os.path.join(dest_loc,f.split('/')[-1]))
-                self.x_ray_list +=[xray]
-                if len(self.x_ray_list)==1:
-                    self.meta_data = {'acquisition_date' : [year],
-                                      'xray_id'          : [self.id],
-                                     'organ'             :[organ_name],
-                                     'file_name'         :[f.split('/')[-1]],
-                                      'image_quality'    :[1] }
-
-                else:
-
-                    self.meta_data['acquisition_date'].append(year)
-                    self.meta_data['xray_id'].append(self.id)
-                    self.meta_data['organ'].append(organ_name)
-                    self.meta_data['file_name'].append(f.split('/')[-1])
-                    self.meta_data['image_quality'].append(1)
-        self.save_metadata()
 
     def save_metadata(self):
         fileloc  = os.path.join(self.output_loc,self.id)
@@ -1763,29 +1769,80 @@ if __name__=='__main__':
     # xray_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012')
     # xray_record.add_xray(image_name='CPSA0045h2019.png',xray_id='CPSA0045',acquisition_date='2019',
     #  save_loc='saved_data',
+    #  save_loc='saved_data',
     #  organ_name='hand')
     #
     #
     # loaded_record = XrayData(image_name='CPSA0045h2012.png',xray_id='CPSA0045',acquisition_date='2012',
     #                          meta_loc=xray_record.save_loc)
     #
-    """#
-    dest_loc = '/media/adwaye/2tb/data/xray_data/aspax_studies'
-    src_loc  = '/media/adwaye/2tb/data/xray_data/anonymised_backup/results/'
-    ids      = find_unique_ids(src_loc)
+    import os, shutil
+    import pydicom
+    dest_loc = 'C:/Users/amr62/Documents/Monitor_aspax'
+    src_loc  = 'C:/Users/amr62/Documents/Monitor'
+    folders = [os.path.join(src_loc,f) for f in os.listdir(src_loc)]
+
+    for study_folder in folders:
+        print("--------------------------")
+        k = 0
+        file_list = []
+        for subfolder in os.listdir(study_folder):
+
+            path = os.path.join(study_folder,subfolder)
+
+            for root, dirs, files in os.walk(path):
+
+                for file in files:
+                    file_list += [os.path.join(root,file)]
+            xray_record = XrayStudy(file_list[0],save_loc = dest_loc)
+            xray_record.load_xrays_from_list(file_list[1:])
+
+
+            #
+            # print(dicom)
+            # if file_name.split('.')[-1]=='dcm':
+            #
+            #     if k==0:
+            #         xray_record = XrayStudy(file_name,save_loc=dest_loc)
+            #     else:
+            #         xray_record.load_xrays_from_loc(file_name)
+            #     k+=1
+
+
+        # for subfolder in os.listdir(study_folder):
+        #     path = os.path.join(study_folder,subfolder)
+        #     dicoms = [os.path.join(path,file) for file in os.listdir(path)]
+        #
+        #     for dicom in dicoms:
+        #         # file = pydicom.read_file(dicom)
+        #
+        #         name_sig = NameSignature(dicom)
+        #         id = name_sig.id
+        #         target_folder = os.path.join(dest_loc,id)
+        #         if not os.path.isdir(target_folder): os.makedirs(target_folder)
+        #         shutil.copyfile(dicom,os.path.join(target_folder,dicom))
+
+
+
+
+
+
+
+
+    # ids      = find_unique_ids(src_loc)
     #study    = XrayStudy
-    filename = '/media/adwaye/2tb/data/xray_data/anonymised_backup/results/29471_2000_hands.jpg'
-    #study    = XrayStudy(filename=filename,save_loc=dest_loc)
-    for id in ids:
-        print(id)
-        study     = XrayStudy(id,save_loc=dest_loc)
-        study.load_xrays_from_loc(loc = src_loc)
-    """
-    import sys
-    app = QApplication(sys.argv)
-    w = Switch()
-    w.show()
-    sys.exit(app.exec_())
+    # filename = '/media/adwaye/2tb/data/xray_data/anonymised_backup/results/29471_2000_hands.jpg'
+    # #study    = XrayStudy(filename=filename,save_loc=dest_loc)
+    # for id in ids:
+    #     print(id)
+    #     study     = XrayStudy(id,save_loc=dest_loc)
+    #     study.load_xrays_from_loc(loc = src_loc)
+
+    # import sys
+    # app = QApplication(sys.argv)
+    # w = Switch()
+    # w.show()
+    # sys.exit(app.exec_())
 
 
 
