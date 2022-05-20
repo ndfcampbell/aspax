@@ -890,7 +890,7 @@ class SaveButton(QPushButton):
         self.font_button = QFont('Android Roboto', 11)
 
         self.setText(title)
-        self.setStyleSheet("background-color: #16CCB1; color: white")
+        # self.setStyleSheet("background-color: #16CCB1; color: white")
         self.setFont(self.font_button)
         self.setMaximumSize(75, 30)
         self.setMinimumSize(75, 30)
@@ -900,18 +900,18 @@ class SaveButton(QPushButton):
 
     def set_to_saved(self):
         self.setText("Saved")
-        self.setStyleSheet("background-color: #CCCCCC; color: black")
+        # self.setStyleSheet("background-color: #CCCCCC; color: black")
         self.setDisabled(True)
 
     def restore_save_button(self):
         self.setText("Save")
-        self.setStyleSheet("background-color: #16CCB1; color: white")
+        # self.setStyleSheet("background-color: #16CCB1; color: white")
         self.setDisabled(False)
 
     def restore_save_button_score(self):
         if self.save_score_flag == 1:
             self.setText("Save")
-            self.setStyleSheet("background-color: #16CCB1; color: white")
+            # self.setStyleSheet("background-color: #16CCB1; color: white")
             self.setDisabled(False)
             self.save_score_flag = 0
 
