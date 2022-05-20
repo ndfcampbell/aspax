@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
     QPolygonF, QPalette, QGradient, QLinearGradient
 from PyQt5.QtCore import *
-import pydicom
+# import pydicom
 
 from extra_widgets import LabeledSlider
 
@@ -1424,22 +1424,22 @@ class NameSignature(object):
             self.year  = splits[1]
             self.organ = splits[2].upper()
             self.id    = splits[0]
-        elif fileName.split('.')[-1]=='dcm':
-            dcm = pydicom.read_file(fileName)
-            try:
-                datestring = dcm.AcquisitionDate
-                self.year = datestring[6:8]+'-'+datestring[4:6]+'-'+datestring[0:4]
-            except AttributeError:
-                print("cannot find acquisition date")
-
-            try:
-                self.organ = dcm.BodyPartExamined
-            except AttributeError:
-                print("cannot find body part examined")
-            try:
-                self.id = dcm.PatientID
-            except AttributeError:
-                print("cannot find patient id")
+        # elif fileName.split('.')[-1]=='dcm':
+        #     dcm = pydicom.read_file(fileName)
+        #     try:
+        #         datestring = dcm.AcquisitionDate
+        #         self.year = datestring[6:8]+'-'+datestring[4:6]+'-'+datestring[0:4]
+        #     except AttributeError:
+        #         print("cannot find acquisition date")
+        #
+        #     try:
+        #         self.organ = dcm.BodyPartExamined
+        #     except AttributeError:
+        #         print("cannot find body part examined")
+        #     try:
+        #         self.id = dcm.PatientID
+        #     except AttributeError:
+        #         print("cannot find patient id")
 
         else:
             print("case for such a filename nor created yet, please extend the class to")

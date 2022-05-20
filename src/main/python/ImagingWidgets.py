@@ -10,7 +10,7 @@ from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_ED
 from DataModels import Polyline, Rect
 import numpy as np
 from MenuWidgets import Slider
-import pydicom
+# import pydicom
 import scipy.io as sio
 
 
@@ -335,30 +335,30 @@ class ImageHandler(QWidget):
             self.pixmap          = QPixmap()
             self.pixmap.load(file_name)
             self.raw_data = cv2.imread(file_name,0)
-        elif bool(is_dicom):
-            self.dicom_file = pydicom.read_file(file_name)
-
-            try:
-                cvImg = self.dicom_file.pixel_array.astype(np.float16)
-                self.raw_data = cvImg
-                cvImg = self.normalise(cvImg)
-                # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
-                cvImgX = np.array([cvImg,cvImg,cvImg]).astype(np.uint32)
-                cvImgX = np.transpose(cvImgX,[1,2,0])
-                height,width,depth = cvImgX.shape
-                a = cvImgX.copy()
-                b = (255 << 24 | a[:,:,0] << 16 | a[:,:,1] << 8 | a[:,:,2]).flatten()
-                bytesPerLine = 3 * width
-                qImg = QImage(b, width, height, QImage.Format_RGBA8888)
-                self.pixmap = QPixmap(qImg)
-            except np.core._exceptions._ArrayMemoryError:
-                print("not enough memory")
-                cvImg = self.dicom_file.pixel_array.astype(np.float16)
-                cvImg = self.normalise(cvImg)
-                cvImg = cvImg.astype(np.uint8)
-                cv2.imwrite('temp_file.png', cvImg)
-                self.pixmap = QPixmap()
-                self.pixmap.load('temp_file.png')
+        # elif bool(is_dicom):
+        #     self.dicom_file = pydicom.read_file(file_name)
+        #
+        #     try:
+        #         cvImg = self.dicom_file.pixel_array.astype(np.float16)
+        #         self.raw_data = cvImg
+        #         cvImg = self.normalise(cvImg)
+        #         # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
+        #         cvImgX = np.array([cvImg,cvImg,cvImg]).astype(np.uint32)
+        #         cvImgX = np.transpose(cvImgX,[1,2,0])
+        #         height,width,depth = cvImgX.shape
+        #         a = cvImgX.copy()
+        #         b = (255 << 24 | a[:,:,0] << 16 | a[:,:,1] << 8 | a[:,:,2]).flatten()
+        #         bytesPerLine = 3 * width
+        #         qImg = QImage(b, width, height, QImage.Format_RGBA8888)
+        #         self.pixmap = QPixmap(qImg)
+        #     except np.core._exceptions._ArrayMemoryError:
+        #         print("not enough memory")
+        #         cvImg = self.dicom_file.pixel_array.astype(np.float16)
+        #         cvImg = self.normalise(cvImg)
+        #         cvImg = cvImg.astype(np.uint8)
+        #         cv2.imwrite('temp_file.png', cvImg)
+        #         self.pixmap = QPixmap()
+        #         self.pixmap.load('temp_file.png')
 
 
 
