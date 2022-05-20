@@ -13,7 +13,7 @@ config_folder = "config"
 
 class AppContext(ApplicationContext):
     def run(self):
-        self.main_window.setStyleSheet(open(self.stylesheet,"r").read())
+        # self.main_window.setStyleSheet(open(self.stylesheet,"r").read())
         self.main_window.show()
         return self.app.exec_()
 
