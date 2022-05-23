@@ -14,6 +14,8 @@ from AnnotationProfiles import HandJointAnnotationProfiler
 
 from Utils import _NP
 
+import pydicom
+import scipy.io as sio
 
 class MyView(QGraphicsView):
 
