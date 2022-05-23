@@ -3,5 +3,5 @@
     "author": "Adwaye M Rambojun",
     "main_module": "src/main/python/main.py",
     "version": "0.0.11",
-    "hidden_imports": ["numpy.core._dtype_ctypes","setuptools","pydicom.encoders.gdcm","pydicom.encoders.pylibjpeg"]
+    "hidden_imports": ["numpy.core._dtype_ctypes","setuptools","pydicom","pylibjpeg","pydicom.encoders.gdcm","pydicom.encoders.pylibjpeg"]
 }
