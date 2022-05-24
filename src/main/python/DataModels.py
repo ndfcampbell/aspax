@@ -2,7 +2,7 @@
 from abc import abstractmethod
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.Qt import QPolygonF, QPointF
-from skimage import draw
+# from skimage import draw
 import json
 import numpy as np
 
@@ -590,6 +590,7 @@ class AnnotationModel(object):
         return AnnotationModel(regions)
 
     def toMasks(self, mode='auto', shape=None):
+        pass
         """
         convert to a binary mask
         :param mode
@@ -597,28 +598,28 @@ class AnnotationModel(object):
         :param shape
         :return:
         """
-        if mode == 'auto':
-            polies = self.toPolies()
-            points = np.vstack(polies)
-            xmax, ymax = tuple(points.max(axis=0))
-            xmin, ymin = tuple(points.min(axis=0))
-            w, h = xmax - xmin, ymax - ymin
-
-            mask = np.zeros((ymax - ymin, xmax - xmin), dtype=np.uint8)
-            for poly in polies:
-                poly1 = poly - np.array([xmin, ymin])
-                rr, cc = draw.polygon(poly1[:, 1], poly[:, 0], shape=(h, w))
-                mask[rr, cc] = 1
-        elif isinstance(shape, tuple):
-            mask = np.zeros(shape, dtype=np.uint8)
-            polies = self.toPolies()
-            for poly in polies:
-                rr, cc = draw.polygon(poly[:, 1], poly[:, 0], shape=shape)
-                mask[rr, cc] = 1
-        else:
-            mask = None
-
-        return mask
+        # if mode == 'auto':
+        #     polies = self.toPolies()
+        #     points = np.vstack(polies)
+        #     xmax, ymax = tuple(points.max(axis=0))
+        #     xmin, ymin = tuple(points.min(axis=0))
+        #     w, h = xmax - xmin, ymax - ymin
+        #
+        #     mask = np.zeros((ymax - ymin, xmax - xmin), dtype=np.uint8)
+        #     for poly in polies:
+        #         poly1 = poly - np.array([xmin, ymin])
+        #         rr, cc = draw.polygon(poly1[:, 1], poly[:, 0], shape=(h, w))
+        #         mask[rr, cc] = 1
+        # elif isinstance(shape, tuple):
+        #     mask = np.zeros(shape, dtype=np.uint8)
+        #     polies = self.toPolies()
+        #     for poly in polies:
+        #         rr, cc = draw.polygon(poly[:, 1], poly[:, 0], shape=shape)
+        #         mask[rr, cc] = 1
+        # else:
+        #     mask = None
+        #
+        # return mask
 
 if __name__ == '__main__':
     # polygon = Polyline([[0, 0], [10, 10]])
