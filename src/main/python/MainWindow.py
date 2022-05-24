@@ -852,19 +852,23 @@ class InspectXRays(QMainWindow):
 
 
     def _get_image_info(self):
-        dates = np.array(self.xray_record.meta_table['acquisition_date'])
-        file_names = np.array(self.xray_record.meta_table['file_name'])
-        organs     = np.array(self.xray_record.meta_table['organ'])
-        #
-        #
-        id =np.where(file_names==self.xray_selection_menu.combobox_xrayid.currentText())
-        if len(id)!=0:
-            date = str(dates[id[0][0]])
-            organ = str( organs[id[0][0]] )
+        if self.xray_record is not None:
+            dates = np.array(self.xray_record.meta_table['acquisition_date'])
+            file_names = np.array(self.xray_record.meta_table['file_name'])
+            organs     = np.array(self.xray_record.meta_table['organ'])
+            #
+            #
+            id =np.where(file_names==self.xray_selection_menu.combobox_xrayid.currentText())
+            if len(id)!=0:
+                date = str(dates[id[0][0]])
+                organ = str( organs[id[0][0]] )
 
+            else:
+                date=""
+                organ=""
         else:
-            date=""
-            organ=""
+            date = ""
+            organ = ""
         return date, organ
 
     def display_image_info(self):
