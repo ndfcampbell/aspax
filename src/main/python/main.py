@@ -29,12 +29,12 @@ class AppContext(ApplicationContext):
     @cached_property
     def score_profiles(self):
 
-        return {'PsA-MSS':  os.path.join(config_folder,"PsA-MSS.h5"),
-                'Ratingen':  os.path.join(config_folder,"Ratingen.h5"),
-                'Steinbrocker':  os.path.join(config_folder,"Steinbrocker.h5"),
-                'VdH-PsA':  os.path.join(config_folder,"VdH-PsA.h5"),
-                'Monitor-Hands':os.path.join(config_folder,"Monitor_hands.h5"),
-                'Monitor-Feet':os.path.join(config_folder,"Monitor_feet.h5")
+        return {'PsA-MSS':  self.get_resource(os.path.join(config_folder,"PsA-MSS.h5")),
+                'Ratingen':  self.get_resource(os.path.join(config_folder,"Ratingen.h5")),
+                'Steinbrocker':  self.get_resource(os.path.join(config_folder,"Steinbrocker.h5")),
+                'VdH-PsA':  self.get_resource(os.path.join(config_folder,"VdH-PsA.h5")),
+                'Monitor-Hands':self.get_resource(os.path.join(config_folder,"Monitor_hands.h5")),
+                'Monitor-Feet':self.get_resource(os.path.join(config_folder,"Monitor_feet.h5"))
         }
 
     @cached_property
