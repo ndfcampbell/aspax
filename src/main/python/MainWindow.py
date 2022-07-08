@@ -76,6 +76,7 @@ class InspectXRays(QMainWindow):
 
         self.menu_tabs = QTabWidget()
         self.menu_tabs.setMinimumWidth(500)
+        self.menu_tabs.setMaximumHeight(self.sizeObject.width()-self.xray_selection_menu.width())
         # self.menu_tabs.setMaximumWidth(500)
         # self.widget_distance_menu = distance_menu_widget()
         self.widget_area_menu     = area_menu_widget(self.ctx.joint_list)
