@@ -79,10 +79,16 @@ class InspectXRays(QMainWindow):
         self.menu_tabs.setMaximumHeight(self.sizeObject.width()-self.xray_selection_menu.width())
         # self.menu_tabs.setMaximumWidth(500)
         # self.widget_distance_menu = distance_menu_widget()
+        height_diff = self.height() - self.sizeObject.height()
         self.widget_area_menu     = area_menu_widget(self.ctx.joint_list)
 
         self.widget_score_menu    = score_menu_widget()
 
+        if height_diff>0:
+            current_table_size = self.widget_score_menu.tableView.height()
+            self.widget_score_menu.tableView.setMaximumHeight(int((current_table_size-height_diff)*0.85))
+            current_table_size = self.widget_score_menu.tableView.height()
+            self.widget_area_menu.tableView.setMaximumHeight(int((current_table_size - height_diff) * 0.85))
         # self.widget_label_menu    = label_extraction_menu_widget()
         # self.menu_tabs.addTab(self.widget_distance_menu,'Distance')
         scrollbar1 = QScrollArea(widgetResizable=False)
@@ -118,6 +124,11 @@ class InspectXRays(QMainWindow):
         profile['score_technique'] = str(self.xray_selection_menu.score_selector.currentText())
         self.menu_tabs.removeTab(1)
         self.widget_score_menu = score_menu_widget(profile=profile)
+        height_diff = self.height()-self.sizeObject.height()
+        if height_diff>0:
+            current_table_size = self.widget_score_menu.tableView.height()
+            self.widget_score_menu.tableView.setMaximumHeight(int((current_table_size-height_diff)*0.85))
+
         scrollbar2 = QScrollArea(widgetResizable=True)
 
         scrollbar2.setWidget(self.widget_score_menu)
