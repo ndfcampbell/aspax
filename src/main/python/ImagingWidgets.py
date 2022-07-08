@@ -2,7 +2,7 @@ import cv2
 import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
     QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,\
-    QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout
+    QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout, QSpacerItem, QSizePolicy
 from AnnotationProfiles import *
 from PyQt5.QtGui import QColor,QPixmap, QFont, QImage
 from PyQt5.QtCore import Qt
@@ -672,6 +672,7 @@ class AnnotationSelectOptions(QWidget):
         label.setMaximumSize(60, 30)
         label.setMinimumSize(60, 30)
         self.dropdown = QComboBox()
+        self.dropdown.setMinimumWidth(300)
         box_label = QLabel("Display "+self.name)
         box_label.setMaximumSize(90,30)
         box_label.setMinimumSize(90, 30)
@@ -680,21 +681,32 @@ class AnnotationSelectOptions(QWidget):
         layout1.addWidget(self.dropdown)
         layout1.addWidget(box_label)
         layout1.addWidget(self.display_box)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Minimum)
+        layout1.addItem(hspacer)
+
         self.overwrite_button = QPushButton("Overwrite")
         self.delete_button = QPushButton("Delete")
 
         layout2 = QHBoxLayout()
         layout2.addWidget(self.overwrite_button)
         layout2.addWidget(self.delete_button)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Minimum)
+        layout2.addItem(hspacer)
         widget1 = QWidget()
         widget1.setLayout(layout1)
         widget2 = QWidget()
         widget2.setLayout(layout2)
         self.loc_line_edit = QLineEdit()
+        self.loc_line_edit.setMaximumWidth(500)
         self.loc_line_edit.setReadOnly(True)
         self.layout.addWidget(self.loc_line_edit)
         self.layout.addWidget(widget1)
         self.layout.addWidget(widget2)
+        vspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Expanding)
+        self.layout.addItem(vspacer)
         self.setLayout(self.layout)
         self.delete_button.clicked.connect(self.delete_annotation)
 
@@ -734,20 +746,30 @@ class AnnotationModelOptions(QWidget):
     def init(self):
 
         self.init_score_slider() #initialises the score sliders for dsicrete scales
-        self.init_select_polylines()
+        # self.init_select_polylines()
         self.setLayout(self.layout)
-        self.delete_poly_button.clicked.connect(self.delete_selected_poly)
-        self.delete_rect_button.clicked.connect(self.delete_selected_rect)
+        # self.delete_poly_button.clicked.connect(self.delete_selected_poly)
+        # self.delete_rect_button.clicked.connect(self.delete_selected_rect)
 
 
     def init_score_slider(self):
         self.score_slider_layout = score_sliders(score_name="Annotation Model",damage_types=["Dot Size","Line Width"],
                                             damage_ranges=[(1,10),(1,10)])
         self.layout.addLayout(self.score_slider_layout)
+        vspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Expanding)
+        self.layout.addItem(vspacer)
         self.score_sliders = self.score_slider_layout.sliders
-        self.score_sliders['Line Width'].setValue(DEFAULT_EDGE_WIDTH)
-        # self.score_sliders['Line Width'].seMinimumSize(100,30)
+        # self.score_sliders['Line Width'].setValue(DEFAULT_EDGE_WIDTH)
+
+        # self.score_sliders['Line Width'].setMinimumWidth(300)
+        #
         self.score_sliders['Dot Size'].setValue(DEFAULT_HANDLE_SIZE)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Expanding)
+        self.layout.addItem(hspacer)
+
+
         # for key,val in self.score_sliders.items():
         #     #val.sliderMoved[int].connect(self.save_slider_value())
         #     val.valueChanged[int].connect(self.get_slider_value)
@@ -1128,6 +1150,12 @@ class Window_Sliders(QWidget):
         layout.addWidget(self.level_slider, 0, 1)
         layout.addWidget(window_label, 1, 0)
         layout.addWidget(self.window_slider, 1, 1)
+        vspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Expanding)
+        layout.addItem(vspacer, 2, 0, 1, -1)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Expanding)
+        layout.addItem(hspacer, 0, 2, -1, 1)
         # self.level_slider.valueChanged.connect(self.change_window_slider_vals)
         self.setLayout(layout)
 
@@ -1164,28 +1192,41 @@ class score_sliders(QVBoxLayout):
         slider_gap      = self.opt_kwargs.pop('slider_gap',130)
         for damage,rng in zip(self.damage_types,self.damage_ranges):
             layout = QHBoxLayout()
+            # print(damage)
             label  = QLabel(damage)
             label.setFont(self.font_text)
             label.setMinimumWidth(min_label_width)
             layout.addWidget(label)
 
-            slider_layout = QVBoxLayout()
+            slider_layout = QGridLayout()
             score_slider   = Slider()
+            score_slider.setPageStep(0)
             score_slider.setStyleSheet("QSlider::handle:horizontal {background-color: #16CCB1;}")
             score_slider.setOrientation(Qt.Horizontal)
             score_slider.setRange(rng[0],rng[1])
             score_slider.setTickInterval(1)
+            score_slider.setSingleStep(1)
+            slider_layout.setHorizontalSpacing(score_slider.tickInterval())
             score_slider.setTickPosition(QSlider.TicksBelow)
-            slider_layout.addWidget(score_slider)
+
 
 
             slider_label_layout  = QHBoxLayout()
             scores = np.arange(rng[0],rng[1]+1)
+
             for score in scores:
-                slider_label_layout.addWidget(QLabel(str(score)))
-                slider_label_layout.setSpacing(tick_spacing)
-            slider_layout.addLayout(slider_label_layout)
+                slider_layout.addWidget(QLabel(str(score)),0,int(score),Qt.AlignHCenter)
+            score_slider.setMinimumWidth(450)
+            slider_layout.addWidget(score_slider,1,0,1,rng[1]-rng[0]+1,Qt.AlignBottom)
+
+            # slider_layout.addLayout(slider_label_layout)
+
+            hspacer = QSpacerItem(30,30,
+                                  QSizePolicy.Expanding,QSizePolicy.Expanding)
             layout.addLayout(slider_layout)
+            layout.addItem(hspacer)
+
+
             self.sliders[damage] = score_slider
             self.addLayout(layout)
 
