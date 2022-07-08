@@ -239,15 +239,16 @@ class ImageHandler(QWidget):
         horizontal_dock.addWidget(self.annotation_options,50)
 
         horizontal_widget = QWidget()
-        horizontal_widget.setMinimumSize(1600,200)
-        horizontal_widget.setMaximumSize(1600,200)
+        # horizontal_widget.setMinimumSize(1600,200)
+        # horizontal_widget.setMaximumSize(1600,200)
 
         horizontal_widget.setLayout(horizontal_dock)
 
 
         self.tabs.addTab(horizontal_widget,"View Annotations")
-        self.tabs.setMinimumSize(1600,220)
-        self.tabs.setMaximumSize(1600,220)
+        # self.tabs.setMinimumSize(1600,220)
+        # self.tabs.setMaximumSize(1600,220)
+        self.tabs.setMaximumHeight(220)
         self.load_windowing()
         self.layout.addWidget(self.tabs)
         self.layout.addWidget(self.image_view)
@@ -293,8 +294,8 @@ class ImageHandler(QWidget):
     def trigger_annotation_mode(self):
         if self.toolbar.buttons['Annotate'].isChecked():
             self.joint_annotator_panel = JointAnnotatorPanel()
-            self.joint_annotator_panel.setMaximumSize(800,200)
-            self.joint_annotator_panel.setMinimumSize(800,200)
+            # self.joint_annotator_panel.setMaximumSize(800,200)
+            # self.joint_annotator_panel.setMinimumSize(800,200)
             self.joint_annotator_panel.output_loc = self.output_loc
             self.joint_annotator_panel.load_profilers()
             self.tabs.addTab(self.joint_annotator_panel,'Joint Annotator')

@@ -37,6 +37,9 @@ from DiagnosticWidgets import PlotWindow
 class InspectXRays(QMainWindow):
     def __init__(self,ctx):
         super(InspectXRays,self).__init__()
+        self.sizeObject = QDesktopWidget().screenGeometry(-1)
+
+        self.showMaximized()
         self.ctx = ctx
         self._panels = []
         self.output_loc = DEFAULT_OUTPUT_LOC
@@ -147,6 +150,7 @@ class InspectXRays(QMainWindow):
 
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
         self.image_widget = ImageHandler(self.ctx.image_handler_icons,self.output_loc)
+        self.image_widget.setMaximumWidth(self.sizeObject.width()-500)
         self._panels = self._panels + [self.image_widget]
 
 
