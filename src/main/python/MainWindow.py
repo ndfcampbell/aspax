@@ -67,12 +67,14 @@ class InspectXRays(QMainWindow):
         # score_profiles = [f.split('.')[0] for f in os.listdir(self.ctx.profiles) if f.split('.')[-1]=='h5']
         score_profiles = [keys for keys,_ in self.ctx.score_profiles.items()]
         self.xray_selection_menu.score_selector.addItems(score_profiles)
+        scrollbar3 = QScrollArea(widgetResizable=False)
+        scrollbar3.setMaximumHeight(300)
+        scrollbar3.setWidget(self.xray_selection_menu)
 
 
 
 
-
-        layout.addWidget(self.xray_selection_menu)
+        layout.addWidget(scrollbar3)
 
         self.menu_tabs = QTabWidget()
         self.menu_tabs.setMinimumWidth(500)
