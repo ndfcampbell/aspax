@@ -2,7 +2,7 @@ import cv2
 import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
     QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,\
-    QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout, QSpacerItem, QSizePolicy
+    QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout, QSpacerItem, QSizePolicy, QScrollArea
 from AnnotationProfiles import *
 from PyQt5.QtGui import QColor,QPixmap, QFont, QImage
 from PyQt5.QtCore import Qt
@@ -252,9 +252,13 @@ class ImageHandler(QWidget):
         # self.tabs.setMaximumSize(1600,220)
         self.tabs.setMaximumHeight(150)
         self.poly_select_options = AnnotationSelectOptions(name='Polylines')
-        self.tabs.addTab(self.poly_select_options,"Polylines")
-        self.rect_select_options = AnnotationSelectOptions(name='Polylines')
-        self.tabs.addTab(self.rect_select_options,"Rectangles")
+        scrollbar1 = QScrollArea(widgetResizable=True)
+        scrollbar1.setWidget(self.poly_select_options)
+        self.tabs.addTab(scrollbar1,"Polylines")
+        self.rect_select_options = AnnotationSelectOptions(name='Rect Items')
+        scrollbar2 = QScrollArea(widgetResizable=True)
+        scrollbar2.setWidget(self.rect_select_options)
+        self.tabs.addTab(scrollbar2,"Rectangles")
         self.load_windowing()
         self.layout.addWidget(self.tabs)
         self.layout.addWidget(self.image_view)

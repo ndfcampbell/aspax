@@ -39,7 +39,7 @@ class InspectXRays(QMainWindow):
         super(InspectXRays,self).__init__()
         self.sizeObject = QDesktopWidget().screenGeometry(-1)
 
-        self.showMaximized()
+        #self.showMaximized()
         self.ctx = ctx
         self._panels = []
         self.output_loc = DEFAULT_OUTPUT_LOC
@@ -64,12 +64,12 @@ class InspectXRays(QMainWindow):
         self.xray_selection_menu = xray_selection_menu()
         self.xray_selection_menu.setMinimumWidth(500)
         self.xray_selection_menu.setMaximumWidth(500)
-        self.xray_selection_menu.setMaximumHeight(280)
-        self.xray_selection_menu.setMinimumHeight(280)
+        # self.xray_selection_menu.setMaximumHeight(280)
+        # self.xray_selection_menu.setMinimumHeight(280)
         # score_profiles = [f.split('.')[0] for f in os.listdir(self.ctx.profiles) if f.split('.')[-1]=='h5']
         score_profiles = [keys for keys,_ in self.ctx.score_profiles.items()]
         self.xray_selection_menu.score_selector.addItems(score_profiles)
-        scrollbar3 = QScrollArea(widgetResizable=False)
+        scrollbar3 = QScrollArea(widgetResizable=True)
         scrollbar3.setMaximumHeight(300)
         scrollbar3.setWidget(self.xray_selection_menu)
 
