@@ -454,10 +454,10 @@ class InspectXRays(QMainWindow):
         self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
         self.image_widget.toolbar.buttons['Good Image Quality'].triggered.connect(self.update_image_quality_score)
         self.image_widget.toolbar.buttons['Bad Image Quality'].triggered.connect(self.update_image_quality_score)
-        self.image_widget.annotation_options.polyline_dropdown.activated.connect(self.show_selected_annotation_bone)
-        self.image_widget.annotation_options.polyline_dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
-        self.image_widget.annotation_options.rectItem_dropdown.activated.connect(self.show_selected_annotation_joint)
-        self.image_widget.annotation_options.rectItem_dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
+        self.image_widget.poly_select_options.dropdown.activated.connect(self.show_selected_annotation_bone)
+        self.image_widget.poly_select_options.dropdown.currentIndexChanged.connect(self.show_selected_annotation_bone)
+        self.image_widget.rect_select_options.dropdown.activated.connect(self.show_selected_annotation_joint)
+        self.image_widget.rect_select_options.dropdown.currentIndexChanged.connect(self.show_selected_annotation_joint)
         self.image_widget.toolbar.buttons['Clear Label'].triggered.connect(self.clear_neasurement)
         self.widget_area_menu.output_button.clicked.connect(self.measure_poly)
         # self.image_widget.annotation_options.delete_poly_button.clicked.connect(self.delete_selected_annotation_bone)
@@ -959,22 +959,26 @@ class InspectXRays(QMainWindow):
         study_id = self.xray_selection_menu.combobox_studyid.currentText()
         target_loc = os.path.join(self.output_loc,study_id)#todo: link this to current date so that only the current
         _loc,x = find_bone_annotations(target_folder=self.output_loc,xray_id=study_id,date=self.xray_selection_menu.xray_info_box_date.text())
-        self.image_widget.annotation_options.poly_loc_line_edit.setText(_loc)
+        # self.image_widget.annotation_options.poly_loc_line_edit.setText(_loc)
+        self.image_widget.poly_select_options.loc_line_edit.setText(_loc)
 
         anatomical_structure = self.xray_selection_menu.xray_info_box_organ.text()
         x_filtered = [f for f in x if anatomical_structure in f]
-        self.image_widget.annotation_options.polyline_dropdown.clear()
+        # self.image_widget.annotation_options.polyline_dFdisplayropdown.clear()
+        self.image_widget.poly_select_options.dropdown.clear()
         maxlen = 0
-        fm = QFontMetrics(self.image_widget.annotation_options.polyline_dropdown.view().font())
+        fm = QFontMetrics(self.image_widget.poly_select_options.dropdown.view().font())
         if len(x)>0:
             for f in x:
                 if f.split('.')[-1] == 'txt':
 
-                    self.image_widget.annotation_options.polyline_dropdown.addItem(f.split('.')[0])
+                    # self.image_widget.annotation_options.polyline_dropdown.addItem(f.split('.')[0])
+                    self.image_widget.poly_select_options.dropdown.addItem(f.split('.')[0])
                     if maxlen<len(f.split('.')[0]): maxlen= fm.width(f.split('.')[0])
             print("font length")
             print(maxlen)
-            self.image_widget.annotation_options.polyline_dropdown.view().setMinimumWidth(maxlen)#todo: determine the width of the pixel
+            self.image_widget.poly_select_options.dropdown.view().setMinimumWidth(maxlen)#todo: determine the width of the
+            # pixel
 
     def populate_rectItems(self):
         study_id = self.xray_selection_menu.combobox_studyid.currentText()
@@ -982,32 +986,33 @@ class InspectXRays(QMainWindow):
                                   study_id)  # todo: link this to current date so that only the current
         _loc,x = find_joint_annotations(target_folder=self.output_loc, xray_id=study_id,
                                   date=self.xray_selection_menu.xray_info_box_date.text())
-        self.image_widget.annotation_options.rect_loc_line_edit.setText(_loc)
+        self.image_widget.rect_select_options.loc_line_edit.setText(_loc)
 
         anatomical_structure = self.xray_selection_menu.xray_info_box_organ.text()
         x_filtered = [f for f in x if anatomical_structure in f]
-        self.image_widget.annotation_options.rectItem_dropdown.clear()
+        self.image_widget.rect_select_options.dropdown.clear()
         maxlen=0
         if len(x) > 0:
             for f in x:
                 if f.split('.')[-1] == 'txt':
-                    self.image_widget.annotation_options.rectItem_dropdown.addItem(f.split('.')[0])
+                    self.image_widget.rect_select_options.dropdown.addItem(f.split('.')[0])
                     if maxlen<len(f.split('.')[0]): maxlen= len(f.split('.')[0])
-            fm = self.image_widget.annotation_options.rectItem_dropdown.view().font()
+            fm = self.image_widget.rect_select_options.dropdown.view().font()
             # self.image_widget.annotation_options.rectItem_dropdown.view().setMinimumWidth(maxlen*fm.pixelSize())#todo: determine the width of the pixel
 
 
     def show_selected_annotation_bone(self):
-        annotation_name = self.image_widget.annotation_options.polyline_dropdown.currentText()
+        annotation_name = self.image_widget.poly_select_options.dropdown.currentText()
         # print(annotation_name)
         annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
         annotation_path = os.path.join(annotation_path,'bone')
         annotation_path = os.path.join(annotation_path,self.xray_selection_menu.xray_info_box_date.text())
         annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        # print(annotation_path)
         if os.path.isfile(annotation_path):
             control_points  = np.loadtxt(annotation_path)
-            if self.image_widget.annotation_options.display_polylines_box.isChecked():
-
+            if self.image_widget.poly_select_options.display_box.isChecked():
+                # print("trying to display the poly")
                 self.image_widget.image_scene.clear_poly()
                 self.image_widget.image_scene.add_polyline(control_points)
 
@@ -1038,7 +1043,7 @@ class InspectXRays(QMainWindow):
 
 
     def show_selected_annotation_joint(self):
-        annotation_name = self.image_widget.annotation_options.rectItem_dropdown.currentText()
+        annotation_name = self.image_widget.rect_select_options.dropdown.currentText()
         # print(annotation_name)
         annotation_path = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
         annotation_path = os.path.join(annotation_path,'joint')
@@ -1050,7 +1055,7 @@ class InspectXRays(QMainWindow):
             w = np.max(control_points[:,0])-np.min(control_points[:,0])
             y = np.min(control_points[:,1])
             h = np.max(control_points[:,1])-np.min(control_points[:,1])
-            if self.image_widget.annotation_options.display_rectItem_box.isChecked():
+            if self.image_widget.rect_select_options.display_box.isChecked():
 
                 self.image_widget.image_scene.clear_poly()
                 self.image_widget.image_scene.add_rectItem(x,y,w,h)

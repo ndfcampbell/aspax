@@ -1108,7 +1108,8 @@ class xray_selection_menu(QWidget):
     def getDirectory(self):
         response = QFileDialog.getExistingDirectory(
             self,
-            caption='Select a folder'
+            caption='Select a folder',directory=self.wd_info.text()
+
         )
 
         return response

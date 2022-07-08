@@ -235,20 +235,25 @@ class ImageHandler(QWidget):
         self.tabs = QTabWidget()
         self.annotation_options = AnnotationModelOptions()
 
-        horizontal_dock = QHBoxLayout()
-        horizontal_dock.addWidget(self.annotation_options,50)
-
-        horizontal_widget = QWidget()
-        # horizontal_widget.setMinimumSize(1600,200)
-        # horizontal_widget.setMaximumSize(1600,200)
-
-        horizontal_widget.setLayout(horizontal_dock)
-
-
-        self.tabs.addTab(horizontal_widget,"View Annotations")
+        # horizontal_dock = QHBoxLayout()
+        # horizontal_dock.addWidget(self.annotation_options,50)
+        #
+        # horizontal_widget = QWidget()
+        # # horizontal_widget.setMinimumSize(1600,200)
+        # # horizontal_widget.setMaximumSize(1600,200)
+        #
+        # horizontal_widget.setLayout(horizontal_dock)
+        #
+        #
+        # self.tabs.addTab(horizontal_widget,"View Annotations")
+        self.tabs.addTab(self.annotation_options,"View Annotations")
         # self.tabs.setMinimumSize(1600,220)
         # self.tabs.setMaximumSize(1600,220)
         self.tabs.setMaximumHeight(220)
+        self.poly_select_options = AnnotationSelectOptions(name='Polylines')
+        self.tabs.addTab(self.poly_select_options,"Polylines")
+        self.rect_select_options = AnnotationSelectOptions(name='Polylines')
+        self.tabs.addTab(self.rect_select_options,"Rectangles")
         self.load_windowing()
         self.layout.addWidget(self.tabs)
         self.layout.addWidget(self.image_view)
@@ -649,6 +654,74 @@ class ImagingToolbar(QToolBar):
             self.addAction(action_button)
             self.buttons[keys] = action_button
 
+
+class AnnotationSelectOptions(QWidget):
+    def __init__(self,name='Polyline',profile={}):
+
+
+
+        super(AnnotationSelectOptions,self).__init__()
+
+        self.name = name
+        self.init()
+
+    def init(self):
+        self.layout = QVBoxLayout()
+        layout1 = QHBoxLayout()
+        label = QLabel(self.name)
+        label.setMaximumSize(60, 30)
+        label.setMinimumSize(60, 30)
+        self.dropdown = QComboBox()
+        box_label = QLabel("Display "+self.name)
+        box_label.setMaximumSize(90,30)
+        box_label.setMinimumSize(90, 30)
+        self.display_box = QCheckBox()
+        layout1.addWidget(label)
+        layout1.addWidget(self.dropdown)
+        layout1.addWidget(box_label)
+        layout1.addWidget(self.display_box)
+        self.overwrite_button = QPushButton("Overwrite")
+        self.delete_button = QPushButton("Delete")
+
+        layout2 = QHBoxLayout()
+        layout2.addWidget(self.overwrite_button)
+        layout2.addWidget(self.delete_button)
+        widget1 = QWidget()
+        widget1.setLayout(layout1)
+        widget2 = QWidget()
+        widget2.setLayout(layout2)
+        self.loc_line_edit = QLineEdit()
+        self.loc_line_edit.setReadOnly(True)
+        self.layout.addWidget(self.loc_line_edit)
+        self.layout.addWidget(widget1)
+        self.layout.addWidget(widget2)
+        self.setLayout(self.layout)
+        self.delete_button.clicked.connect(self.delete_annotation)
+
+    def delete_annotation(self):
+        print("deleting file")
+        annotation_name = self.dropdown.currentText()
+        # print(annotation_name)
+        annotation_path = self.loc_line_edit.text()
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+        print(annotation_path)
+        # popupWindow = QMessageBox.question(self, 'Warning!',
+        #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
+        #                                         QMessageBox.Ok)
+        qm = QMessageBox
+        ret = qm.question(self, '', "Are you sure you want to delete "+annotation_name, qm.Yes | qm.No)
+        if os.path.isfile(annotation_path):
+            if  ret == qm.Yes:
+                print("deleting " +annotation_path)
+
+                self.dropdown.removeItem(self.dropdown.currentIndex())
+                os.remove(annotation_path)
+            else:
+                print("keeping " + annotation_path)
+        else:
+            print("file not present")
+
+
 class AnnotationModelOptions(QWidget):
     def __init__(self,name='Score',profile={}):
 
@@ -657,7 +730,6 @@ class AnnotationModelOptions(QWidget):
         super(AnnotationModelOptions,self).__init__()
         self.layout = QHBoxLayout()
         self.init()
-
 
     def init(self):
 
