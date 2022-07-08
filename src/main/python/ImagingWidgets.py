@@ -9,7 +9,8 @@ from PyQt5.QtCore import Qt
 from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH, BaseRectItem
 from DataModels import Polyline, Rect
 import numpy as np
-from MenuWidgets import Slider
+from MenuWidgets import score_sliders
+# from MenuWidgets import Slider
 import pydicom
 import scipy.io as sio
 
@@ -249,7 +250,7 @@ class ImageHandler(QWidget):
         self.tabs.addTab(self.annotation_options,"View Annotations")
         # self.tabs.setMinimumSize(1600,220)
         # self.tabs.setMaximumSize(1600,220)
-        self.tabs.setMaximumHeight(220)
+        self.tabs.setMaximumHeight(150)
         self.poly_select_options = AnnotationSelectOptions(name='Polylines')
         self.tabs.addTab(self.poly_select_options,"Polylines")
         self.rect_select_options = AnnotationSelectOptions(name='Polylines')
@@ -740,7 +741,7 @@ class AnnotationModelOptions(QWidget):
 
 
         super(AnnotationModelOptions,self).__init__()
-        self.layout = QHBoxLayout()
+        self.layout = QVBoxLayout()
         self.init()
 
     def init(self):
@@ -1166,85 +1167,85 @@ class Window_Sliders(QWidget):
 
         return window,level
 
-
-
-class score_sliders(QVBoxLayout):
-    """
-    For discrete scores
-    """
-    def __init__(self,score_name='Ratingen',damage_types=['Destruction','Proliferation'],damage_ranges=[(0,5),(0,5)],
-                 opt_kwargs={}):
-        super(score_sliders,self).__init__()
-        self.opt_kwargs = opt_kwargs
-        self.font_header = QFont('Android Roboto', 15)
-        self.font_subheader = QFont('Android Roboto', 13)
-        self.font_text = QFont('Android Roboto', 10)
-        self.font_button = QFont('Android Roboto', 11)
-        self.score_name    = score_name
-        self.damage_types  = damage_types
-        self.damage_ranges = damage_ranges
-        self.sliders       = {}
-        self.init_sliders()
-
-    def init_sliders(self):
-        min_label_width = self.opt_kwargs.pop('label_minimum_width',110)
-        tick_spacing    = self.opt_kwargs.pop('tick_spacing',30)
-        slider_gap      = self.opt_kwargs.pop('slider_gap',130)
-        for damage,rng in zip(self.damage_types,self.damage_ranges):
-            layout = QHBoxLayout()
-            # print(damage)
-            label  = QLabel(damage)
-            label.setFont(self.font_text)
-            label.setMinimumWidth(min_label_width)
-            layout.addWidget(label)
-
-            slider_layout = QGridLayout()
-            score_slider   = Slider()
-            score_slider.setPageStep(0)
-            score_slider.setStyleSheet("QSlider::handle:horizontal {background-color: #16CCB1;}")
-            score_slider.setOrientation(Qt.Horizontal)
-            score_slider.setRange(rng[0],rng[1])
-            score_slider.setTickInterval(1)
-            score_slider.setSingleStep(1)
-            slider_layout.setHorizontalSpacing(score_slider.tickInterval())
-            score_slider.setTickPosition(QSlider.TicksBelow)
-
-
-
-            slider_label_layout  = QHBoxLayout()
-            scores = np.arange(rng[0],rng[1]+1)
-
-            for score in scores:
-                slider_layout.addWidget(QLabel(str(score)),0,int(score),Qt.AlignHCenter)
-            score_slider.setMinimumWidth(450)
-            slider_layout.addWidget(score_slider,1,0,1,rng[1]-rng[0]+1,Qt.AlignBottom)
-
-            # slider_layout.addLayout(slider_label_layout)
-
-            hspacer = QSpacerItem(30,30,
-                                  QSizePolicy.Expanding,QSizePolicy.Expanding)
-            layout.addLayout(slider_layout)
-            layout.addItem(hspacer)
-
-
-            self.sliders[damage] = score_slider
-            self.addLayout(layout)
-
-
-    def reinit_values(self):
-        for keys,val in self.sliders.items():
-            val.setValue(0)
-
-    def print_slider_values(self):
-        for keys,val in self.sliders.items():
-            print(val.value())
-
-    def get_slider_values(self):
-        mydict = {}
-        for keys, val in self.sliders.items():
-            mydict[keys]=val.value()
-        print(mydict)
-        return mydict
+#
+#
+# class score_sliders(QVBoxLayout):
+#     """
+#     For discrete scores
+#     """
+#     def __init__(self,score_name='Ratingen',damage_types=['Destruction','Proliferation'],damage_ranges=[(0,5),(0,5)],
+#                  opt_kwargs={}):
+#         super(score_sliders,self).__init__()
+#         self.opt_kwargs = opt_kwargs
+#         self.font_header = QFont('Android Roboto', 15)
+#         self.font_subheader = QFont('Android Roboto', 13)
+#         self.font_text = QFont('Android Roboto', 10)
+#         self.font_button = QFont('Android Roboto', 11)
+#         self.score_name    = score_name
+#         self.damage_types  = damage_types
+#         self.damage_ranges = damage_ranges
+#         self.sliders       = {}
+#         self.init_sliders()
+#
+#     def init_sliders(self):
+#         min_label_width = self.opt_kwargs.pop('label_minimum_width',110)
+#         tick_spacing    = self.opt_kwargs.pop('tick_spacing',30)
+#         slider_gap      = self.opt_kwargs.pop('slider_gap',130)
+#         for damage,rng in zip(self.damage_types,self.damage_ranges):
+#             layout = QHBoxLayout()
+#             # print(damage)
+#             label  = QLabel(damage)
+#             label.setFont(self.font_text)
+#             label.setMinimumWidth(min_label_width)
+#             layout.addWidget(label)
+#
+#             slider_layout = QGridLayout()
+#             score_slider   = Slider()
+#             score_slider.setPageStep(0)
+#             score_slider.setStyleSheet("QSlider::handle:horizontal {background-color: #16CCB1;}")
+#             score_slider.setOrientation(Qt.Horizontal)
+#             score_slider.setRange(rng[0],rng[1])
+#             score_slider.setTickInterval(1)
+#             score_slider.setSingleStep(1)
+#             slider_layout.setHorizontalSpacing(score_slider.tickInterval())
+#             score_slider.setTickPosition(QSlider.TicksBelow)
+#
+#
+#
+#             slider_label_layout  = QHBoxLayout()
+#             scores = np.arange(rng[0],rng[1]+1)
+#
+#             for score in scores:
+#                 slider_layout.addWidget(QLabel(str(score)),0,int(score),Qt.AlignHCenter)
+#             score_slider.setMinimumWidth(450)
+#             slider_layout.addWidget(score_slider,1,0,1,rng[1]-rng[0]+1,Qt.AlignBottom)
+#
+#             # slider_layout.addLayout(slider_label_layout)
+#
+#             hspacer = QSpacerItem(30,30,
+#                                   QSizePolicy.Expanding,QSizePolicy.Expanding)
+#             layout.addLayout(slider_layout)
+#             layout.addItem(hspacer)
+#
+#
+#             self.sliders[damage] = score_slider
+#             self.addLayout(layout)
+#
+#
+#     def reinit_values(self):
+#         for keys,val in self.sliders.items():
+#             val.setValue(0)
+#
+#     def print_slider_values(self):
+#         for keys,val in self.sliders.items():
+#             print(val.value())
+#
+#     def get_slider_values(self):
+#         mydict = {}
+#         for keys, val in self.sliders.items():
+#             mydict[keys]=val.value()
+#         print(mydict)
+#         return mydict
 
 def main():
     app = QApplication([])
