@@ -2,6 +2,6 @@
     "app_name": "ASPAX Annotator",
     "author": "Adwaye M Rambojun",
     "main_module": "src/main/python/main.py",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "hidden_imports": ["numpy.core._dtype_ctypes","setuptools","pydicom","pylibjpeg","pydicom.encoders.gdcm","pydicom.encoders.pylibjpeg"]
 }
