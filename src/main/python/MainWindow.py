@@ -88,14 +88,15 @@ class InspectXRays(QMainWindow):
 
         self.widget_score_menu    = score_menu_widget()
 
-        if height_diff>0:
-            current_table_size = self.widget_score_menu.tableView.height()
-            self.widget_score_menu.tableView.setMaximumHeight(int((current_table_size-height_diff)*0.85))
-            current_table_size = self.widget_score_menu.tableView.height()
-            self.widget_area_menu.tableView.setMaximumHeight(int((current_table_size - height_diff) * 0.85))
+        # if height_diff>0:
+        #     current_table_size = self.widget_score_menu.tableView.height()
+        #     self.widget_score_menu.tableView.setMaximumHeight(int((current_table_size-height_diff)*0.85))
+        #     current_table_size = self.widget_score_menu.tableView.height()
+        #     self.widget_area_menu.tableView.setMaximumHeight(int((current_table_size - height_diff) * 0.85))
         # self.widget_label_menu    = label_extraction_menu_widget()
         # self.menu_tabs.addTab(self.widget_distance_menu,'Distance')
         scrollbar1 = QScrollArea(widgetResizable=False)
+        scrollbar1.setMaximumHeight(self.sizeObject.height()-scrollbar3.height()-20)
 
         scrollbar1.setWidget(self.widget_area_menu)
         self.menu_tabs.addTab(self.widget_area_menu,'Annotation')
@@ -129,14 +130,16 @@ class InspectXRays(QMainWindow):
         self.menu_tabs.removeTab(1)
         self.widget_score_menu = score_menu_widget(profile=profile)
         height_diff = self.height()-self.sizeObject.height()
-        if height_diff>0:
-            current_table_size = self.widget_score_menu.tableView.height()
-            self.widget_score_menu.tableView.setMaximumHeight(int((current_table_size-height_diff)*0.85))
+        # if height_diff>0:
+        #     current_table_size = self.widget_score_menu.tableView.height()
+        #     self.widget_score_menu.tableView.setMaximumHeight(int((current_table_size-height_diff)*0.85))
+        self.widget_score_menu.tableView.setMinimumHeight(300)
 
         scrollbar2 = QScrollArea(widgetResizable=True)
-
+        scrollbar2.setMaximumHeight(self.sizeObject.height() - 300-20)
         scrollbar2.setWidget(self.widget_score_menu)
-        scrollbar2.ensureVisible(500,500,xMargin=0,yMargin=0)
+
+
 
 
         self.menu_tabs.addTab(scrollbar2,self.widget_score_menu.score_technique)
