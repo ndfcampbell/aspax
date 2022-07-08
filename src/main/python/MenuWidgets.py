@@ -68,6 +68,8 @@ class distance_menu_widget(QWidget):
         self.output_box = QLineEdit()
         # self.output_box = BoxDistanceArea()
         self.output_box.setText("0mm")
+        self.output_box.setMaximumSize(240+70+30,30)
+        self.output_box.setMinimumSize(240+70+30,30)
         # self.output_box.add_to_layout(self.output_box_layout)
         self.output_box_layout.addWidget(self.output_box)
 
@@ -78,6 +80,9 @@ class distance_menu_widget(QWidget):
         self.output_button.setMinimumSize(130,30)
 
         self.output_box_layout.addWidget(self.output_button)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Minimum)
+        self.output_box_layout.addItem(hspacer)
 
         self.output_box_widget = QWidget()
         self.output_box_widget.setLayout(self.output_box_layout)
@@ -142,10 +147,11 @@ class distance_menu_widget(QWidget):
         self.save_discard_layout.addItem(hspacer)
 
         self.save_button = SaveButton()
-
-        self.save_button.add_to_layout(self.save_discard_layout)
+        self.save_discard_layout.addWidget(self.save_button,alignment=Qt.AlignRight)
+        # self.save_button.add_to_layout(self.save_discard_layout)
         self.unsure_button = SaveButton(title="Unsure")
-        self.unsure_button.add_to_layout(self.save_discard_layout)
+        # self.unsure_button.add_to_layout(self.save_discard_layout)
+        self.save_discard_layout.addWidget(self.unsure_button,alignment=Qt.AlignRight)
         self.discard_button = QPushButton("X")
         self.discard_button.setStyleSheet("background-color: #FF6666; color: white")
         self.discard_button.setFont(self.font_button)
@@ -188,20 +194,30 @@ class area_menu_widget(distance_menu_widget):
 
 
     def init_save_discard(self):
+
         self.save_discard_layout = QHBoxLayout()
-        self.save_discard_layout.addSpacing(290)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Minimum)
+        self.save_discard_layout.addItem(hspacer)
+
         self.save_button = SaveButton()
-        self.save_button.add_to_layout(self.save_discard_layout)
+        # self.save_button.add_to_layout(self.save_discard_layout)
+        self.save_discard_layout.addWidget(self.save_button,alignment=Qt.AlignRight)
         self.unsure_button = SaveButton(title="Unsure")
-        self.unsure_button.add_to_layout(self.save_discard_layout)
+        # self.unsure_button.add_to_layout(self.save_discard_layout)
+        self.save_discard_layout.addWidget(self.unsure_button,alignment=Qt.AlignRight)
         self.view_button = SaveButton(title="View")
-        self.view_button.add_to_layout(self.save_discard_layout)
+        # self.view_button.add_to_layout(self.save_discard_layout)
+        self.save_discard_layout.addWidget(self.view_button,alignment=Qt.AlignRight)
         self.discard_button = QPushButton("X")
         self.discard_button.setStyleSheet("background-color: #FF6666; color: white")
         self.discard_button.setFont(self.font_button)
         self.discard_button.setMaximumSize(30,30)
         self.discard_button.setMinimumSize(30,30)
         self.save_discard_layout.addWidget(self.discard_button,alignment=Qt.AlignRight)
+        # hspacer = QSpacerItem(30,30,
+        #                       QSizePolicy.Expanding,QSizePolicy.Minimum)
+        # self.save_discard_layout.addItem(hspacer)
         self.save_discard_widget = QWidget()
         self.save_discard_widget.setLayout(self.save_discard_layout)
 
@@ -370,6 +386,7 @@ class score_menu_widget(distance_menu_widget):
             # val.mousePressEvent.connect(self.store_slider_value)
 
 
+
     def init_label_selection(self):
         label_layout = QHBoxLayout()
         self.score_technique_label = QLabel(self.score_technique+' on')
@@ -383,8 +400,12 @@ class score_menu_widget(distance_menu_widget):
         self.score_area_box.setMaximumSize(300,30)
         self.score_area_box.setMinimumSize(300,30)
         self.score_area_box.addItems(self.damage_areas)
+
         label_layout.addWidget(self.score_technique_label)
         label_layout.addWidget(self.score_area_box)
+        hspacer = QSpacerItem(30,30,
+            QSizePolicy.Expanding,QSizePolicy.Minimum)
+        label_layout.addItem(hspacer)
         label_widget = QWidget()
         label_widget.setLayout(label_layout)
         self.layout.addWidget(label_widget)
@@ -811,10 +832,17 @@ class score_sliders(QVBoxLayout):
 
             for score in scores:
                 slider_layout.addWidget(QLabel(str(score)),0,int(score),Qt.AlignHCenter)
-
+            score_slider.setMinimumWidth(300)
             slider_layout.addWidget(score_slider,1,0,1,rng[1]-rng[0]+1,Qt.AlignBottom)
+
             # slider_layout.addLayout(slider_label_layout)
+
+            hspacer = QSpacerItem(30,30,
+                                  QSizePolicy.Expanding,QSizePolicy.Minimum)
             layout.addLayout(slider_layout)
+            layout.addItem(hspacer)
+
+
             self.sliders[damage] = score_slider
             self.addLayout(layout)
 
