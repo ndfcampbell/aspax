@@ -76,7 +76,7 @@ class InspectXRays(QMainWindow):
 
         self.menu_tabs = QTabWidget()
         self.menu_tabs.setMinimumWidth(500)
-        self.menu_tabs.setMaximumWidth(500)
+        # self.menu_tabs.setMaximumWidth(500)
         # self.widget_distance_menu = distance_menu_widget()
         self.widget_area_menu     = area_menu_widget(self.ctx.joint_list)
 
@@ -84,8 +84,15 @@ class InspectXRays(QMainWindow):
 
         # self.widget_label_menu    = label_extraction_menu_widget()
         # self.menu_tabs.addTab(self.widget_distance_menu,'Distance')
+        scrollbar1 = QScrollArea(widgetResizable=False)
+
+        scrollbar1.setWidget(self.widget_area_menu)
         self.menu_tabs.addTab(self.widget_area_menu,'Annotation')
-        self.menu_tabs.addTab(self.widget_score_menu,'Score')
+        scrollbar2 = QScrollArea(widgetResizable=False)
+        scrollbar2.setWidget(self.widget_score_menu)
+
+        self.menu_tabs.addTab(scrollbar2,'Score')
+
         # self.menu_tabs.addTab(self.widget_label_menu,'Label')
         layout.addWidget(self.menu_tabs)
         self.left_panel = QWidget()
@@ -110,7 +117,14 @@ class InspectXRays(QMainWindow):
         profile['score_technique'] = str(self.xray_selection_menu.score_selector.currentText())
         self.menu_tabs.removeTab(1)
         self.widget_score_menu = score_menu_widget(profile=profile)
-        self.menu_tabs.addTab(self.widget_score_menu,self.widget_score_menu.score_technique)
+        scrollbar2 = QScrollArea(widgetResizable=True)
+
+        scrollbar2.setWidget(self.widget_score_menu)
+        scrollbar2.ensureVisible(500,500,xMargin=0,yMargin=0)
+
+
+        self.menu_tabs.addTab(scrollbar2,self.widget_score_menu.score_technique)
+        # self.menu_tabs.addTab(self.widget_score_menu,self.widget_score_menu.score_technique)
         self.connect_sub_buttons()
 
 
