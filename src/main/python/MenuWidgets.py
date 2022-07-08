@@ -103,6 +103,10 @@ class distance_menu_widget(QWidget):
             button.clicked.connect(lambda: self.get_text(self.side_buttons))
             self.side_buttons_layout.addWidget(button,alignment=Qt.AlignLeft)
 
+        hspacer = QSpacerItem(30,30,
+            QSizePolicy.Expanding,QSizePolicy.Minimum)
+        self.side_buttons_layout.addItem(hspacer)
+
         self.side_buttons_layout.addSpacing(267)
         self.layout.addLayout(self.side_buttons_layout)
 
@@ -133,8 +137,12 @@ class distance_menu_widget(QWidget):
         :rtype:
         """
         self.save_discard_layout = QHBoxLayout()
-        self.save_discard_layout.addSpacing(290)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Minimum)
+        self.save_discard_layout.addItem(hspacer)
+
         self.save_button = SaveButton()
+
         self.save_button.add_to_layout(self.save_discard_layout)
         self.unsure_button = SaveButton(title="Unsure")
         self.unsure_button.add_to_layout(self.save_discard_layout)
@@ -145,6 +153,8 @@ class distance_menu_widget(QWidget):
         self.discard_button.setMinimumSize(30,30)
         self.save_discard_layout.addWidget(self.discard_button,alignment=Qt.AlignRight)
         self.save_discard_widget = QWidget()
+
+
         self.save_discard_widget.setLayout(self.save_discard_layout)
 
         self.layout.addWidget(self.save_discard_widget)
@@ -220,7 +230,11 @@ class area_menu_widget(distance_menu_widget):
             self.annotation_type_layout.addWidget(button,alignment=Qt.AlignLeft)
             if button.text() == 'Bone':
                 button.toggle()
-        self.annotation_type_layout.addSpacing(90)
+
+        # self.annotation_type_layout.addSpacing(90)
+        hspacer = QSpacerItem(30,30,
+                              QSizePolicy.Expanding,QSizePolicy.Minimum)
+        self.annotation_type_layout.addItem(hspacer)
         self.layout.addLayout(self.annotation_type_layout)
 
     def get_label_name(self):
