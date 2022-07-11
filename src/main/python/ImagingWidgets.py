@@ -13,6 +13,7 @@ from MenuWidgets import score_sliders
 # from MenuWidgets import Slider
 import pydicom
 import scipy.io as sio
+from DicomProcess import extract_pixel_spacing
 
 
 
@@ -214,6 +215,7 @@ class ImageHandler(QWidget):
 
     def __init__(self,icon_library,output_loc):
         super().__init__()
+        self.pixel_width = np.array([0.1, 0.1])
         self.output_loc = output_loc
         self.scaling_factor = 1.1
         self._empty = True
@@ -267,7 +269,7 @@ class ImageHandler(QWidget):
         self.activate_toolbar()
         self.zoom_tracker  = 1.0
         self.zoom_out_scaling_factor = 1.0
-        self.pixel_width = [0.1,0.1]
+
 
         #replace with a connect toolbar
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
@@ -347,7 +349,13 @@ class ImageHandler(QWidget):
             self.pixmap.load(file_name)
             self.raw_data = cv2.imread(file_name,0)
         elif bool(is_dicom):
-            self.dicom_file = pydicom.read_file(file_name)
+            self.dicom_file  = pydicom.read_file(file_name)
+            pixel_width = extract_pixel_spacing(self.dicom_file)
+            if pixel_width is not None:
+                self.pixel_width = np.array(pixel_width)
+            #todo: need to extract pixel spacing from file.
+            #todo: default should be to write a temp image and then read it
+
 
             try:
                 cvImg = self.dicom_file.pixel_array.astype(np.float16)
