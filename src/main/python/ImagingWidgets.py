@@ -353,31 +353,30 @@ class ImageHandler(QWidget):
             pixel_width = extract_pixel_spacing(self.dicom_file)
             if pixel_width is not None:
                 self.pixel_width = np.array(pixel_width)
-            #todo: need to extract pixel spacing from file.
-            #todo: default should be to write a temp image and then read it
 
+            # try:
+            #     cvImg = self.dicom_file.pixel_array.astype(np.float16)
+            #     self.raw_data = cvImg
+            #     cvImg = self.normalise(cvImg)
+            #     # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
+            #     cvImgX = np.array([cvImg,cvImg,cvImg]).astype(np.uint32)
+            #     cvImgX = np.transpose(cvImgX,[1,2,0])
+            #     height,width,depth = cvImgX.shape
+            #     a = cvImgX.copy()
+            #     b = (255 << 24 | a[:,:,0] << 16 | a[:,:,1] << 8 | a[:,:,2]).flatten()
+            #     bytesPerLine = 3 * width
+            #     qImg = QImage(b, width, height, QImage.Format_RGBA8888)
+            #     self.pixmap = QPixmap(qImg)
+            # except np.core._exceptions._ArrayMemoryError:
+            #     print("not enough memory")
 
-            try:
-                cvImg = self.dicom_file.pixel_array.astype(np.float16)
-                self.raw_data = cvImg
-                cvImg = self.normalise(cvImg)
-                # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
-                cvImgX = np.array([cvImg,cvImg,cvImg]).astype(np.uint32)
-                cvImgX = np.transpose(cvImgX,[1,2,0])
-                height,width,depth = cvImgX.shape
-                a = cvImgX.copy()
-                b = (255 << 24 | a[:,:,0] << 16 | a[:,:,1] << 8 | a[:,:,2]).flatten()
-                bytesPerLine = 3 * width
-                qImg = QImage(b, width, height, QImage.Format_RGBA8888)
-                self.pixmap = QPixmap(qImg)
-            except np.core._exceptions._ArrayMemoryError:
-                print("not enough memory")
-                cvImg = self.dicom_file.pixel_array.astype(np.float16)
-                cvImg = self.normalise(cvImg)
-                cvImg = cvImg.astype(np.uint8)
-                cv2.imwrite('temp_file.png', cvImg)
-                self.pixmap = QPixmap()
-                self.pixmap.load('temp_file.png')
+            cvImg = self.dicom_file.pixel_array.astype(np.float16)
+            cvImg = self.normalise(cvImg)
+            cvImg = cvImg.astype(np.uint8)
+            cv2.imwrite('temp_file.png', cvImg)
+            self.raw_data = cv2.imread('temp_file.png', 0)
+            self.pixmap = QPixmap()
+            self.pixmap.load('temp_file.png')
 
 
 
@@ -398,6 +397,16 @@ class ImageHandler(QWidget):
         self.display_image(self.pixmap)
         # self.load_windowing()
 
+    def invert_image(self):
+        cvImg = 255 - self.raw_data
+        cv2.imwrite('temp_file.png', cvImg)
+        self.raw_data = cvImg
+        self.pixmap = QPixmap()
+        self.pixmap.load('temp_file.png')
+
+        self.display_image(self.pixmap)
+
+
 
     def load_windowing(self):
 
@@ -405,6 +414,7 @@ class ImageHandler(QWidget):
         self.tabs.addTab(self.image_processor,"Manipulate Image")
         self.image_processor.window_slider.valueChanged.connect(self.window_image)
         self.image_processor.level_slider.valueChanged.connect(self.window_image)
+        self.image_processor.invert_button.clicked.connect(self.invert_image)
 
 
 
@@ -1158,17 +1168,20 @@ class Window_Sliders(QWidget):
         self.window_slider.setRange(0, int(max_pix/2))
         self.level_slider.setTickInterval(tick_interval)
         self.window_slider.setSliderPosition(tick_interval*100)
+        self.invert_button = QPushButton('Invert Image')
 
         layout.addWidget(level_label, 0, 0)
         layout.addWidget(self.level_slider, 0, 1)
         layout.addWidget(window_label, 1, 0)
         layout.addWidget(self.window_slider, 1, 1)
+        layout.addWidget(self.invert_button,2,1)
         vspacer = QSpacerItem(30,30,
                               QSizePolicy.Expanding,QSizePolicy.Expanding)
         layout.addItem(vspacer, 2, 0, 1, -1)
         hspacer = QSpacerItem(30,30,
                               QSizePolicy.Expanding,QSizePolicy.Expanding)
         layout.addItem(hspacer, 0, 2, -1, 1)
+
         # self.level_slider.valueChanged.connect(self.change_window_slider_vals)
         self.setLayout(layout)
 
