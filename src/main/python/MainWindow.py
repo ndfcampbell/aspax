@@ -865,6 +865,8 @@ class InspectXRays(QMainWindow):
         if os.path.isfile(score_path):
             my_dict = load_csv(score_path)
             self.widget_score_menu.load_table_view(my_dict)
+        else:
+            self.widget_score_menu.create_table_view()
 
         try:#todo: remove use of try except and try to use if id non empty
             image_quality_array = np.array(self.xray_record.meta_table['image_quality'])

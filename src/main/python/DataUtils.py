@@ -153,14 +153,22 @@ def find_bone_annotations(target_folder, xray_id,date):
     target_loc = os.path.join(target_folder,xray_id)
     target_loc = os.path.join(target_loc, 'bone')
     target_loc = os.path.join(target_loc, date)
-    return target_loc,os.listdir(target_loc)
+    if os.path.isdir(target_loc):
+        file_list = os.listdir(target_loc)
+    else:
+        file_list = []
+    return target_loc,file_list
 
 
 def find_joint_annotations(target_folder, xray_id,date):
     target_loc = os.path.join(target_folder,xray_id)
     target_loc = os.path.join(target_loc, 'joint')
     target_loc = os.path.join(target_loc, date)
-    return target_loc,os.listdir(target_loc)
+    if os.path.isdir(target_loc):
+        file_list = os.listdir(target_loc)
+    else:
+        file_list = []
+    return target_loc,file_list
 
 
 # target_folder ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"
