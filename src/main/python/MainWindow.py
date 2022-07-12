@@ -883,6 +883,7 @@ class InspectXRays(QMainWindow):
         score_path = os.path.join(meta_loc,'scores')
         date = self.xray_selection_menu.xray_info_box_date.text()
         score_path = os.path.join(score_path,date)
+        if not os.path.isdir(score_path): os.makedirs(score_path)
         score_path = os.path.join(score_path,self.widget_score_menu.score_technique + '.csv')
 
         return score_path
