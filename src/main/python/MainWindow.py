@@ -782,6 +782,8 @@ class InspectXRays(QMainWindow):
             # file_name = os.path.join(file_loc,self.widget_score_menu.score_technique+'.csv')
 
             file_name = self.make_score_path()
+            file_path = os.path.dirname(file_name)
+            if not os.path.isdir(file_path): os.makedirs(file_path)
             print("saving at "+file_name)
             self.widget_score_menu.save_table_view(file_loc=file_name)
 
@@ -883,7 +885,7 @@ class InspectXRays(QMainWindow):
         score_path = os.path.join(meta_loc,'scores')
         date = self.xray_selection_menu.xray_info_box_date.text()
         score_path = os.path.join(score_path,date)
-        if not os.path.isdir(score_path): os.makedirs(score_path)
+
         score_path = os.path.join(score_path,self.widget_score_menu.score_technique + '.csv')
 
         return score_path
