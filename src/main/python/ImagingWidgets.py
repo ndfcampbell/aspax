@@ -217,6 +217,7 @@ class ImageHandler(QWidget):
         super().__init__()
         self.pixel_width = np.array([0.1, 0.1])
         self.output_loc = output_loc
+        self.temp_name = os.path.join(output_loc,'temp_file.png')
         self.scaling_factor = 1.1
         self._empty = True
         self.image_view = MyView()
@@ -342,8 +343,9 @@ class ImageHandler(QWidget):
         is_mat = [ele for ele in mat_extensions if (ele in file_ext)]
         is_dicom = [ele for ele in dicom_extensions if (ele in file_ext)]
 
-
-
+        file_loc = os.path.dirname(file_name)
+        self.temp_name = os.path.join(file_loc,'temp_file.png')
+        # temp_name = './temp_file.png'
         if bool(is_image):
             self.pixmap          = QPixmap()
             self.pixmap.load(file_name)
@@ -373,10 +375,10 @@ class ImageHandler(QWidget):
             cvImg = self.dicom_file.pixel_array.astype(np.float16)
             cvImg = self.normalise(cvImg)
             cvImg = cvImg.astype(np.uint8)
-            cv2.imwrite('temp_file.png', cvImg)
-            self.raw_data = cv2.imread('temp_file.png', 0)
+            cv2.imwrite(self.temp_name, cvImg)
+            self.raw_data = cv2.imread(self.temp_name, 0)
             self.pixmap = QPixmap()
-            self.pixmap.load('temp_file.png')
+            self.pixmap.load(self.temp_name)
 
 
 
@@ -398,11 +400,12 @@ class ImageHandler(QWidget):
         # self.load_windowing()
 
     def invert_image(self):
+
         cvImg = 255 - self.raw_data
-        cv2.imwrite('temp_file.png', cvImg)
+        cv2.imwrite(self.temp_name, cvImg)
         self.raw_data = cvImg
         self.pixmap = QPixmap()
-        self.pixmap.load('temp_file.png')
+        self.pixmap.load(self.temp_name)
 
         self.display_image(self.pixmap)
 
@@ -427,25 +430,25 @@ class ImageHandler(QWidget):
         lower_bound  = level-window
         cvImg[np.where(cvImg>upper_bound)] = upper_bound
         cvImg[np.where(cvImg < lower_bound)] = lower_bound
-        try:
-            cvImg = self.normalise(cvImg)
-            # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
-            cvImgX = np.array([cvImg, cvImg, cvImg]).astype(np.uint32)
-            cvImgX = np.transpose(cvImgX, [1, 2, 0])
-            height, width, depth = cvImgX.shape
-            a = cvImgX.copy()
-            b = (255 << 24 | a[:, :, 0] << 16 | a[:, :, 1] << 8 | a[:, :, 2]).flatten()
-            bytesPerLine = 3 * width
-            qImg = QImage(b, width, height, QImage.Format_RGBA8888)
-            self.pixmap = QPixmap(qImg)
-        except np.core._exceptions._ArrayMemoryError:
-            print("not enough memory")
+        # try:
+        #     cvImg = self.normalise(cvImg)
+        #     # cvImg = ((cvImg - np.min(cvImg)) / np.max(cvImg)) * 255
+        #     cvImgX = np.array([cvImg, cvImg, cvImg]).astype(np.uint32)
+        #     cvImgX = np.transpose(cvImgX, [1, 2, 0])
+        #     height, width, depth = cvImgX.shape
+        #     a = cvImgX.copy()
+        #     b = (255 << 24 | a[:, :, 0] << 16 | a[:, :, 1] << 8 | a[:, :, 2]).flatten()
+        #     bytesPerLine = 3 * width
+        #     qImg = QImage(b, width, height, QImage.Format_RGBA8888)
+        #     self.pixmap = QPixmap(qImg)
+        # except np.core._exceptions._ArrayMemoryError:
+        #     print("not enough memory")
 
-            cvImg = self.normalise(cvImg)
-            cvImg = cvImg.astype(np.uint8)
-            cv2.imwrite('temp_file.png', cvImg)
-            self.pixmap = QPixmap()
-            self.pixmap.load('temp_file.png')
+        cvImg = self.normalise(cvImg)
+        cvImg = cvImg.astype(np.uint8)
+        cv2.imwrite(self.temp_name, cvImg)
+        self.pixmap = QPixmap()
+        self.pixmap.load(self.temp_name)
 
         self.display_image(self.pixmap)
 
@@ -480,9 +483,9 @@ class ImageHandler(QWidget):
         img = self.matfile[key]
         self.raw_data = img
         scaled_img = ((img-np.min(img))/np.max(img))*255
-        cv2.imwrite('temp_file.png',scaled_img)
+        cv2.imwrite(self.temp_name,scaled_img)
         self.pixmap = QPixmap()
-        self.pixmap.load('temp_file.png')
+        self.pixmap.load(self.temp_name)
         # w = img.shape[1]
         # h = img.shape[0]
         # img2 = np.require(img,np.uint8,'C')
