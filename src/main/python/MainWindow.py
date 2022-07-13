@@ -795,7 +795,7 @@ class InspectXRays(QMainWindow):
         studies = [f for f in os.listdir(self.output_loc) if os.path.isdir(os.path.join(self.output_loc,f))]
         for it in studies:
             self.xray_selection_menu.combobox_studyid.addItem(it)
-            print('adding ' + Xray_id + ' to dropdown')
+            print('adding ' + it + ' to dropdown')
 
 
     def display_xrays(self):
