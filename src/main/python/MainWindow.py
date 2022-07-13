@@ -118,10 +118,10 @@ class InspectXRays(QMainWindow):
         # profile_loc = os.path.join('score_profiles',str(self.xray_selection_menu.score_selector.currentText())+'.h5')
         # profile_loc = self.ctx.score_profiles[str(self.xray_selection_menu.score_selector.currentText())]
         profile_loc = self.ctx.score_profiles[str(self.xray_selection_menu.score_selector.currentText())]
-        print("======================")
+        #print("======================")
 
-        print(profile_loc)
-        print("======================")
+        #print(profile_loc)
+        #print("======================")
         try:
             profile = load_profile(profile_loc)
         except:
@@ -165,10 +165,10 @@ class InspectXRays(QMainWindow):
             my_dict = load_csv(file_name)
             self.widget_area_menu.load_table_view(my_dict)
 
-        print("looking for score path")
+        #print("looking for score path")
         score_path = self.make_score_path()
         if os.path.isfile(score_path):
-            print("found score path at "+score_path)
+            #print("found score path at "+score_path)
             my_dict = load_csv(score_path)
             self.widget_score_menu.load_table_view(my_dict)
         else:
@@ -190,7 +190,7 @@ class InspectXRays(QMainWindow):
 
 
     def open_output_folder_selector_old(self):
-        print("yes man")
+        #print("yes man")
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.Directory)
         if dlg.exec_():
@@ -215,7 +215,7 @@ class InspectXRays(QMainWindow):
 
 
     def open_output_folder_selector(self):
-        print("yes man")
+        #print("yes man")
         # response = QFileDialog.getOpenFileName(
         #     parent=self,
         #     caption='Select a data file',
@@ -229,7 +229,7 @@ class InspectXRays(QMainWindow):
         #                                QFileDialog.ShowDirsOnly
         #                                | QFileDialog.DontResolveSymlinks)
         response = self.getDirectory()
-        print(response)
+        #print(response)
 
         folder_names = response
         self.output_loc = os.path.join(os.sep,folder_names)
@@ -256,12 +256,12 @@ class InspectXRays(QMainWindow):
     def open_study_creator(self):
         #print('function triggered')
         filename = self.xray_selection_menu.temp_name
-        print('filename fed to mainwindow is ')
-        print(filename)
+        #print('filename fed to mainwindow is ')
+        #print(filename)
         # f = open(filenames[0],'r')
         self.image_widget.load_image(file_name=filename)
         self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
-        print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
+        #print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
 
 
         # self.create_image_menu = XrayDataCreationDialog()
@@ -293,7 +293,7 @@ class InspectXRays(QMainWindow):
             # f = open(filenames[0],'r')
             self.image_widget.load_image(file_name=filenames[0])
             self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
-            print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
+            #print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
 
             self.create_image_menu = XrayDataCreationDialog()
             if QMessageBox.Yes:
@@ -321,7 +321,7 @@ class InspectXRays(QMainWindow):
         # f = open(filenames[0],'r')
         self.image_widget.load_image(file_name=filename)
         self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
-        print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
+        #print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
 
 
         # self.create_image_menu = XrayDataCreationDialog()
@@ -358,7 +358,7 @@ class InspectXRays(QMainWindow):
             # f = open(filenames[0],'r')
             self.image_widget.load_image(file_name=filenames[0])
             self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
-            print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
+            #print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
 
 
             self.create_image_menu = XrayDataCreationDialog()
@@ -412,6 +412,7 @@ class InspectXRays(QMainWindow):
         # print(self.xray_record.save_loc)
         self.create_xray_window.close()
         self.xray_selection_menu.combobox_studyid.addItem(Xray_id)
+        print('adding '+Xray_id+' to dropdown')
         self.xray_selection_menu.combobox_studyid.setCurrentIndex(self.xray_selection_menu.combobox_studyid.count() - 1)
 
 
@@ -784,7 +785,7 @@ class InspectXRays(QMainWindow):
             file_name = self.make_score_path()
             file_path = os.path.dirname(file_name)
             if not os.path.isdir(file_path): os.makedirs(file_path)
-            print("saving at "+file_name)
+            #print("saving at "+file_name)
             self.widget_score_menu.save_table_view(file_loc=file_name)
 
 
@@ -794,6 +795,7 @@ class InspectXRays(QMainWindow):
         studies = [f for f in os.listdir(self.output_loc) if os.path.isdir(os.path.join(self.output_loc,f))]
         for it in studies:
             self.xray_selection_menu.combobox_studyid.addItem(it)
+            print('adding ' + Xray_id + ' to dropdown')
 
 
     def display_xrays(self):
@@ -849,7 +851,7 @@ class InspectXRays(QMainWindow):
         if os.path.isfile(os.path.join(meta_loc,image_name)):
             self.image_widget.load_image(file_name=os.path.join(meta_loc,image_name))
 
-            print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
+            #print("Image quality is ={:}".format(int(self.image_widget.image_quality_flag)))
             self.display_image_info()
             self.find_tracking_info()
 
@@ -868,15 +870,15 @@ class InspectXRays(QMainWindow):
         else:
             self.widget_score_menu.create_table_view()
 
-        try:#todo: remove use of try except and try to use if id non empty
+        try:
             image_quality_array = np.array(self.xray_record.meta_table['image_quality'])
             image_qual_bool     = bool(int(float(image_quality_array[id[0][0]])))
-            print(image_qual_bool)
+            #print(image_qual_bool)
             self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(image_qual_bool)
             self.image_widget.toolbar.buttons['Bad Image Quality'].setChecked(not image_qual_bool)
         except KeyError:
             self.image_widget.toolbar.buttons['Good Image Quality'].setChecked(1)
-            print("No image quality info present in metadata")
+            #print("No image quality info present in metadata")
 
         #print(image_name)
 
@@ -942,16 +944,16 @@ class InspectXRays(QMainWindow):
         rects = [os.path.join(joint_loc, f) for f in os.listdir(joint_loc) if f.split('.')[-1]=='txt']
         polys = [os.path.join(bones_loc, f) for f in os.listdir(bones_loc) if f.split('.')[-1]=='txt']
         self.display_window = PlotWindow()
-        print("rectitems:")
-        print(joint_loc)
-        print(rects)
+        #print("rectitems:")
+        #print(joint_loc)
+        #print(rects)
         for rect in rects:
-            print(rect)
+            #print(rect)
             x = np.loadtxt(rect)
             self.display_window.plot(np.append(x[:, 0], x[0, 0]), np.append(x[:, 1], x[0, 1]))
 
         for poly in polys:
-            print(poly)
+            #print(poly)
             x = np.loadtxt(poly)
             self.display_window.plot(x[:, 0], x[:, 1])
 
@@ -980,8 +982,8 @@ class InspectXRays(QMainWindow):
                     # self.image_widget.annotation_options.polyline_dropdown.addItem(f.split('.')[0])
                     self.image_widget.poly_select_options.dropdown.addItem(f.split('.')[0])
                     if maxlen<len(f.split('.')[0]): maxlen= fm.width(f.split('.')[0])
-            print("font length")
-            print(maxlen)
+            #print("font length")
+            #print(maxlen)
             self.image_widget.poly_select_options.dropdown.view().setMinimumWidth(maxlen)#todo: determine the width of the
             # pixel
 

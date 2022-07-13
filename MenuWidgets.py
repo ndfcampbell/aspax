@@ -80,12 +80,12 @@ class distance_layout(QVBoxLayout):
             # self.addStretch(0)
 
             self.init_rest_state(label=self.label,title=self.title)
-            print(self.active_state)
+            #print(self.active_state)
             self.active_state = False
         else:
             self.init_active_state()
             # self.update()
-            print(self.active_state)
+            #print(self.active_state)
             self.active_state = True
 
 class area_layout(distance_layout):
@@ -307,7 +307,7 @@ class area_menu_widget(distance_menu_widget):
         self.organ_name    = self.get_text(self.annotation_type_buttons)
         self.suborgan_name = self.line_edit_labels.text()
         self.extension_name = self.side_name+self.limb_type+self.suborgan_name
-        print(self.extension_name)
+        #print(self.extension_name)
 
 
 class score_menu_widget(distance_menu_widget):

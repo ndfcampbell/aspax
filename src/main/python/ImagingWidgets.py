@@ -79,7 +79,7 @@ class MyScene(QGraphicsScene):
         self.polyline_annotate_item.edge_color = QColor("#FF511C")
 
         self.addItem(self.polyline_annotate_item)
-        print(len(control_points))
+        #print(len(control_points))
         self.annotation_length  = len(control_points)
 
     def add_rectItem(self,x,y,w,h):
@@ -152,8 +152,8 @@ class MyScene(QGraphicsScene):
                     self.start = coord
                     self.rect_annotate_item.model._shiftControlPts(dx,dy)
                     self.rect_annotate_item.update()
-                    print('control points= ')
-                    print(self.rect_annotate_item.model.control_points)
+                    # print('control points= ')
+                    # print(self.rect_annotate_item.model.control_points)
                     self.update()
         super(MyScene,self).mouseMoveEvent(event)
         self.update()
@@ -491,7 +491,7 @@ class ImageHandler(QWidget):
         # img2 = np.require(img,np.uint8,'C')
         # image = QImage(img2,w,h,QImage.Format_RGB32)
         # self.pixmap = QPixmap.fromImage(img)
-        print("pixmap created")
+        #print("pixmap created")
 
     def display_image(self, img):
         self.image_scene.clear()
@@ -612,16 +612,16 @@ class ImageHandler(QWidget):
                         bounding_points
                     index = self.joint_annotator_panel.joint_dropdown.currentIndex()
                     label_name = profiler.label_names[profiler.current_index - 1]
-                    print(label_name)
+                    # print(label_name)
                     organ_name = self.joint_annotator_panel.joint_dropdown.itemText(index+1)
 
                     path = os.path.join(output_folder,label_name + '.txt')
-                    print(path)
+                    # print(path)
                     np.savetxt(path,bounding_points)
                     self.image_scene.clear_poly()
             profiler()
             label_name = profiler.label_names[profiler.current_index-1]
-            print(label_name)
+            #print(label_name)
             self.joint_annotator_panel.joint_dropdown.addItem(label_name)
             self.joint_annotator_panel.joint_name_qline.setText(label_name)
             self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()] = profiler
@@ -633,7 +633,7 @@ class ImageHandler(QWidget):
                               qm.Yes | qm.No)
 
             if ret == qm.Yes:
-                print("saving shit ")
+                #print("saving shit ")
                 profiler = self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()]
                 date = self.annotation_options.poly_loc_line_edit.text().split('/')[-1]
                 id = self.annotation_options.poly_loc_line_edit.text().split('/')[-3]
@@ -737,7 +737,7 @@ class AnnotationSelectOptions(QWidget):
         self.delete_button.clicked.connect(self.delete_annotation)
 
     def delete_annotation(self):
-        print("deleting file")
+        #print("deleting file")
         annotation_name = self.dropdown.currentText()
         # print(annotation_name)
         annotation_path = self.loc_line_edit.text()
