@@ -503,18 +503,21 @@ class ImageHandler(QWidget):
         self.image_scene.update()
 
     def update_annotation_dimensions(self):
-        size_dict = self.annotation_options.get_slider_value()
-        self.image_scene.handle_size=size_dict['Dot Size']
-        self.image_scene.edge_width = size_dict['Line Width']
+        # size_dict = self.annotation_options.get_slider_value()
 
+        # self.image_scene.handle_size = size_dict['Dot Size']
+        # self.image_scene.edge_width  = size_dict['Line Width']
+
+        self.image_scene.handle_size = self.annotation_options.score_sliders['Dot Size'].value()
+        self.image_scene.edge_width  = self.annotation_options.score_sliders['Line Width'].value()
         # self.image_scene.removeItem(self.image_scene.polyline_annotate_item)
         # qt5G.DEFAULT_HANDLE_SIZE = scala*maxSize
         # self.pLineItem = Pol	ylineItem(self.pLine,handle_size=100)
         #
         if self.image_scene.polyline_annotate_item is not None:
             self.image_scene.polyline_annotate_item.prepareGeometryChange()
-            self.image_scene.polyline_annotate_item.handle_size = int(float(size_dict['Dot Size']))
-            self.image_scene.polyline_annotate_item.edge_width  = int(float(size_dict['Line Width']))
+            self.image_scene.polyline_annotate_item.handle_size = int(self.annotation_options.score_sliders['Dot Size'].value())
+            self.image_scene.polyline_annotate_item.edge_width  = int(self.annotation_options.score_sliders['Line Width'].value())
             self.image_scene.polyline_annotate_item.model.update()
             # self.image_scene.polyline_annotate_item.update()
             self.image_scene.update()
@@ -781,6 +784,8 @@ class AnnotationModelOptions(QWidget):
     def init_score_slider(self):
         self.score_slider_layout = score_sliders(score_name="Annotation Model",damage_types=["Dot Size","Line Width"],
                                             damage_ranges=[(1,10),(1,10)])
+        print('These are the sliders for width')
+        print(self.score_slider_layout.sliders)
         self.layout.addLayout(self.score_slider_layout)
         vspacer = QSpacerItem(30,30,
                               QSizePolicy.Expanding,QSizePolicy.Expanding)

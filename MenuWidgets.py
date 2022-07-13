@@ -547,12 +547,14 @@ class score_sliders(QVBoxLayout):
 
             slider_layout = QVBoxLayout()
             score_slider   = Slider()
+
             score_slider.setStyleSheet("QSlider::handle:horizontal {background-color: #16CCB1;}")
             score_slider.setOrientation(Qt.Horizontal)
             score_slider.setRange(rng[0],rng[1])
             score_slider.setTickInterval(1)
             score_slider.setTickPosition(QSlider.TicksBelow)
             slider_layout.addWidget(score_slider)
+            self.sliders[damage] = score_slider
 
 
             slider_label_layout  = QHBoxLayout()
@@ -562,7 +564,7 @@ class score_sliders(QVBoxLayout):
                 slider_label_layout.setSpacing(tick_spacing)
             slider_layout.addLayout(slider_label_layout)
             layout.addLayout(slider_layout)
-            self.sliders[damage] = score_slider
+            #self.sliders[damage] = score_slider
             self.addLayout(layout)
 
 
@@ -575,8 +577,13 @@ class score_sliders(QVBoxLayout):
             print(val.value())
 
     def get_slider_values(self):
-
-        pass
+        mydict = {}
+        for keys, val in self.sliders.items():
+            print("curent key is")
+            print(keys)
+            mydict[keys]=val.value()
+        print(mydict)
+        return mydict
 
 
 
