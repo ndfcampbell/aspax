@@ -144,7 +144,7 @@ class InspectXRays(QMainWindow):
 
         self.menu_tabs.addTab(scrollbar2,self.widget_score_menu.score_technique)
         # self.menu_tabs.addTab(self.widget_score_menu,self.widget_score_menu.score_technique)
-        self.connect_sub_buttons()
+        self.connect_score_menu_buttons()
 
 
 
@@ -463,6 +463,9 @@ class InspectXRays(QMainWindow):
         self.widget_area_menu.output_button.clicked.connect(self.measure_poly)
         # self.image_widget.annotation_options.delete_poly_button.clicked.connect(self.delete_selected_annotation_bone)
 
+    def connect_score_menu_buttons(self):
+        self.widget_score_menu.save_button.clicked.connect(self.save_scores)
+        self.widget_score_menu.unsure_button.clicked.connect(self.update_tracking_score)
 
 
     def split_layouts(self):
