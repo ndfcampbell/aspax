@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DataModels &#8212; hip_shape 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for DataModels</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="n">pyqtSignal</span><span class="p">,</span> <span class="n">QObject</span>
+<span class="kn">from</span> <span class="nn">PyQt5.Qt</span> <span class="kn">import</span> <span class="n">QPolygonF</span><span class="p">,</span> <span class="n">QPointF</span>
+<span class="c1"># from skimage import draw</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<div class="viewcode-block" id="GeometryFactory"><a class="viewcode-back" href="../DataModels.html#DataModels.GeometryFactory">[docs]</a><span class="k">class</span> <span class="nc">GeometryFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="GeometryFactory.createGeometry"><a class="viewcode-back" href="../DataModels.html#DataModels.GeometryFactory.createGeometry">[docs]</a>    <span class="k">def</span> <span class="nf">createGeometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geo_type</span><span class="p">,</span> <span class="n">control_points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">geo_type</span> <span class="o">==</span> <span class="s2">&quot;Polyline&quot;</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">Polyline</span><span class="p">(</span><span class="n">points</span><span class="o">=</span><span class="n">control_points</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">geo_type</span> <span class="o">==</span> <span class="s2">&quot;Rect&quot;</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Geometry"><a class="viewcode-back" href="../DataModels.html#DataModels.Geometry">[docs]</a><span class="k">class</span> <span class="nc">Geometry</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A region</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">changed</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">ControlPointPositionHasChanged</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Geometry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;geometry&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                <span class="s2">&quot;coordinates&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_fromDict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Geometry.toString"><a class="viewcode-back" href="../DataModels.html#DataModels.Geometry.toString">[docs]</a>    <span class="k">def</span> <span class="nf">toString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;convert this object to a string for serialization</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toDict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Geometry.fromString"><a class="viewcode-back" href="../DataModels.html#DataModels.Geometry.fromString">[docs]</a>    <span class="k">def</span> <span class="nf">fromString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        parse a string and return a Geometry object</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">][</span><span class="s1">&#39;coordinates&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Geometry.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Geometry.toPolies">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert this geometry to a set of polygons</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+    <span class="nd">@property</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return control points</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set control points, remember to call self.update</span>
+<span class="sd">        :param points:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Geometry.update"><a class="viewcode-back" href="../DataModels.html#DataModels.Geometry.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        notify all the listeners that the geometry has changed</span>
+<span class="sd">        :param change: 0 = default change</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changed</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">change</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Polyline"><a class="viewcode-back" href="../DataModels.html#DataModels.Polyline">[docs]</a><span class="k">class</span> <span class="nc">Polyline</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="c1"># if len(self._points.shape) != 2:</span>
+        <span class="c1">#     raise ValueError(&#39;invalid points&#39;)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;only 2D points are supported&#39;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Polyline</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Polyline.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Polyline.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">points</span>
+
+<div class="viewcode-block" id="Polyline.addControlPoints"><a class="viewcode-back" href="../DataModels.html#DataModels.Polyline.addControlPoints">[docs]</a>    <span class="k">def</span> <span class="nf">addControlPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">control_points</span><span class="p">,</span> <span class="n">points</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+        
+    <span class="k">def</span> <span class="nf">_shiftControlPts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">):</span>
+        <span class="n">control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">control</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">L</span><span class="p">):</span>
+            <span class="n">control</span><span class="p">[</span><span class="n">k</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">control</span><span class="p">[</span><span class="n">k</span><span class="p">,:]</span><span class="o">+</span><span class="p">[</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span> <span class="o">=</span> <span class="n">control</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+<span class="c1">#class Points(Geometry) todo: maybe add a classs to model data points</span>
+
+
+
+<div class="viewcode-block" id="Rect"><a class="viewcode-back" href="../DataModels.html#DataModels.Rect">[docs]</a><span class="k">class</span> <span class="nc">Rect</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Rect</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+    <span class="nd">@x</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+
+    <span class="nd">@y</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+
+    <span class="nd">@width</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+
+    <span class="nd">@height</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span><span class="p">]])</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> \
+                <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bounding_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">y2</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">y3</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+        <span class="n">x4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="n">y4</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+
+        <span class="n">coords</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="p">[</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">],[</span><span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="p">],[</span><span class="n">x4</span><span class="p">,</span><span class="n">y4</span><span class="p">]])</span>
+        <span class="c1"># mean_pos = np.mean(coords,axis=0)</span>
+        <span class="n">mean_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">mean_pos</span>
+        <span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span>
+        <span class="n">coords_rot</span> <span class="o">=</span> <span class="p">(</span><span class="n">rotation_matrix</span><span class="nd">@coords</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">+</span> <span class="n">mean_pos</span>
+        <span class="k">return</span> <span class="n">coords_rot</span>
+
+<div class="viewcode-block" id="Rect.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Rect.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span></div>
+
+    <span class="k">def</span> <span class="nf">_shiftControlPts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">):</span>
+        <span class="n">control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">dx</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="n">dy</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="RotateRect"><a class="viewcode-back" href="../DataModels.html#DataModels.RotateRect">[docs]</a><span class="k">class</span> <span class="nc">RotateRect</span><span class="p">(</span><span class="n">Rect</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">angle</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span> <span class="o">=</span> <span class="n">angle</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RotateRect</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span>
+
+    <span class="nd">@angle</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">theta</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_angle</span> <span class="o">=</span> <span class="n">theta</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">y2</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span>
+
+
+
+        <span class="n">coords</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="p">[</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">]])</span>
+        <span class="c1"># mean_pos = np.mean(coords,axis=0)</span>
+        <span class="n">mean_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">mean_pos</span>
+        <span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span>
+        <span class="n">coords_rot</span> <span class="o">=</span> <span class="p">(</span><span class="n">rotation_matrix</span><span class="nd">@coords</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">+</span> <span class="n">mean_pos</span>
+        <span class="k">return</span> <span class="n">coords_rot</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+
+
+        <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">mean_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="c1">#mean_pos = np.array([self._x + self._width / 2, self._y + self._height / 2])</span>
+            <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">mean_pos</span>
+            <span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span>
+            <span class="n">coords_rot</span> <span class="o">=</span> <span class="p">(</span><span class="n">rotation_matrix</span> <span class="o">@</span> <span class="n">coords</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">+</span> <span class="n">mean_pos</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> \
+                <span class="n">coords_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="nb">abs</span><span class="p">(</span><span class="n">coords_rot</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">abs</span><span class="p">(</span><span class="n">coords_rot</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">coords_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bounding_polygon</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">y2</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">y3</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+        <span class="n">x4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="n">y4</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span>
+
+
+
+        <span class="n">coords</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="p">[</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">],[</span><span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="p">],[</span><span class="n">x4</span><span class="p">,</span><span class="n">y4</span><span class="p">]])</span>
+        <span class="c1"># mean_pos = np.mean(coords,axis=0)</span>
+        <span class="n">mean_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">mean_pos</span>
+        <span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span>
+        <span class="n">coords_rot</span> <span class="o">=</span> <span class="p">(</span><span class="n">rotation_matrix</span><span class="nd">@coords</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">+</span> <span class="n">mean_pos</span>
+        <span class="n">polygon</span> <span class="o">=</span> <span class="n">QPolygonF</span><span class="p">()</span><span class="c1">#todo: look up the proper syntax</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">polygon</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">QPointF</span><span class="p">(</span><span class="n">coords_rot</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">coords_rot</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+
+
+        <span class="k">return</span> <span class="n">polygon</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bounding_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">y2</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_width</span>
+        <span class="n">y3</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+        <span class="n">x4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+        <span class="n">y4</span> <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_height</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">angle</span>
+
+
+
+        <span class="n">coords</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">],</span> <span class="p">[</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">],[</span><span class="n">x3</span><span class="p">,</span><span class="n">y3</span><span class="p">],[</span><span class="n">x4</span><span class="p">,</span><span class="n">y4</span><span class="p">]])</span>
+        <span class="c1"># mean_pos = np.mean(coords,axis=0)</span>
+        <span class="n">mean_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">])</span>
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">mean_pos</span>
+        <span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span>
+        <span class="n">coords_rot</span> <span class="o">=</span> <span class="p">(</span><span class="n">rotation_matrix</span><span class="nd">@coords</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">+</span> <span class="n">mean_pos</span>
+        <span class="k">return</span> <span class="n">coords_rot</span>
+
+
+<div class="viewcode-block" id="RotateRect.rotate"><a class="viewcode-back" href="../DataModels.html#DataModels.RotateRect.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">theta</span><span class="p">):</span>
+        <span class="k">pass</span></div></div>
+
+
+
+
+
+
+
+<div class="viewcode-block" id="Box"><a class="viewcode-back" href="../DataModels.html#DataModels.Box">[docs]</a><span class="k">class</span> <span class="nc">Box</span><span class="p">(</span><span class="n">Rect</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Box</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">a</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../DataModels.html#DataModels.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Circle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
+
+    <span class="nd">@center</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">]])</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="c1"># self.update()</span>
+
+<div class="viewcode-block" id="Circle.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Circle.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span></div></div>
+
+
+<div class="viewcode-block" id="Ring"><a class="viewcode-back" href="../DataModels.html#DataModels.Ring">[docs]</a><span class="k">class</span> <span class="nc">Ring</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inner_r</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">outer_r</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outer_r</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inner_r</span><span class="p">,</span> <span class="n">outer_r</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Ring</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
+
+    <span class="nd">@center</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">],</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">outer_r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">]])</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inner_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">outer_r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<div class="viewcode-block" id="Ring.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Ring.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span></div></div>
+
+
+<div class="viewcode-block" id="Point"><a class="viewcode-back" href="../DataModels.html#DataModels.Point">[docs]</a><span class="k">class</span> <span class="nc">Point</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Point</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span>
+
+    <span class="nd">@x</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span>
+
+    <span class="nd">@y</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">value</span>
+
+<div class="viewcode-block" id="Point.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Point.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">]]])</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Line"><a class="viewcode-back" href="../DataModels.html#DataModels.Line">[docs]</a><span class="k">class</span> <span class="nc">Line</span><span class="p">(</span><span class="n">Polyline</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Line</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">([[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">],</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">]])</span></div>
+
+
+<div class="viewcode-block" id="Spline"><a class="viewcode-back" href="../DataModels.html#DataModels.Spline">[docs]</a><span class="k">class</span> <span class="nc">Spline</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;invalid points&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;only 2D points are supported&#39;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Spline</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Spline.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Spline.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># TODO: implement this</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_points</span>
+
+    <span class="nd">@control_points</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Spline.addControlPoints"><a class="viewcode-back" href="../DataModels.html#DataModels.Spline.addControlPoints">[docs]</a>    <span class="k">def</span> <span class="nf">addControlPoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">cur_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">end_point</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">end_point</span> <span class="o">-</span> <span class="n">cur_point</span>
+            <span class="n">mid_point</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">cur_point</span>
+            <span class="n">c_point1</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">mid_point</span>
+            <span class="n">c_point2</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">mid_point</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">control_points</span><span class="p">,</span> <span class="p">[</span><span class="n">c_point1</span><span class="p">,</span> <span class="n">c_point2</span><span class="p">,</span> <span class="n">end_point</span><span class="p">]])</span>
+        <span class="c1"># elif len(points) == 3:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../DataModels.html#DataModels.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometries</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param geometries: must be a list of Geometry</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Group</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geos</span> <span class="o">=</span> <span class="n">geometries</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">geos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geos</span>
+
+    <span class="nd">@geos</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">geos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;value must be a list&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">issubclass</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">Geometry</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_geos</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;objects in the list must be Geometry&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Group.toString"><a class="viewcode-back" href="../DataModels.html#DataModels.Group.toString">[docs]</a>    <span class="k">def</span> <span class="nf">toString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_toDict</span><span class="p">()</span>
+        <span class="n">cps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">geos</span><span class="p">:</span>
+            <span class="n">cps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo</span><span class="o">.</span><span class="n">control_points</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+            <span class="n">types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">geo</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">][</span><span class="s1">&#39;coordinates&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cps</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">][</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;types&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">types</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Group.fromString"><a class="viewcode-back" href="../DataModels.html#DataModels.Group.fromString">[docs]</a>    <span class="k">def</span> <span class="nf">fromString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="c1"># TODO: Under construction</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">geos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span></div>
+            <span class="c1"># geos.append(super())</span>
+
+<div class="viewcode-block" id="Group.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.Group.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">geo</span><span class="o">.</span><span class="n">toPolies</span><span class="p">()</span> <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometries</span><span class="p">]</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span></div>
+
+
+<div class="viewcode-block" id="MultiGeometry"><a class="viewcode-back" href="../DataModels.html#DataModels.MultiGeometry">[docs]</a><span class="k">class</span> <span class="nc">MultiGeometry</span><span class="p">(</span><span class="n">Geometry</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class for all multi-geometry</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geos</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geos</span> <span class="o">=</span> <span class="n">geos</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiGeometry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">geos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geos</span>
+
+    <span class="k">def</span> <span class="nf">_toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MultiGeometry</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_toDict</span><span class="p">()</span>
+        <span class="n">cps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">geos</span><span class="p">:</span>
+            <span class="n">cps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">geo</span><span class="o">.</span><span class="n">control_points</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+        <span class="n">d</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">][</span><span class="s1">&#39;coordinates&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cps</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+<div class="viewcode-block" id="MultiGeometry.fromString"><a class="viewcode-back" href="../DataModels.html#DataModels.MultiGeometry.fromString">[docs]</a>    <span class="k">def</span> <span class="nf">fromString</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+        <span class="c1"># TODO: under construction</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">control_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">geo</span><span class="o">.</span><span class="n">control_points</span> <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geos</span><span class="p">])</span>
+
+<div class="viewcode-block" id="MultiGeometry.toPolies"><a class="viewcode-back" href="../DataModels.html#DataModels.MultiGeometry.toPolies">[docs]</a>    <span class="k">def</span> <span class="nf">toPolies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">geo</span><span class="o">.</span><span class="n">toPolies</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">geo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geos</span><span class="p">])</span></div></div>
+
+
+<div class="viewcode-block" id="MultiSpline"><a class="viewcode-back" href="../DataModels.html#DataModels.MultiSpline">[docs]</a><span class="k">class</span> <span class="nc">MultiSpline</span><span class="p">(</span><span class="n">MultiGeometry</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">]):</span>
+        <span class="n">splines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ps</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+            <span class="n">splines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Spline</span><span class="p">(</span><span class="n">ps</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiSpline</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">splines</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MultiPolyline"><a class="viewcode-back" href="../DataModels.html#DataModels.MultiPolyline">[docs]</a><span class="k">class</span> <span class="nc">MultiPolyline</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="p">[[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">]):</span>
+        <span class="n">polygons</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ps</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+            <span class="n">polygons</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Spline</span><span class="p">(</span><span class="n">ps</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MultiPolyline</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">polygons</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AnnotationModel"><a class="viewcode-back" href="../DataModels.html#DataModels.AnnotationModel">[docs]</a><span class="k">class</span> <span class="nc">AnnotationModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Model for Annotating Objects</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__geos__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;MultiSpline&#39;</span><span class="p">:</span> <span class="n">MultiSpline</span><span class="p">,</span>
+                <span class="s2">&quot;MultiPolyline&quot;</span><span class="p">:</span> <span class="n">MultiPolyline</span><span class="p">,</span>
+                <span class="s2">&quot;Spline&quot;</span><span class="p">:</span> <span class="n">Spline</span><span class="p">,</span>
+                <span class="s2">&quot;Polyline&quot;</span><span class="p">:</span> <span class="n">Polyline</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">regions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param regions: list of Geometries</span>
+<span class="sd">        :param label:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="o">=</span> <span class="n">regions</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AnnotationModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_toDict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">re</span><span class="o">.</span><span class="n">_toDict</span><span class="p">()</span> <span class="k">for</span> <span class="n">re</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">]</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="AnnotationModel.toString"><a class="viewcode-back" href="../DataModels.html#DataModels.AnnotationModel.toString">[docs]</a>    <span class="k">def</span> <span class="nf">toString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_toDict</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AnnotationModel.fromString"><a class="viewcode-back" href="../DataModels.html#DataModels.AnnotationModel.fromString">[docs]</a>    <span class="k">def</span> <span class="nf">fromString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AnnotationModel.save"><a class="viewcode-back" href="../DataModels.html#DataModels.AnnotationModel.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_toDict</span><span class="p">(),</span> <span class="n">fp</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnnotationModel.load"><a class="viewcode-back" href="../DataModels.html#DataModels.AnnotationModel.load">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+            <span class="n">regions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">sub_d</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">]:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">sub_d</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">][</span><span class="s1">&#39;coordinates&#39;</span><span class="p">]</span>
+                <span class="n">regions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AnnotationModel</span><span class="o">.</span><span class="n">__geos__</span><span class="p">[</span><span class="n">sub_d</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]](</span><span class="n">data</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">AnnotationModel</span><span class="p">(</span><span class="n">regions</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnnotationModel.toMasks"><a class="viewcode-back" href="../DataModels.html#DataModels.AnnotationModel.toMasks">[docs]</a>    <span class="k">def</span> <span class="nf">toMasks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        convert to a binary mask</span>
+<span class="sd">        :param mode</span>
+<span class="sd">        :type str</span>
+<span class="sd">        :param shape</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+        <span class="c1"># if mode == &#39;auto&#39;:</span>
+        <span class="c1">#     polies = self.toPolies()</span>
+        <span class="c1">#     points = np.vstack(polies)</span>
+        <span class="c1">#     xmax, ymax = tuple(points.max(axis=0))</span>
+        <span class="c1">#     xmin, ymin = tuple(points.min(axis=0))</span>
+        <span class="c1">#     w, h = xmax - xmin, ymax - ymin</span>
+        <span class="c1">#</span>
+        <span class="c1">#     mask = np.zeros((ymax - ymin, xmax - xmin), dtype=np.uint8)</span>
+        <span class="c1">#     for poly in polies:</span>
+        <span class="c1">#         poly1 = poly - np.array([xmin, ymin])</span>
+        <span class="c1">#         rr, cc = draw.polygon(poly1[:, 1], poly[:, 0], shape=(h, w))</span>
+        <span class="c1">#         mask[rr, cc] = 1</span>
+        <span class="c1"># elif isinstance(shape, tuple):</span>
+        <span class="c1">#     mask = np.zeros(shape, dtype=np.uint8)</span>
+        <span class="c1">#     polies = self.toPolies()</span>
+        <span class="c1">#     for poly in polies:</span>
+        <span class="c1">#         rr, cc = draw.polygon(poly[:, 1], poly[:, 0], shape=shape)</span>
+        <span class="c1">#         mask[rr, cc] = 1</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     mask = None</span>
+        <span class="c1">#</span>
+        <span class="c1"># return mask</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c1"># polygon = Polyline([[0, 0], [10, 10]])</span>
+    <span class="c1"># spline = MultiSpline(np.array([[[0, 0], [100, 100], [0, 150], [50, 200]],</span>
+    <span class="c1">#                                [[200, 200], [300, 300], [200, 350], [250, 400]]]))</span>
+
+    <span class="c1"># am = AnnotationModel([spline, polygon])</span>
+    <span class="c1"># print(am.toString())</span>
+    <span class="c1"># am.save(&quot;tmp.json&quot;)</span>
+
+    <span class="n">am</span> <span class="o">=</span> <span class="n">AnnotationModel</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;tmp.json&quot;</span><span class="p">)</span>
+    <span class="n">polygon</span><span class="p">,</span> <span class="n">spline</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">am</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">polygon</span><span class="o">.</span><span class="n">toString</span><span class="p">())</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hip_shape</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Adwaye Rambojun.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

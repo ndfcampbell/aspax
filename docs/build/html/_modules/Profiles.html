@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profiles &#8212; hip_shape 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for Profiles</h1><div class="highlight"><pre>
+<span></span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span><span class="nn">h5py</span>
+
+
+<div class="viewcode-block" id="SCORE_PROFILE"><a class="viewcode-back" href="../Profiles.html#Profiles.SCORE_PROFILE">[docs]</a><span class="k">class</span> <span class="nc">SCORE_PROFILE</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">matFile</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="create_profile"><a class="viewcode-back" href="../Profiles.html#Profiles.create_profile">[docs]</a><span class="k">def</span> <span class="nf">create_profile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">damage_types</span><span class="p">,</span><span class="n">damage_scores</span><span class="p">,</span><span class="n">damage_areas</span><span class="p">,</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;score_profiles&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param name: name of the coring techniques eg Ratingen, VdH-PsA, PsA-MSS, Steinbrocker</span>
+<span class="sd">    :param damage_types: tuple like of string for the feature being described e.g. [&#39;erosion&#39;,&#39;JSN&#39;]</span>
+<span class="sd">    :param damage_scores: tuple of interval for discrete range of score values e.g. [(0,5),(0,3)] represents</span>
+<span class="sd">                          0,1,2,3,4,5 and 0,1,2,3</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mylib</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">damage_types</span><span class="p">)</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">damage_scores</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+    <span class="n">mylib</span><span class="p">[</span><span class="s1">&#39;score_technique&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">mylib</span><span class="p">[</span><span class="s1">&#39;damage_types&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="n">damage_types</span>
+    <span class="n">mylib</span><span class="p">[</span><span class="s1">&#39;damage_scores&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">damage_scores</span>
+    <span class="n">mylib</span><span class="p">[</span><span class="s1">&#39;damage_areas&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="n">damage_areas</span>
+    <span class="n">hf</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span><span class="n">name</span><span class="o">+</span><span class="s1">&#39;.h5&#39;</span><span class="p">),</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+    <span class="c1">#Store this dictionary object as hdf5 metadata</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">mylib</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">hf</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">mylib</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">hf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">mylib</span></div>
+
+
+
+<div class="viewcode-block" id="load_profile"><a class="viewcode-back" href="../Profiles.html#Profiles.load_profile">[docs]</a><span class="k">def</span> <span class="nf">load_profile</span><span class="p">(</span><span class="n">profile_loc</span><span class="p">):</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">profile_loc</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">my_lib</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">my_lib</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="n">my_lib</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">profile_loc</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">my_lib</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">outloc</span> <span class="o">=</span> <span class="s1">&#39;/home/adwaye/PycharmProjects/aspax/src/main/resources/base/config&#39;</span>
+
+    <span class="c1"># names              = [&#39;Steinbrocker&#39;,&#39;PsA-MSS&#39;,&#39;VdH-PsA&#39;,&#39;Ratingen&#39;]</span>
+    <span class="c1"># damage_types_array = [[&#39;Damage&#39;],</span>
+    <span class="c1">#                       [&#39;Erosion&#39;,&#39;JSN&#39;],</span>
+    <span class="c1">#                       [&#39;Erosion&#39;,&#39;JSN&#39;],</span>
+    <span class="c1">#                       [&#39;Destruction&#39;,&#39;Proliferation&#39;]</span>
+    <span class="c1">#                       ]</span>
+    <span class="c1"># damage_scores_array = [[(0,4)],</span>
+    <span class="c1">#                        [(0,5),(0,5)],</span>
+    <span class="c1">#                        [(0,3),(0,4)],</span>
+    <span class="c1">#                        [(0,5),(0,5)],</span>
+    <span class="c1">#                        ]</span>
+    <span class="c1"># damage_areas = []</span>
+    <span class="c1"># for name in names:</span>
+    <span class="c1">#     area_loc  = &quot;config&quot;</span>
+    <span class="c1">#     text_file = open(os.path.join(name+&#39;_areas.txt&#39;))</span>
+    <span class="c1">#     lines     = text_file.readline().split(&quot;,&quot;)</span>
+    <span class="c1">#     damage_areas+=[lines]</span>
+    <span class="c1">#     text_file.close()</span>
+    <span class="c1"># for name,damage_types,damage_scores,damage_area in zip(names,damage_types_array,damage_scores_array,damage_areas):</span>
+    <span class="c1">#     create_profile(name,damage_types,damage_scores,damage_areas=damage_area,loc = &quot;./&quot;)</span>
+    <span class="n">damage_areas</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">text_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;hand_areas.txt&#39;</span><span class="p">,</span><span class="s1">&#39;feet_areas.txt&#39;</span><span class="p">]:</span>
+
+        <span class="n">text_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text_name</span><span class="p">))</span>
+        <span class="n">lines</span>     <span class="o">=</span> <span class="n">text_file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">damage_areas</span> <span class="o">+=</span><span class="p">[</span><span class="n">lines</span><span class="p">]</span>
+        <span class="n">text_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">names</span>          <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Monitor_hands&#39;</span><span class="p">,</span><span class="s1">&#39;Monitor_feet&#39;</span><span class="p">]</span>
+    <span class="n">damage_types</span>  <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;Erosion&#39;</span><span class="p">,</span><span class="s1">&#39;JSN&#39;</span><span class="p">,</span><span class="s1">&#39;osteoProlif&#39;</span><span class="p">,</span><span class="s1">&#39;Gross-osteolysis&#39;</span><span class="p">,</span><span class="s1">&#39;pencil-in-cup&#39;</span><span class="p">],</span>
+                     <span class="p">[</span><span class="s1">&#39;Erosion&#39;</span><span class="p">,</span><span class="s1">&#39;JSN&#39;</span><span class="p">,</span><span class="s1">&#39;osteoProlif&#39;</span><span class="p">,</span><span class="s1">&#39;Gross-osteolysis&#39;</span><span class="p">,</span><span class="s1">&#39;pencil-in-cup&#39;</span><span class="p">]]</span>
+    <span class="c1"># damage_types  = [[&#39;Erosion&#39;,&#39;JSN&#39;,&#39;osteoProlif&#39;,&#39;Grossosteolysis&#39;,&#39;pencilincup&#39;],</span>
+    <span class="c1">#                  [&#39;Erosion&#39;,&#39;JSN&#39;,&#39;osteoProlif&#39;,&#39;Grossosteolysis&#39;,&#39;pencilincup&#39;]]</span>
+    <span class="n">damage_scores</span> <span class="o">=</span> <span class="p">[[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)],</span>
+                     <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+                     <span class="p">]</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span><span class="n">damage_type</span><span class="p">,</span><span class="n">damage_score</span><span class="p">,</span><span class="n">damage_area</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span><span class="n">damage_types</span><span class="p">,</span><span class="n">damage_scores</span><span class="p">,</span><span class="n">damage_areas</span><span class="p">):</span>
+        <span class="n">my_lib</span> <span class="o">=</span> <span class="n">create_profile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">damage_type</span><span class="p">,</span><span class="n">damage_score</span><span class="p">,</span><span class="n">damage_areas</span><span class="o">=</span><span class="n">damage_area</span><span class="p">,</span><span class="n">loc</span> <span class="o">=</span> <span class="n">outloc</span><span class="p">)</span>
+        <span class="n">my_lib</span> <span class="o">=</span> <span class="n">create_profile</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">damage_type</span><span class="p">,</span><span class="n">damage_score</span><span class="p">,</span><span class="n">damage_areas</span><span class="o">=</span><span class="n">damage_area</span><span class="p">,</span><span class="n">loc</span> <span class="o">=</span> <span class="s1">&#39;/home/adwaye/PycharmProjects/aspax/config&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">my_lib</span><span class="p">)</span>
+
+
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hip_shape</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Adwaye Rambojun.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

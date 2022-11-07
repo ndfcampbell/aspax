@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DataModels module &#8212; hip_shape 0.0.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2022.1" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /><link rel="shortcut icon" type="image/png" href="_static/py.svg" />
+            <script type="text/javascript" src="_static/copybutton.js"></script>
+            <script type="text/javascript" src="_static/menu.js"></script> 
+  </head>
+<body>
+<div class="mobile-nav">
+    <input type="checkbox" id="menuToggler" class="toggler__input" aria-controls="navigation"
+           aria-pressed="false" aria-expanded="false" role="button" aria-label="Menu" />
+    <label for="menuToggler" class="toggler__label">
+        <span></span>
+    </label>
+    <nav class="nav-content" role="navigation">
+         <a href="https://www.python.org/" class="nav-logo">
+             <img src="_static/py.svg" alt="Logo"/>
+         </a>
+        <div class="version_switcher_placeholder"></div>
+        <form role="search" class="search" action="search.html" method="get">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="search-icon">
+                <path fill-rule="nonzero"
+                        d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="#444"></path>
+            </svg>
+            <input type="text" name="q" aria-label="Quick search"/>
+            <input type="submit" value="Go"/>
+        </form>
+    </nav>
+    <div class="menu-wrapper">
+        <nav class="menu" role="navigation" aria-label="main navigation">
+            <div class="language_switcher_placeholder"></div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/DataModels.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </nav>
+    </div>
+</div>
+  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+          <li><img src="_static/py.svg" alt="python logo" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">DataModels module</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+                     |
+                </li>
+            
+      </ul>
+    </div>    
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-DataModels">
+<span id="datamodels-module"></span><h1>DataModels module<a class="headerlink" href="#module-DataModels" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.AnnotationModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">AnnotationModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#AnnotationModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.AnnotationModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Model for Annotating Objects</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.AnnotationModel.fromString">
+<span class="sig-name descname"><span class="pre">fromString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#AnnotationModel.fromString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.AnnotationModel.fromString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.AnnotationModel.load">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#AnnotationModel.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.AnnotationModel.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.AnnotationModel.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#AnnotationModel.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.AnnotationModel.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.AnnotationModel.toMasks">
+<span class="sig-name descname"><span class="pre">toMasks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#AnnotationModel.toMasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.AnnotationModel.toMasks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.AnnotationModel.toString">
+<span class="sig-name descname"><span class="pre">toString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#AnnotationModel.toString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.AnnotationModel.toString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Box">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Rect" title="DataModels.Rect"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Rect</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Circle">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Circle.center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">center</span></span><a class="headerlink" href="#DataModels.Circle.center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Circle.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Circle.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Circle.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Circle.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Circle.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Geometry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Geometry</span></span><a class="reference internal" href="_modules/DataModels.html#Geometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QObject</span></code></p>
+<p>A region</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DataModels.Geometry.ControlPointPositionHasChanged">
+<span class="sig-name descname"><span class="pre">ControlPointPositionHasChanged</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#DataModels.Geometry.ControlPointPositionHasChanged" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="DataModels.Geometry.changed">
+<span class="sig-name descname"><span class="pre">changed</span></span><a class="headerlink" href="#DataModels.Geometry.changed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Geometry.control_points">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Geometry.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Geometry.fromString">
+<span class="sig-name descname"><span class="pre">fromString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Geometry.fromString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Geometry.fromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse a string and return a Geometry object
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Geometry.toPolies">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Geometry.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Geometry.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Geometry.toString">
+<span class="sig-name descname"><span class="pre">toString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Geometry.toString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Geometry.toString" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert this object to a string for serialization
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Geometry.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Geometry.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Geometry.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>notify all the listeners that the geometry has changed
+:param change: 0 = default change
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.GeometryFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">GeometryFactory</span></span><a class="reference internal" href="_modules/DataModels.html#GeometryFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.GeometryFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.GeometryFactory.createGeometry">
+<span class="sig-name descname"><span class="pre">createGeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geo_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#GeometryFactory.createGeometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.GeometryFactory.createGeometry" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Group">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometries</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Group.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Group.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Group.fromString">
+<span class="sig-name descname"><span class="pre">fromString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Group.fromString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Group.fromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse a string and return a Geometry object
+:return:</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Group.geos">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">geos</span></span><a class="headerlink" href="#DataModels.Group.geos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Group.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Group.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Group.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Group.toString">
+<span class="sig-name descname"><span class="pre">toString</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Group.toString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Group.toString" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert this object to a string for serialization
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Line">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Polyline" title="DataModels.Polyline"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Polyline</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.MultiGeometry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">MultiGeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#MultiGeometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.MultiGeometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<p>Abstract class for all multi-geometry</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.MultiGeometry.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.MultiGeometry.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.MultiGeometry.fromString">
+<span class="sig-name descname"><span class="pre">fromString</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#MultiGeometry.fromString"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.MultiGeometry.fromString" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse a string and return a Geometry object
+:return:</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.MultiGeometry.geos">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">geos</span></span><a class="headerlink" href="#DataModels.MultiGeometry.geos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.MultiGeometry.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#MultiGeometry.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.MultiGeometry.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.MultiPolyline">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">MultiPolyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0]]]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#MultiPolyline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.MultiPolyline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Group" title="DataModels.Group"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Group</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.MultiSpline">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">MultiSpline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0]]]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#MultiSpline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.MultiSpline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.MultiGeometry" title="DataModels.MultiGeometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.MultiGeometry</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Point">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Point.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Point.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Point.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Point.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Point.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Point.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#DataModels.Point.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Point.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#DataModels.Point.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Polyline">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0]]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Polyline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Polyline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Polyline.addControlPoints">
+<span class="sig-name descname"><span class="pre">addControlPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Polyline.addControlPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Polyline.addControlPoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Polyline.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Polyline.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Polyline.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Polyline.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Polyline.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Rect">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Rect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Rect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Rect.bounding_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounding_points</span></span><a class="headerlink" href="#DataModels.Rect.bounding_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Rect.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Rect.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Rect.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#DataModels.Rect.height" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Rect.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Rect.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Rect.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Rect.width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#DataModels.Rect.width" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Rect.x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#DataModels.Rect.x" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Rect.y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#DataModels.Rect.y" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Ring">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Ring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inner_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outer_r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Ring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Ring.center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">center</span></span><a class="headerlink" href="#DataModels.Ring.center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Ring.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Ring.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Ring.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Ring.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Ring.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.RotateRect">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">RotateRect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#RotateRect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.RotateRect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Rect" title="DataModels.Rect"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Rect</span></code></a></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.RotateRect.angle">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">angle</span></span><a class="headerlink" href="#DataModels.RotateRect.angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.RotateRect.bounding_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounding_points</span></span><a class="headerlink" href="#DataModels.RotateRect.bounding_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.RotateRect.bounding_polygon">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounding_polygon</span></span><a class="headerlink" href="#DataModels.RotateRect.bounding_polygon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.RotateRect.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.RotateRect.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.RotateRect.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">theta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#RotateRect.rotate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.RotateRect.rotate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DataModels.Spline">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DataModels.</span></span><span class="sig-name descname"><span class="pre">Spline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0],</span> <span class="pre">[0,</span> <span class="pre">0]]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Spline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Spline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#DataModels.Geometry" title="DataModels.Geometry"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataModels.Geometry</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Spline.addControlPoints">
+<span class="sig-name descname"><span class="pre">addControlPoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Spline.addControlPoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Spline.addControlPoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="DataModels.Spline.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#DataModels.Spline.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return control points
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DataModels.Spline.toPolies">
+<span class="sig-name descname"><span class="pre">toPolies</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DataModels.html#Spline.toPolies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DataModels.Spline.toPolies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this geometry to a set of polygons
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/DataModels.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>  
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+          <li><img src="_static/py.svg" alt="python logo" style="vertical-align: middle; margin-top: -1px"/></li>
+          <li><a href="https://www.python.org/">Python</a> &#187;</li>
+          <li class="switchers">
+            <div class="language_switcher_placeholder"></div>
+            <div class="version_switcher_placeholder"></div>
+          </li>
+          <li>
+              
+              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              
+          </li>
+        <li class="nav-item nav-item-this"><a href="">DataModels module</a></li>
+                <li class="right">
+                    
+
+    <div class="inline-search" role="search">
+        <form class="inline-search" action="search.html" method="get">
+          <input placeholder="Quick search" aria-label="Quick search" type="text" name="q" />
+          <input type="submit" value="Go" />
+          <input type="hidden" name="check_keywords" value="yes" />
+          <input type="hidden" name="area" value="default" />
+        </form>
+    </div>
+                     |
+                </li>
+            
+      </ul>
+    </div>  
+    <div class="footer">
+    &copy; Copyright 2022, Adwaye Rambojun.
+    <br />
+    This page is licensed under the Python Software Foundation License Version 2.
+    <br />
+    Examples, recipes, and other code in the documentation are additionally licensed under the Zero Clause BSD License.
+    <br />
+    
+    <br />
+
+    The Python Software Foundation is a non-profit corporation.
+<a href="https://www.python.org/psf/donations/">Please donate.</a>
+<br />
+    <br />
+
+    Last updated on None.
+    
+    <br />
+
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.2.
+    </div>
+
+  </body>
+</html>

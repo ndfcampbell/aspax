@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+
+<html lang="python">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Utils &#8212; hip_shape 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for Utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">PyQt5.QtCore</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QPointF</span><span class="p">,</span> <span class="n">Qt</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="p">(</span><span class="n">QColor</span><span class="p">,</span>  <span class="n">QPixmap</span><span class="p">,</span> <span class="n">QPainter</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">listdir</span>
+
+
+<div class="viewcode-block" id="colorPixmap"><a class="viewcode-back" href="../Utils.html#Utils.colorPixmap">[docs]</a><span class="k">def</span> <span class="nf">colorPixmap</span><span class="p">(</span><span class="n">pix</span><span class="p">,</span> <span class="n">color</span><span class="p">):</span>
+    <span class="n">newPix</span> <span class="o">=</span> <span class="n">QPixmap</span><span class="p">(</span><span class="n">pix</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+    <span class="n">newPix</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">transparent</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">pix</span><span class="o">.</span><span class="n">createMaskFromColor</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MaskInColor</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="n">newPix</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">SmoothPixmapTransform</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">setRenderHint</span><span class="p">(</span><span class="n">QPainter</span><span class="o">.</span><span class="n">Antialiasing</span><span class="p">)</span>
+
+    <span class="n">p</span><span class="o">.</span><span class="n">setBackgroundMode</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">TransparentMode</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">drawPixmap</span><span class="p">(</span><span class="n">newPix</span><span class="o">.</span><span class="n">rect</span><span class="p">(),</span> <span class="n">mask</span><span class="p">,</span> <span class="n">pix</span><span class="o">.</span><span class="n">rect</span><span class="p">())</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">newPix</span></div>
+
+
+<span class="k">def</span> <span class="nf">_circle_to_poly</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">astep</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span>  <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">astep</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">points</span>
+
+
+<span class="k">def</span> <span class="nf">_NC</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">rgb</span><span class="o">.</span><span class="n">red</span><span class="p">())</span> <span class="o">/</span> <span class="mf">255.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">rgb</span><span class="o">.</span><span class="n">green</span><span class="p">())</span> <span class="o">/</span> <span class="mf">255.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">rgb</span><span class="o">.</span><span class="n">blue</span><span class="p">())</span> <span class="o">/</span> <span class="mf">255.</span><span class="p">]</span> <span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_QC</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">fact</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fact</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="mi">255</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">fact</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">QColor</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">fact</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">fact</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">rgb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">fact</span><span class="p">),</span> <span class="n">alpha</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_QP</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">QPointF</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">_NP</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">x</span><span class="p">(),</span> <span class="n">point</span><span class="o">.</span><span class="n">y</span><span class="p">()])</span>
+
+
+<span class="k">def</span> <span class="nf">_getPictures</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
+       <span class="n">x</span> <span class="o">=</span> <span class="n">listdir</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+       <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+       <span class="n">L</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+       <span class="n">condtnarray</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.bmp&#39;</span><span class="p">,</span><span class="s1">&#39;.gif&#39;</span><span class="p">,</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;jpeg&#39;</span><span class="p">,</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span><span class="s1">&#39;.pbm&#39;</span><span class="p">,</span><span class="s1">&#39;.pgm&#39;</span><span class="p">,</span>\
+                    <span class="s1">&#39;.ppm&#39;</span><span class="p">,</span><span class="s1">&#39;.xbm&#39;</span><span class="p">,</span><span class="s1">&#39;.xpm&#39;</span><span class="p">,</span><span class="s1">&#39;.tif&#39;</span><span class="p">]</span><span class="c1">#use png for dicom</span>
+       <span class="n">Lc</span>          <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">condtnarray</span><span class="p">)</span>
+       <span class="n">conds</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">Lc</span><span class="p">))</span>
+       <span class="n">locarray</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+       
+       <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+           <span class="n">xval</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span> <span class="c1">#k=-th item in directory</span>
+           <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Lc</span><span class="p">):</span> <span class="c1">#loop to check is the file is one of the</span>
+              <span class="c1">#supporter types</span>
+              <span class="n">conds</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">xval</span><span class="o">==</span><span class="n">condtnarray</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+           <span class="n">sconds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">conds</span><span class="p">))</span>
+           <span class="k">if</span><span class="p">(</span> <span class="n">sconds</span> <span class="o">&gt;</span><span class="mi">0</span> <span class="p">):</span>
+              <span class="n">locarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span> <span class="p">(</span><span class="n">locarray</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">k</span><span class="p">]])</span> <span class="p">))</span> <span class="c1">#array that shows</span>
+           <span class="c1"># where in x the supported files are</span>
+       
+       <span class="c1">#locarray.astype(np.int64)</span>
+       <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">locarray</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)]</span> 
+       <span class="k">return</span> <span class="n">x</span>
+       <span class="c1">#self.messageBox.setText(np.array2string(self.__images))</span>
+       <span class="c1">#self.messageBox.setText(str(np.sum(conds)))</span>
+
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">hip_shape</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Adwaye Rambojun.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
