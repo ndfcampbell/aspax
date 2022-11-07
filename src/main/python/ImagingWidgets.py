@@ -521,11 +521,6 @@ class ImageHandler(QWidget):
             self.image_scene.polyline_annotate_item.model.update()
             # self.image_scene.polyline_annotate_item.update()
             self.image_scene.update()
-        # self.image_scene.addItem(self.image_scene.polyline_annotate_item)
-        # self.errorBox.setText(str(self.pLineItem.handle_size))
-
-
-
 
     def get_image_dimensions(self):
         pass
@@ -533,7 +528,6 @@ class ImageHandler(QWidget):
         # ImageHandler.image_height_pixels = ImageHandler.image.height()
         # ImageHandler.image_width_mm = ImageHandler.image.widthMM()
         # ImageHandler.image_height_mm = ImageHandler.image.heightMM()
-
 
     def get_image(self):
         return self.image

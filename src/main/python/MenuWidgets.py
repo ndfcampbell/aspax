@@ -30,6 +30,14 @@ import csv
 
 
 class distance_menu_widget(QWidget):
+
+    """Base class for menu widgets to be used in the main aspax program. allows the user to process
+
+    :param joint_list: list of labels to be used to annotate xrays
+    :type joint_list: list
+    :param name: name of the object.
+    :type name: string
+    """
     def __init__(self,joint_list,name='Distance'):
         super(distance_menu_widget,self).__init__()
         self.name = name
@@ -52,14 +60,19 @@ class distance_menu_widget(QWidget):
 
 
     def init(self):
+        """Initialises the layout of the widget
+
+        :return: None
+        :rtype: None
+        """
         self.init_output() #output box for distance- has a qlineitem and aqpushbutton('Measure)
         self.init_side_buttons() #initialises panel with R L N/A
         self.init_label_selection() #initialises qlineedit for the joint/bone selection
         self.init_save_discard() #initialises the buttons for the save and discard methods
 
     def init_output(self):
-        """
-        Creates a Qwidget that has a box and a qpushbutton('Measure)
+        """Creates a Qwidget that has a box and a qpushbutton('Measure)
+
         :return:
         :rtype:
         """

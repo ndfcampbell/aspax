@@ -380,22 +380,22 @@ class ControllableItem(QGraphicsItem):
     def scaleBy(self, sx, sy):
         for control in self.controls:
             control.setPos(control.x() * sx, control.y() * sy)
-    """        
-    def __reInit(self,posx,posy,horGap,vertGap):
-        y = np.array([[posx,posy], [posx+horGap,posy+vertGap ]])
-        self.control_points = y
-    
-    def mousePressEvent(self, e):
-        if e.button() == 1 and e.modifiers() != Qt.ControlModifier and self._draw_flag == True:
-            self.model.addControlPoints(_NP(e.scenePos())[None, ...])
-            self.update()
-        if e.button() == 1 and self._drag_flag == True:
-            dx = _NP(e.scenePos())[0]-self.model.control_points[0,0]
-            dy = _NP(e.scenePos())[1]-self.model.control_points[0,1]
-            self.moveBy(dx, dy)
-            #self.model._shiftControlPts(dx,dy)
-        self.update()
-    """
+
+    # def __reInit(self,posx,posy,horGap,vertGap):
+    #     y = np.array([[posx,posy], [posx+horGap,posy+vertGap ]])
+    #     self.control_points = y
+    #
+    # def mousePressEvent(self, e):
+    #     if e.button() == 1 and e.modifiers() != Qt.ControlModifier and self._draw_flag == True:
+    #         self.model.addControlPoints(_NP(e.scenePos())[None, ...])
+    #         self.update()
+    #     if e.button() == 1 and self._drag_flag == True:
+    #         dx = _NP(e.scenePos())[0]-self.model.control_points[0,0]
+    #         dy = _NP(e.scenePos())[1]-self.model.control_points[0,1]
+    #         self.moveBy(dx, dy)
+    #         #self.model._shiftControlPts(dx,dy)
+    #     self.update()
+
 
 
 
@@ -640,7 +640,7 @@ class GroupItem(ControllableItem):
 class PolylineItem(ControllableItem):
     def __init__(self,model,**kwargs):
         super(PolylineItem,self).__init__(model,**kwargs)
-        self._drag_flag = True
+        self._drag_flag = False
         self._draw_flag = True
     # def __init__(self, points, **kwargs):
     #     model = Polyline(points)
@@ -676,13 +676,13 @@ class PolylineItem(ControllableItem):
     # def mousePressEvent(self, e):
     #     if e.button() == 1 and e.modifiers() == Qt.ControlModifier:
     #         self.model.addControlPoints(_NP(e.scenePos())[None, ...])
-    """
-    def mouseMoveEvent(self,e):
-        if e.button() == 1 and self._drag_flag == True:
-           self.model._shiftControlPts(_NP(e.scenePos())[0],_NP(e.scenePos())[1])
-           #self.moveBy(self, dx, dy)
-           self.update()
-    """
+
+    # def mouseMoveEvent(self,e):
+    #     if e.button() == 1 and self._drag_flag == True:
+    #        self.model._shiftControlPts(_NP(e.scenePos())[0],_NP(e.scenePos())[1])
+    #        #self.moveBy(self, dx, dy)
+    #        self.update()
+
     def measure_area(self):
         #todo: implement algorithm to find area enclosed: see shoelace formula wikipedia
         coordinates = self.model.control_points
