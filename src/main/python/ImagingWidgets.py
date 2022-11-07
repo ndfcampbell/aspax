@@ -300,7 +300,8 @@ class ImageHandler(QWidget):
             val.valueChanged[int].connect(self.update_annotation_dimensions)
         self.toolbar.buttons['Annotate'].setCheckable(True)
         self.toolbar.buttons['Annotate'].triggered.connect(self.trigger_annotation_mode)
-
+        self.poly_select_options.overwrite_button.clicked.connect(self.overwrite_annotation_poly)
+        self.rect_select_options.overwrite_button.clicked.connect(self.overwrite_annotation_rect)
         #.triggered.connect(self.image_scene.clear_poly)
         # self.toolbar.buttons['Draw Rect'].triggered.connect(self.image_scene.clear_poly)
 
@@ -651,6 +652,86 @@ class ImageHandler(QWidget):
     def prev_annotation(self):
         pass
 
+    def overwrite_annotation_poly(self):
+        """Saves the polyline visible in self.image_scene under the file_path given by
+        os.path.join(self.poly_select_options.loc_line_edit,self.poly_select_options.dropdown+'txt'). Connected to
+        self.poly_select_options.overwrite_button
+
+        :return: None
+        :rtype: None
+        """
+        annotation_name = self.poly_select_options.dropdown.currentText()
+
+        annotation_path = self.poly_select_options.loc_line_edit.text()
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+
+
+        qm = QMessageBox
+        if self.image_scene.polyline_annotate_item is not None:
+            ret = qm.question(self, '', "Are you sure you want to overwrite "+annotation_name, qm.Yes | qm.No)
+            if os.path.isfile(annotation_path):
+                if  ret == qm.Yes:
+
+
+
+                    np.savetxt(annotation_path, self.image_scene.polyline_annotate_item.control_points.tolist())
+                    self.check_overwritten(annotation_path)
+                    #os.remove(annotation_path)
+                else:
+                    print("keeping " + annotation_path)
+            else:
+                print("file not present")
+
+
+    def overwrite_annotation_rect(self):
+        """Saves the rectItem visible in self.image_scene under the file_path given by
+        os.path.join(self.rect_select_options.loc_line_edit,self.rect_select_options.dropdown+'txt'). Connected to
+        self.rect_select_options.overwrite_button
+
+        :return: None
+        :rtype: None
+        """
+        annotation_name = self.rect_select_options.dropdown.currentText()
+
+        annotation_path = self.rect_select_options.loc_line_edit.text()
+        annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
+
+
+        qm = QMessageBox
+        if self.image_scene.rect_annotate_item is not None:
+            ret = qm.question(self, '', "Are you sure you want to overwrite "+annotation_name, qm.Yes | qm.No)
+            if os.path.isfile(annotation_path):
+                if  ret == qm.Yes:
+
+
+                    bounding_points = self.image_scene.rect_annotate_item.model.bounding_points
+                    np.savetxt(annotation_path, bounding_points.tolist())
+
+                    self.check_overwritten(annotation_path)
+                    #os.remove(annotation_path)
+                else:
+                    print("keeping " + annotation_path)
+            else:
+                print("file not present")
+
+
+    def check_overwritten(self,filepath):
+        """Creates a dialog that tells the user if the file with path filepath has been recently modified. Due to the
+        use case, and speed at which file saving is done, it does so by checking that the difference between the current
+        time and the last time the file was modified is within 1s from each other
+
+        :return: None
+        :rtype: None
+        """
+
+        if time.time()-os.path.getmtime(filepath)<1:
+            self.msg = QMessageBox()
+            self.msg.setIcon(QMessageBox.Information)
+            self.msg.setText("Overwrote annotation under")
+            self.msg.setDetailedText("Save location \n"+filepath)
+            self.msg.setStandardButtons(QMessageBox.Ok)
+            self.msg.show()
+
 
 
 
@@ -679,7 +760,35 @@ class ImagingToolbar(QToolBar):
 
 
 class AnnotationSelectOptions(QWidget):
+    """Generic Qwidget that displayes the location and name of the annotations that were saved so far.
+
+    :ivar layout: Layout of the QWidget
+    :type layout: QVBoxLayout
+    :ivar dropdown: dropdown list containing the list of annotations saved so far
+    :type dropdown: QComboBox
+    :ivar overwrite_button: Button that can be linked to an overwrite method. The overwrite method needs to save the
+    data structure viewable in the parent widget of AnnotationSelectOptions under the name appearing in the
+    AnnotationSelectOptions.dropdown in the location appearing in the AnnotationSelectOptions.loc_line_edit
+    :type overwrite_button: QPushButton
+    :ivar delete_button: Button that is linked to the delete_annotation method. Clicking the button will delete the .txt
+    file whose name is the current_text of AnnotationSelectOptions.dropdown and is located in
+    AnnotationSelectOptions.dropdown.text()
+    :type delete_button: QPushButton
+    :ivar loc_line_edit: Provides a text area that Displays the folder where annotations have been saved. The text needs
+    to be set by the parent widget when building the full UI
+    :type loc_line_edit: QLineEdit
+    """
     def __init__(self,name='Polyline',profile={}):
+        """
+
+
+        :param name: name of the type of annotation being displayed. Text Will appear inside a QLabel next to self.dropdown
+        :type name: str
+        :param profile: currently unused
+        :type profile: None
+
+        """
+
 
 
 
@@ -734,15 +843,19 @@ class AnnotationSelectOptions(QWidget):
         self.delete_button.clicked.connect(self.delete_annotation)
 
     def delete_annotation(self):
-        #print("deleting file")
+        """Deletes the file whose full path is equal to os.path.join(annotation_path, annotation_name+'.txt') where
+         annotation path is the text appearing in self.loc_line_edit and annotation name is the name of the annotation
+         appeaing in self.dropdown
+
+        :return: None
+        :rtype: NOne
+        """
+
         annotation_name = self.dropdown.currentText()
-        # print(annotation_name)
+
         annotation_path = self.loc_line_edit.text()
         annotation_path = os.path.join(annotation_path, annotation_name+'.txt')
-        print(annotation_path)
-        # popupWindow = QMessageBox.question(self, 'Warning!',
-        #                                         "Are you sure you want to delete "+annotation_name+"?",QMessageBox.No,
-        #                                         QMessageBox.Ok)
+
         qm = QMessageBox
         ret = qm.question(self, '', "Are you sure you want to delete "+annotation_name, qm.Yes | qm.No)
         if os.path.isfile(annotation_path):
@@ -758,7 +871,15 @@ class AnnotationSelectOptions(QWidget):
 
 
 class AnnotationModelOptions(QWidget):
+    """
+
+    :param name:
+    :type name:
+    :param profile:
+    :type profile:
+    """
     def __init__(self,name='Score',profile={}):
+
 
 
 
