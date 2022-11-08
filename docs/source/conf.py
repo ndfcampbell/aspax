@@ -17,12 +17,12 @@ sys.path.insert(0, os.path.abspath('../../src/main/python'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'hip_shape'
+project = 'aspax Annotator'
 copyright = '2022, Adwaye Rambojun'
 author = 'Adwaye Rambojun'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '0.0.14'
 
 
 # -- General configuration ---------------------------------------------------
@@ -76,5 +76,10 @@ autodoc_mock_imports = ["visualiser","dummy","initial_data_analysis","mayavi_tes
                         "utils",
                         "visualiser",
                         "visualiser_mayavi",
-                        "visualiser_utils"
+                        "visualiser_utils",
+                        'pydicom',
+                        'cv2',
+                        'DataUtils',
+                        'fbs_runtime',
+                        'matplotlib.backends.backend_qt4agg'
                         ]

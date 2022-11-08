@@ -762,30 +762,32 @@ class ImagingToolbar(QToolBar):
 class AnnotationSelectOptions(QWidget):
     """Generic Qwidget that displayes the location and name of the annotations that were saved so far.
 
+
+    :param name: name of the type of annotation being displayed. Text Will appear inside a QLabel next to self.dropdown
+    :type name: str
+    :param profile: currently unused
+    :type profile: None
+
     :ivar layout: Layout of the QWidget
-    :type layout: QVBoxLayout
+    :vartype layout: QVBoxLayout
     :ivar dropdown: dropdown list containing the list of annotations saved so far
-    :type dropdown: QComboBox
+    :vartype dropdown: QComboBox
     :ivar overwrite_button: Button that can be linked to an overwrite method. The overwrite method needs to save the
-    data structure viewable in the parent widget of AnnotationSelectOptions under the name appearing in the
-    AnnotationSelectOptions.dropdown in the location appearing in the AnnotationSelectOptions.loc_line_edit
-    :type overwrite_button: QPushButton
+                            data structure viewable in the parent widget of AnnotationSelectOptions under the name appearing in the
+                            AnnotationSelectOptions.dropdown in the location appearing in the AnnotationSelectOptions.loc_line_edit
+    :vartype overwrite_button: QPushButton
     :ivar delete_button: Button that is linked to the delete_annotation method. Clicking the button will delete the .txt
-    file whose name is the current_text of AnnotationSelectOptions.dropdown and is located in
-    AnnotationSelectOptions.dropdown.text()
-    :type delete_button: QPushButton
+                         file whose name is the current_text of AnnotationSelectOptions.dropdown and is located in
+                         AnnotationSelectOptions.dropdown.text()
+    :vartype delete_button: QPushButton
     :ivar loc_line_edit: Provides a text area that Displays the folder where annotations have been saved. The text needs
-    to be set by the parent widget when building the full UI
-    :type loc_line_edit: QLineEdit
+                         to be set by the parent widget when building the full UI
+    :vartype loc_line_edit: QLineEdit
     """
     def __init__(self,name='Polyline',profile={}):
-        """
+        """Initialises the class
 
 
-        :param name: name of the type of annotation being displayed. Text Will appear inside a QLabel next to self.dropdown
-        :type name: str
-        :param profile: currently unused
-        :type profile: None
 
         """
 

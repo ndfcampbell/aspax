@@ -35,7 +35,32 @@ from DiagnosticWidgets import PlotWindow
 
 
 class InspectXRays(QMainWindow):
+    """Main class for aspax annotator
+
+    :param ctx: fbs Application Context for fbs compilation
+    :type ctx: fbs_runtime.application_context.PyQt5.ApplicationContext
+
+
+    :ivar ctx: fbs application context of application
+    :vartype ctx: fbs_runtime.application_context.PyQt5.ApplicationContext
+    :ivar output_loc: location where annotations should be saved. This is the folder where the studies should be saved
+                      see https://people.bath.ac.uk/amr62/Projects/malard/software/aspax.html for more information on aspax
+                      file structure
+    :vartype output_loc: str
+    :ivar xray_selection_menu:
+    :vartype:
+    :ivar
+    :vartype
+    :ivar
+    :vartype
+    :ivar
+    :vartype
+    :ivar
+    :vartype
+
+    """
     def __init__(self,ctx):
+
         super(InspectXRays,self).__init__()
         self.sizeObject = QDesktopWidget().screenGeometry(-1)
 

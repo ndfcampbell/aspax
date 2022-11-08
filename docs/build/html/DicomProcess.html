@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DicomProcess module &#8212; hip_shape 0.0.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DicomProcess module &#8212; aspax Annotator 0.0.14 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2022.1" />
@@ -82,7 +82,7 @@
           </li>
           <li>
               
-              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              <a href="index.html">aspax Annotator 0.0.14 documentation</a> &#187;
               
           </li>
         <li class="nav-item nav-item-this"><a href="">DicomProcess module</a></li>
@@ -108,8 +108,25 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="dicomprocess-module">
-<h1>DicomProcess module<a class="headerlink" href="#dicomprocess-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-DicomProcess">
+<span id="dicomprocess-module"></span><h1>DicomProcess module<a class="headerlink" href="#module-DicomProcess" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="DicomProcess.extract_pixel_spacing">
+<span class="sig-prename descclassname"><span class="pre">DicomProcess.</span></span><span class="sig-name descname"><span class="pre">extract_pixel_spacing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicom_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DicomProcess.html#extract_pixel_spacing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DicomProcess.extract_pixel_spacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>tries to access ImagerPixelSpacing attribute of the dicom_file: if this is not present, then runs
+find_element_spacing to try to access the element corresponding the pixel imager spacing
+:param dicom_file: a dicom file output of pydicom.readfile
+:return: the imager spacing data if this is found, Nonetype otherwise</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="DicomProcess.find_spacing_element">
+<span class="sig-prename descclassname"><span class="pre">DicomProcess.</span></span><span class="sig-name descname"><span class="pre">find_spacing_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dicom_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DicomProcess.html#find_spacing_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DicomProcess.find_spacing_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates through the elements in dicom_file to find the element corresponding to the pixe spainc element
+:param dicom_file: a dicom file output of pydicom.readfile
+:return: a data element if pixel spacing data is found, none otherwise</p>
+</dd></dl>
+
 </div>
 
 
@@ -157,7 +174,7 @@
           </li>
           <li>
               
-              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              <a href="index.html">aspax Annotator 0.0.14 documentation</a> &#187;
               
           </li>
         <li class="nav-item nav-item-this"><a href="">DicomProcess module</a></li>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DiagnosticWidgets module &#8212; hip_shape 0.0.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiagnosticWidgets module &#8212; aspax Annotator 0.0.14 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2022.1" />
@@ -82,7 +82,7 @@
           </li>
           <li>
               
-              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              <a href="index.html">aspax Annotator 0.0.14 documentation</a> &#187;
               
           </li>
         <li class="nav-item nav-item-this"><a href="">DiagnosticWidgets module</a></li>
@@ -108,8 +108,47 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="diagnosticwidgets-module">
-<h1>DiagnosticWidgets module<a class="headerlink" href="#diagnosticwidgets-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-DiagnosticWidgets">
+<span id="diagnosticwidgets-module"></span><h1>DiagnosticWidgets module<a class="headerlink" href="#module-DiagnosticWidgets" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="DiagnosticWidgets.PlotWindow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">DiagnosticWidgets.</span></span><span class="sig-name descname"><span class="pre">PlotWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DiagnosticWidgets.html#PlotWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DiagnosticWidgets.PlotWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>QWidget with a matplotlib fig axis. In the main aspax widget, this is the class that generates a plot of the
+current xray being annotated along with all the annotations drawn so far.
+MainWindow.InspectXrays.display_all_current_annotations initialises this class as an attribute
+MainWindow.InspectXrays.display_window that contains the plot above.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>figure</strong> (<em>matplotlib.figure.Figure</em>) -- Figure for plot of annotations</p></li>
+<li><p><strong>canvas</strong> (<em>matplotlib.backends.backend_qt4agg.FigureCanvasQTAgg</em>) -- canvas holding the figure attribute</p></li>
+<li><p><strong>ax</strong> (<em>matplotlib.axes.axis</em>) -- axis added to figure attribute</p></li>
+<li><p><strong>button</strong> (<em>QPushButton</em>) -- unused button, can be linked to a plot method</p></li>
+</ul>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>parent</strong> -- </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="DiagnosticWidgets.PlotWindow.imshow">
+<span class="sig-name descname"><span class="pre">imshow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">im</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DiagnosticWidgets.html#PlotWindow.imshow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DiagnosticWidgets.PlotWindow.imshow" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DiagnosticWidgets.PlotWindow.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DiagnosticWidgets.html#PlotWindow.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DiagnosticWidgets.PlotWindow.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot some random stuff</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DiagnosticWidgets.PlotWindow.plot_with_labels">
+<span class="sig-name descname"><span class="pre">plot_with_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DiagnosticWidgets.html#PlotWindow.plot_with_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DiagnosticWidgets.PlotWindow.plot_with_labels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -157,7 +196,7 @@
           </li>
           <li>
               
-              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              <a href="index.html">aspax Annotator 0.0.14 documentation</a> &#187;
               
           </li>
         <li class="nav-item nav-item-this"><a href="">DiagnosticWidgets module</a></li>

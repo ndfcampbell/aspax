@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AnnotationProfiles module &#8212; hip_shape 0.0.1 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnnotationProfiles module &#8212; aspax Annotator 0.0.14 documentation</title><meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/pydoctheme.css?2022.1" />
@@ -82,7 +82,7 @@
           </li>
           <li>
               
-              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              <a href="index.html">aspax Annotator 0.0.14 documentation</a> &#187;
               
           </li>
         <li class="nav-item nav-item-this"><a href="">AnnotationProfiles module</a></li>
@@ -108,8 +108,61 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="annotationprofiles-module">
-<h1>AnnotationProfiles module<a class="headerlink" href="#annotationprofiles-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-AnnotationProfiles">
+<span id="annotationprofiles-module"></span><h1>AnnotationProfiles module<a class="headerlink" href="#module-AnnotationProfiles" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="AnnotationProfiles.AnnotationProfiler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">AnnotationProfiles.</span></span><span class="sig-name descname"><span class="pre">AnnotationProfiler</span></span><a class="reference internal" href="_modules/AnnotationProfiles.html#AnnotationProfiler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.AnnotationProfiler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnnotationProfiles.AnnotationProfiler.load_data">
+<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/AnnotationProfiles.html#AnnotationProfiler.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.AnnotationProfiler.load_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnnotationProfiles.AnnotationProfiler.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/AnnotationProfiles.html#AnnotationProfiler.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.AnnotationProfiler.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the predictive model metadata from save loc which it uses to predict the loctaions of the labels.
+:param save_loc:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="AnnotationProfiles.HandJointAnnotationProfiler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">AnnotationProfiles.</span></span><span class="sig-name descname"><span class="pre">HandJointAnnotationProfiler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/AnnotationProfiles.html#HandJointAnnotationProfiler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.HandJointAnnotationProfiler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="AnnotationProfiles.HandJointAnnotationProfiler.add_label">
+<span class="sig-name descname"><span class="pre">add_label</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">study_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/AnnotationProfiles.html#HandJointAnnotationProfiler.add_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.HandJointAnnotationProfiler.add_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>stores the coordinates corresponding to label with label_name
+:param study_id:
+:param label_name:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnnotationProfiles.HandJointAnnotationProfiler.init_next_label">
+<span class="sig-name descname"><span class="pre">init_next_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/AnnotationProfiles.html#HandJointAnnotationProfiler.init_next_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.HandJointAnnotationProfiler.init_next_label" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnnotationProfiles.HandJointAnnotationProfiler.load_data">
+<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/AnnotationProfiles.html#HandJointAnnotationProfiler.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.HandJointAnnotationProfiler.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the raw data on which this is made
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="AnnotationProfiles.HandJointAnnotationProfiler.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/AnnotationProfiles.html#HandJointAnnotationProfiler.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#AnnotationProfiles.HandJointAnnotationProfiler.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -157,7 +210,7 @@
           </li>
           <li>
               
-              <a href="index.html">hip_shape 0.0.1 documentation</a> &#187;
+              <a href="index.html">aspax Annotator 0.0.14 documentation</a> &#187;
               
           </li>
         <li class="nav-item nav-item-this"><a href="">AnnotationProfiles module</a></li>

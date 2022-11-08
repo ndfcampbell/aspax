@@ -9,12 +9,31 @@ from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as Navigatio
 from matplotlib.figure import Figure
 import cv2
 from sys import platform
-if platform=="linux" or platform =="linux2":
-    import os
-    os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
+# if platform=="linux" or platform =="linux2":
+#     import os
+#     os.environ.pop("QT_QPA_PLATFORM_PLUGIN_PATH")
 
 class PlotWindow(QtWidgets.QWidget):
+    """QWidget with a matplotlib fig axis. In the main aspax widget, this is the class that generates a plot of the
+    current xray being annotated along with all the annotations drawn so far.
+    MainWindow.InspectXrays.display_all_current_annotations initialises this class as an attribute
+    MainWindow.InspectXrays.display_window that contains the plot above.
+
+    :ivar figure: Figure for plot of annotations
+    :vartype figure: matplotlib.figure.Figure
+    :ivar canvas: canvas holding the figure attribute
+    :vartype canvas: matplotlib.backends.backend_qt4agg.FigureCanvasQTAgg
+    :ivar ax: axis added to figure attribute
+    :vartype ax: matplotlib.axes.axis
+    :ivar button: unused button, can be linked to a plot method
+    :vartype button: QPushButton
+
+    :param parent:
+    :type parent:
+    """
+
     def __init__(self, parent=None):
+
         super(PlotWindow, self).__init__(parent)
 
         # a figure instance to plot on
