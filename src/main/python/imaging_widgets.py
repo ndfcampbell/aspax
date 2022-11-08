@@ -3,27 +3,41 @@ import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
     QActionGroup, QApplication, QSlider, QMainWindow, QHBoxLayout, QLabel, QComboBox, QCheckBox, QPushButton, QFrame,\
     QTabWidget,QMessageBox, QLineEdit, QDialog, QDialogButtonBox, QGridLayout, QSpacerItem, QSizePolicy, QScrollArea
-from AnnotationProfiles import *
+from annotation_profiles import *
 from PyQt5.QtGui import QColor,QPixmap, QFont, QImage
 from PyQt5.QtCore import Qt
-from GraphicsItems import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH, BaseRectItem
-from DataModels import Polyline, Rect
+from graphics_items import PolylineItem,RectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH, BaseRectItem
+from data_models import Polyline, Rect
 import numpy as np
-from MenuWidgets import score_sliders
+from menu_widgets import score_sliders
 # from MenuWidgets import Slider
 import pydicom
 import scipy.io as sio
-from DicomProcess import extract_pixel_spacing
+from dicom_process import extract_pixel_spacing
 
 
 
-from Utils import _NP
+from utils import _NP
 
 
 class MyView(QGraphicsView):
+    """QGraphicsView to display the image being annotated. It defines the mouse behaviour within itself.
 
-    # Function that controls mouse clicks - if right click, it sets the previous mouse positions (???), otherwise event
+    .. code-block:: python
+
+        my_view = MyView()
+        my_scene = QGraphicsScene()
+        my_view.setScene()
+
+    """
     def mousePressEvent(self, event):
+        """Defines the mouse press events.
+
+        :param event: mouse press event
+        :type event: mousePressEvent
+        :return: None
+        :rtype: None
+        """
         if event.button() == Qt.RightButton:  # If the click event on the button is right-click
             self.__prevMousePos = event.pos()  # Set the previous mouse position as the previous mouse position
         else:
@@ -31,6 +45,13 @@ class MyView(QGraphicsView):
 
     # Function that controls mouse movements -
     def mouseMoveEvent(self, event):
+        """Defines the mouse move events. MOveing the mouse while pressing the right button pans the view
+
+        :param event: mouse move event
+        :type event: mouseMoveEvent
+        :return: None
+        :rtype: None
+        """
         if event.buttons() == Qt.RightButton:
             offset = self.__prevMousePos - event.pos()  # Calculates the movements in offset variable
             self.__prevMousePos = event.pos()  # Saves current mouse position as new previous mouse position
@@ -42,6 +63,38 @@ class MyView(QGraphicsView):
 
 
 class MyScene(QGraphicsScene):
+    """
+
+    :ivar polyline_annotate_item: controllable item for polyline annotation, gets added when draw_poly_flag is set to True
+                                  used to delineate bones etc
+    :vartype polyline_annotate_item: graphics_item.PolyLineItem
+    :ivar rect_annotate_item: controllable item for polyline annotation, gets added when draw_poly_flag is set to True
+                              used to annotate joints with patches
+    :vartype rect_annotate_item: graphics_item.RectItem
+    :ivar pixmap: rendered image being displayed
+    :vartype pixmap: bool
+    :ivar start: dummy variables used to draw the controllable items shape (1,2)
+    :vartype start: array-like
+    :ivar end: dummy variables used to draw the controllable items shape (1,2)
+    :vartype end: array-like
+    :ivar annotation_length: keeps track of the  number of points in the polyline_annotate_item
+    :vartype annotation_length: int
+    :ivar list_of_undone_points: unused
+    :vartype list_of_undone_points: None
+    :ivar draw_poly_flag: if True, clicking inside the scnee  will draw a PolyLineItem, cannot be True
+                          while draw_recr_flag is True
+    :vartype draw_poly_flag: bool
+    :ivar draw_rect_flag: if True, pressing the mouse press move and release will draw a rectItem, cannot be True while 
+                          draw_poly_flag is True
+    :vartype draw_rect_flag: bool
+    :ivar pressed: switches to True when the mouse is pressed
+    :vartype pressed: bool
+    :ivar edge_width: width of polyline and rect item edges
+    :vartype edge_width: float
+    :ivar handle_size: size of the draggable ControllableItem handles
+    :vartype handle_size: float
+
+    """
     actual_distance_between_points = 0
     def __init__(self, parent=None):
         super(MyScene, self).__init__(parent)
@@ -62,6 +115,23 @@ class MyScene(QGraphicsScene):
         self.handle_size = DEFAULT_HANDLE_SIZE
 
     def display_image(self,img):
+        """Adds the image img as a pixmap item
+
+        :param img: Image to be displayed
+        :type img: QPixmap()
+        :return: None
+        :rtype: None
+
+        .. code-block:: python
+
+            my_view = MyView()
+            my_scene = QGraphicsScene()
+            my_view.setScene()
+            file_path = 'img/image.png'
+            pixmap = QPixMap()
+            pixmap.load(file_path)
+            my_scene.display_image(pixmap)
+        """
         self.clear()
         self.rect_annotate_item = None
         self.polyline_annotate_item = None
@@ -73,6 +143,14 @@ class MyScene(QGraphicsScene):
 
 
     def add_polyline(self,control_points):
+        """Method that adds a polyline to the scene. only called when there are not polylines. Clicking when
+        draw_poly_flag is True and when annotation_length=0 adds one control_point where the mouse click occurs
+
+        :param control_points: coordinate shape (N,2) where PolyLine is added
+        :type control_points: array-like
+        :return: None
+        :rtype: None
+        """
         polyline_annotate = Polyline(control_points)
         self.polyline_annotate_item = PolylineItem(polyline_annotate, edge_width=self.edge_width,
                                                    handle_size=self.handle_size)
@@ -83,17 +161,53 @@ class MyScene(QGraphicsScene):
         self.annotation_length  = len(control_points)
 
     def add_rectItem(self,x,y,w,h):
+        """Adds a rectItem with top corner coordinate x,y and width w, h
+
+        :param x: x coordinate of top corner
+        :type x: float
+        :param y: y coordinate of top corner
+        :type y: float
+        :param w: width
+        :type w: float
+        :param h: width
+        :type h: float
+        :return: None
+        :rtype: None
+        """
         self.rect_annotate_item = RectItem(x=x, y=y, width=w, height=h)
         self.addItem(self.rect_annotate_item)
         self.addItem(self.rect_annotate_item.rotate_handle)
 
     def add_rectItemBase(self,x,y,w,h):
+        """Adds a BaseRectItem (no rotation allowed) with top corner coordinate x,y and width w, h
+
+        :param x: x coordinate of top corner
+        :type x: float
+        :param y: y coordinate of top corner
+        :type y: float
+        :param w: width
+        :type w: float
+        :param h: width
+        :type h: float
+        :return: None
+        :rtype: None
+        """
         self.rect_annotate_item = BaseRectItem(x=x, y=y, width=w, height=h)
         self.addItem(self.rect_annotate_item)
         # self.addItem(self.rect_annotate_item.rotate_handle)
 
-    # Function to override the QGraphicsScene mouse press behaviour, conditional on what functionality is selected
+
     def mousePressEvent(self, event):
+        """Sets the behaviour of a mousePressEvent. If draw_poly_flag is True, a PolyLineItem is added if not present already.
+        If a polyline is present while draw_poly_flag is true, then the control_points are appended with new control_points
+        having the same coordinates as the mouse press. Pressing control while clicking does not add any new
+        GraphicsItem but allows the user to drag GraphicItem handles. If draw_rect_flag is True, then the scene waits for a drag release event to draw a recItem
+
+        :param event:
+        :type event:
+        :return: None
+        :rtype: None
+        """
         items = self.items(event.scenePos())
 
 
@@ -135,6 +249,13 @@ class MyScene(QGraphicsScene):
         super(MyScene, self).mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
+        """Handles mouse move events. Mostly hanldes the dragging of the rectItem
+
+        :param event:
+        :type event:
+        :return: None
+        :rtype: None
+        """
         items = self.items(event.scenePos())
 
         for item in items:
@@ -162,6 +283,13 @@ class MyScene(QGraphicsScene):
                 # self.addItem(self.rect_annotate_item)
 
     def mouseReleaseEvent(self,event):
+        """Handles a mouse release event. See Mouse press event for more information on functionality
+
+        :param event:
+        :type event:
+        :return: None
+        :rtype: None
+        """
         self.pressed = False
         items = self.items(event.scenePos())
         for item in items:
@@ -182,6 +310,11 @@ class MyScene(QGraphicsScene):
 
 
     def clear_poly(self):
+        """Removes any controllable item still present in the scene
+
+        :return: None
+        :rtype: None
+        """
         if self.polyline_annotate_item is not None:
             self.removeItem(self.polyline_annotate_item)
             self.polyline_annotate_item=None

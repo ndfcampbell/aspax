@@ -60,29 +60,47 @@ class PlotWindow(QtWidgets.QWidget):
         self.ax = self.figure.add_subplot(111)
 
     def imshow(self,im):
-        #self.ax = self.figure.add_subplot(111)
+        """displays an image
+
+        :param im: image shape [N,M,3] or [N,M]
+        :type im: array-like
+        :return: None
+        :rtype: None
+        """
+
         self.ax.imshow(im,cmap='Greys_r')
 
 
 
-    def plot(self,x,y):#todo: add the option to color and change the size etc, might have to pass **kwargs to imshow within
-        ''' plot some random stuff '''
-        # random data
+    def plot(self,x,y):
+        """plots data
 
+        :param x: x-axis data
+        :type x: array like shape (N,)
+        :param y: x-axis data
+        :type y: array like shape (N,)
+        :return: None
+        :rtype: None
+        """
 
-        # create an axis
-
-
-        # discards the old graph
-
-
-        # plot data
+        #todo: add the option to color and change the size etc, might have to pass **kwargs to imshow within
         self.ax.plot(x,y, '-',color='lightgreen')
 
         # refresh canvas
         self.canvas.draw()
 
     def plot_with_labels(self,x,y,label):
+        """plots data and annotate with label
+
+        :param x: x-axis data
+        :type x: array like shape (N,)
+        :param y: x-axis data
+        :type y: array like shape (N,)
+        :param label: label
+        :type label:str
+        :return: None
+        :rtype: None
+        """
         self.ax.plot(x,y,'-',color='lightgreen')
 
         self.ax.annotate(label,

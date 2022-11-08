@@ -11,9 +11,9 @@ from PyQt5.QtGui import (QColor, QBrush, QFont, QPen, QTransform, QPainterPath)
 from PyQt5.QtWidgets import (QGraphicsScene, QGraphicsItem, QGraphicsTextItem)
 
 
-from DataModels import *
-from Common import *
-from Utils import _NP, _QP
+from data_models import *
+from common import *
+from utils import _NP, _QP
 import math
 from PyQt5 import QtCore, QtWidgets
 
@@ -30,11 +30,13 @@ DEFAULT_IDMAN = IDManager()
 
 
 def dataModel2GraphicsItem(model):
+    """"""
     if isinstance(model, str):
         return globals()[model + 'Item']
 
 
 class InteractiveScene(QGraphicsScene):
+    """"""
     def __init__(self, parent=None):
         # self._active_item = None
         self._layer_stack = LayerStack()
@@ -91,6 +93,22 @@ class InteractiveScene(QGraphicsScene):
 class ControllableItem(QGraphicsItem):
     """ A controllable graphics item has handles
 
+    :param model: must be a subclass of DataModels.Geometry
+    :type model: data_model.Geometry
+    :param color: fill color
+    :type color: QColor
+    :param parent: parent object, defaults to None
+    :type parent: QWidget
+    :param label: a label for this item
+    :type label: str
+    :param handle_size: size of the handls
+    :type handle_size: int
+    :param handle_color: color of the handles
+    :type handle_color: QColor
+    :param edge_color: color of the edges
+    :type edge_color: QColor
+    :param edge_width: width of the edges
+    :type: float
     """
     # deleted = pyqtSignal(int, name='itemDeleted')
     HandlePositionHasChanged = 100
@@ -99,16 +117,7 @@ class ControllableItem(QGraphicsItem):
                  handle_color=DEFAULT_HANDLE_COLOR,
                  edge_color=DEFAULT_EDGE_COLOR, edge_width=DEFAULT_EDGE_WIDTH, draw_flag=bool(0),
                  drag_flag=bool(0)):
-        """
-        :param model: must be a subclass of DataModels.Geometry
-        :param color: fill color
-        :param parent: parent object
-        :param label: a label for this item
-        :param handle_size: size of the handls
-        :param handle_color: color of the handles
-        :param edge_color:
-        :param edge_width:
-        """
+
         super(ControllableItem, self).__init__(parent)
         # if not issubclass(model.__class__, Geometry):
         #     raise ValueError('Invalid model, need to be a subclass of Geometry')
@@ -139,8 +148,8 @@ class ControllableItem(QGraphicsItem):
         self._updateRect()
 
     def itemChange(self, change, value):
-        """
-        tell the inner model to update itself with new control points, also notifies other Items sharing this model
+        """tell the inner model to update itself with new control points, also notifies other Items sharing this model
+
         :param change:
         :param value:
         :return:
@@ -157,6 +166,7 @@ class ControllableItem(QGraphicsItem):
 
     @property
     def drag_flag(self):
+        """"""
         return self._drag_flag
 
     @drag_flag.setter
@@ -290,8 +300,8 @@ class ControllableItem(QGraphicsItem):
 
     @abstractmethod
     def _paintMe(self, qp, option, widget):
-        """
-        Paint the main part of this widget, subclass should impl this
+        """Paint the main part of this widget, subclass should impl this
+
         :param qp:
         :param option:
         :param widget:
@@ -549,6 +559,7 @@ class LayerStack(object):
 
 
 class LayerItem(QGraphicsItem):
+    """"""
     def __init__(self, layer_stack, label, parent=None):
         super(LayerItem, self).__init__(parent=parent)
         self._label = label
@@ -583,6 +594,7 @@ class LayerItem(QGraphicsItem):
 
 
 class GroupItem(ControllableItem):
+    """"""
     def __init__(self, items, **kwargs):
         model = Group([item.model for item in items])
         super(GroupItem, self).__init__(model, **kwargs)
@@ -638,7 +650,15 @@ class GroupItem(ControllableItem):
 
 
 class PolylineItem(ControllableItem):
+    """Controllable graphics item used to annotate bones and free form areas
+
+    :param model: data model to be used
+    :type model: data_models.PolyLine
+    :param kwargs: additional parameters
+    :type kwargs: dict
+    """
     def __init__(self,model,**kwargs):
+
         super(PolylineItem,self).__init__(model,**kwargs)
         self._drag_flag = False
         self._draw_flag = True
@@ -662,6 +682,17 @@ class PolylineItem(ControllableItem):
         return self.rect
     #"""
     def mousePressEvent(self, e):
+        """Defines the behaviour of polyline.
+        1. Clicking while holding control points while _drag_flag is set to true
+        shifst the polylines
+        2. Clicking inside the bounding rect adds a control points
+        3. Holding ctr allows one to drag a control point
+
+        :param e: mouse event
+        :type e: QEvent
+        :return: None
+        :rtype: None
+        """
         if e.button() == 1 and e.modifiers() != Qt.ControlModifier and self._draw_flag == True:
             self.model.addControlPoints(_NP(e.scenePos())[None, ...])
             self.update()
@@ -673,26 +704,28 @@ class PolylineItem(ControllableItem):
             #self.moveTo(_NP(e.scenePos())[0],_NP(e.scenePos())[1])
             self.model._shiftControlPts(dx,dy)
             self.update()
-    # def mousePressEvent(self, e):
-    #     if e.button() == 1 and e.modifiers() == Qt.ControlModifier:
-    #         self.model.addControlPoints(_NP(e.scenePos())[None, ...])
 
-    # def mouseMoveEvent(self,e):
-    #     if e.button() == 1 and self._drag_flag == True:
-    #        self.model._shiftControlPts(_NP(e.scenePos())[0],_NP(e.scenePos())[1])
-    #        #self.moveBy(self, dx, dy)
-    #        self.update()
 
     def measure_area(self):
-        #todo: implement algorithm to find area enclosed: see shoelace formula wikipedia
+        """ measures the bounding area of the polyline. Need to re-implement
+
+        :return: area
+        :rtype: float
+        """
+
         coordinates = self.model.control_points
         #coordinates = np.concatenate((coordinates,coordinates[0:1,:]),axis=1)
         x = np.arange(0, 1, 0.001)
         y = np.sqrt(1 - x ** 2)
-        0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
+        return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
 
 
     def measure_circumference(self):
+        """measures the perimeter of the polyline
+
+        :return: perimeter
+        :rtype: float
+        """
         #todo: check if thi does \sum sqrt(dx_i^2+dy_i^2)
         coordinates = self.model.control_points
         sqdiff      = np.sqrt(np.sum(np.square(coordinates - np.roll(coordinates,shift=1,axis=0)),axis=1))
@@ -700,9 +733,11 @@ class PolylineItem(ControllableItem):
         return dist
 
     def clear_coordinates(self):
+        """"""
         self.polyline_annotate_item = None
 
 class PointsItem(ControllableItem):
+    """"""
     def _paintMe(self, qp, option, widget=None):
         qp.setPen(QPen(QBrush(self.edge_color), 5))
         #qp.drawPolyline(*[c.pos() for c in self.controls])
@@ -733,6 +768,7 @@ class PointsItem(ControllableItem):
 
 
 class Ellipse(QtWidgets.QGraphicsEllipseItem):
+    """"""
     def __init__(self):
         super(Ellipse,self).__init__()
         self.size = 3
@@ -753,6 +789,7 @@ class Ellipse(QtWidgets.QGraphicsEllipseItem):
 
 
 class BaseRectItem(ControllableItem):
+    """"""
     def __init__(self, x, y, width, height, **kwargs):
         """
         :param x: top-left corner
@@ -787,13 +824,21 @@ class BaseRectItem(ControllableItem):
 
 
 class RectItem(ControllableItem):
+    """Controllable item used to place patches on images. Used for joint annotation
+
+    :param x: top-left corner
+    :type x: float
+    :param y: bottom-right corner
+    :type y: float
+    :param width:
+    :type width: float
+    :param height:
+    :type height: float
+    :param kwargs: see @ControllableItem
+    """
     def __init__(self, x, y, width, height, **kwargs):
         """
-        :param x: top-left corner
-        :param y: bottom-right corner
-        :param width:
-        :param height:
-        :param kwargs: see @ControllableItem
+
         """
         model = RotateRect(x, y, width, height,angle=0)
 
@@ -862,6 +907,7 @@ class RectItem(ControllableItem):
 
 
 class CircleItem(ControllableItem):
+    """"""
     # def __init__(self, x, y, r, **kwargs):
     #     model = Circle(x, y, r)
     #     super(CircleItem, self).__init__(model=model, **kwargs)
@@ -878,6 +924,7 @@ class CircleItem(ControllableItem):
 
 
 class RingItem(ControllableItem):
+    """"""
     # def __init__(self, x, y, inner_r, outer_r, **kwargs):
     #     model = Ring(x, y, inner_r, outer_r)
     #     super(RingItem, self).__init__(model=model, **kwargs)
@@ -893,6 +940,7 @@ class RingItem(ControllableItem):
 
 
 class SplineItem(ControllableItem):
+    """"""
     # def __init__(self, points, **kwargs):
     #     model = Spline(points)
     #     super(SplineItem, self).__init__(model, **kwargs)
@@ -940,6 +988,7 @@ class SplineItem(ControllableItem):
 
 
 class SRectItem(ControllableItem):
+    """"""
     # def __init__(self, x, y, inner_a, outer_a, **kwargs):
     #     model = Ring(x, y, inner_a, outer_a)
     #     super(SRectItem, self).__init__(model=model, **kwargs)
@@ -959,6 +1008,7 @@ class SRectItem(ControllableItem):
 
 
 class HandleItem(QGraphicsItem):
+    """"""
     def __init__(self, position, size=3, parent=None, color=Qt.green):
         super(HandleItem, self).__init__(parent)
         self.setPos(position)
@@ -1019,6 +1069,7 @@ class graphicsScene(QtGui.QGraphicsScene):
 
 
 class DraggableGraphicsItemSignaller(QtCore.QObject):
+    """"""
 
     positionChanged = QtCore.pyqtSignal(QtCore.QPointF)
 
@@ -1026,6 +1077,7 @@ class DraggableGraphicsItemSignaller(QtCore.QObject):
         super().__init__()
 
 def make_GraphicsItem_draggable(parent):
+    """"""
 
     class DraggableGraphicsItem(parent):
 
@@ -1057,6 +1109,7 @@ def make_GraphicsItem_draggable(parent):
 
 #rectangle = RectItem(x=0,y=0,width=10,height=10)
 def main():
+    """"""
     DraggableRectItem = make_GraphicsItem_draggable(QtWidgets.QGraphicsRectItem)
 
     app = QtWidgets.QApplication([])
@@ -1091,28 +1144,3 @@ if __name__=='__main__':
     main()
 
 
-"""
-    def mousePressEvent(self, e):
-       
-        #if the user click on an item, set it to the current_item in the LayerStack.
-        #:param e:
-        #:return:
-       
-        pos = e.scenePos()
-        items = [item for item in self.items(pos) if issubclass(item.__class__, ControllableItem)]
-
-        if len(items) == 0 and self._layer_stack.hasCurrentItem():
-            self.sendEvent(self._layer_stack.current_item, e)
-            return super(InteractiveScene, self).mousePressEvent(e)
-
-        for item in items:
-            if item.idd == self._layer_stack.current_item_id:
-                self.sendEvent(item, e)
-                return super(InteractiveScene, self).mousePressEvent(e)
-
-        item = self.itemAt(pos.x(), pos.y(), QTransform())
-        if item in self._layer_stack:
-            self._layer_stack.current_item = item
-
-        return super(InteractiveScene, self).mousePressEvent(e)
-"""

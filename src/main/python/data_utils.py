@@ -6,27 +6,29 @@ import os
 # from PyQt5.QtGui import QIcon,QColor,QPalette,QFont,QPixmap,QPainter,QPen,QImage,QTransform,QPolygon,QBrush,\
 #     QPolygonF
 # from PyQt5.QtCore import *
-from MenuWidgets import NameSignature
+from menu_widgets import NameSignature
 import numpy as np
 from math import sqrt
 from PIL import Image
 
 
 class LabelName(object):
+    """"""
+    # """
+    #
+    # :param xray_name: name of the xray
+    # :type xray_name: string
+    # :param side_name: name of the side 'R', 'L'
+    # :type side_name:  string
+    # :param organ_name: name of the main organ
+    # :type organ_name: string
+    # :param suborgan_name: name of the sub area within the organ
+    # :type suborgan_name:  string
+    # :return:
+    # :rtype:
+    # """
     def __init__(self,xray_name,side_name,organ_name,suborgan_name):
-        """
 
-        :param xray_name: name of the xray
-        :type xray_name: string
-        :param side_name: name of the side 'R', 'L'
-        :type side_name:  string
-        :param organ_name: name of the main organ
-        :type organ_name: string
-        :param suborgan_name: name of the sub area within the organ
-        :type suborgan_name:  string
-        :return:
-        :rtype:
-        """
         if xray_name=='':
             self.xray_name = 'XX'
         else:
@@ -47,24 +49,32 @@ class LabelName(object):
             self.suborgan_name = suborgan_name
 
     def create_file_name(self):
+        """class make_file_name to output the filename corresponding to the label
+
+        :return: filename
+        :rtype: str
+        """
         filename = make_file_name([self.xray_name,self.organ_name,self.suborgan_name,self.side_name])
         return filename
 
 
 class AnnotationLabel(object):
+    """"""
+    # """
+    #
+    # :param xray_name: name of the xray image on which the annotation is made
+    # :type xray_name:  string
+    # :param side_name: name of the side 'R' or 'L'
+    # :type side_name:  string
+    # :param organ_name: name of the organ example feet or hands
+    # :type organ_name:  string
+    # :param suborgan_name: name of the area within the organ being measured
+    # :type suborgan_name: string
+    # :param label_type: name of the type of label
+    # :type label_type: string
+    # """
     def __init__(self,xray_name,side_name,organ_name,suborgan_name,label_type):
-        """
-        :param xray_name: name of the xray image on which the annotation is made
-        :type xray_name:  string
-        :param side_name: name of the side 'R' or 'L'
-        :type side_name:  string
-        :param organ_name: name of the organ example feet or hands
-        :type organ_name:  string
-        :param suborgan_name: name of the area within the organ being measured
-        :type suborgan_name: string
-        :param label_type: name of the type of label
-        :type label_type: string
-        """
+
         if side_name is not None: assert side_name=='R' or side_name=='L'
 
         self.Label_Name = LabelName(xray_name,side_name,organ_name,suborgan_name)
@@ -90,15 +100,16 @@ class AnnotationLabel(object):
 
 
 class PsAScoreData(object):
+    """"""
     def __init__(self,score,xray_name,side_name,organ_name,suborgan_name,scoring_type,damage_type):
-        """
-        :param score: value of the score
-        :type score:  float
-        :param scoring_type:
-        :type scoring_type:
-        :param damage_type:
-        :type damage_type:
-        """
+        # """
+        # :param score: value of the score
+        # :type score:  float
+        # :param scoring_type:
+        # :type scoring_type:
+        # :param damage_type:
+        # :type damage_type:
+        # """
         self.label_name   = LabelName(xray_name,side_name,organ_name,suborgan_name)
         self.score        = score
         self.scoring_type = scoring_type
@@ -120,6 +131,7 @@ class PsAScoreData(object):
 
 
 class PsAScoreDataFrame(object):
+    """"""
     def __init__(self):
         self.columns   = ['Scoring_technique','Damage_type','SubOrgan','Organ','Side','Score','XRay_id']
         self.dict      = dict.fromkeys(self.columns)
@@ -150,6 +162,18 @@ def make_file_name(stringlist):
 
 
 def find_bone_annotations(target_folder, xray_id,date):
+    """Uses the aspax file structure to all bone annotations for xray with id xray_id taken on a certain date. Please see https://people.bath.ac.uk/amr62/Projects/malard/software/aspax.html for more details on aspax folder structure
+
+    :param target_folder: folder containing a list of studies, need to follow aspax folder structure
+    :type target_folder: str
+    :param xray_id: id of xray whose annotations need to be found, needs to correspond to a folder found in target_loc
+    :type xray_id: str
+    :param date: date when xray was taken: needs to
+    :type date: str
+    :return: target_loc,file_list, where target_loc is the location where the annotations were found and where file_list
+             is a list of annotations found in target_loc
+    :rtype: list
+    """
     target_loc = os.path.join(target_folder,xray_id)
     target_loc = os.path.join(target_loc, 'bone')
     target_loc = os.path.join(target_loc, date)
@@ -161,6 +185,19 @@ def find_bone_annotations(target_folder, xray_id,date):
 
 
 def find_joint_annotations(target_folder, xray_id,date):
+    """Uses the aspax file structure to all joint annotations for xray with id xray_id taken on a certain date. Please
+    see https://people.bath.ac.uk/amr62/Projects/malard/software/aspax.html for more details on aspax folder structure
+
+    :param target_folder: folder containing a list of studies, need to follow aspax folder structure
+    :type target_folder: str
+    :param xray_id: id of xray whose annotations need to be found, needs to correspond to a folder found in target_loc
+    :type xray_id: str
+    :param date: date when xray was taken: needs to
+    :type date: str
+    :return: target_loc,file_list, where target_loc is the location where the annotations were found and where file_list
+             is a list of annotations found in target_loc
+    :rtype: list
+    """
     target_loc = os.path.join(target_folder,xray_id)
     target_loc = os.path.join(target_loc, 'joint')
     target_loc = os.path.join(target_loc, date)
@@ -171,10 +208,7 @@ def find_joint_annotations(target_folder, xray_id,date):
     return target_loc,file_list
 
 
-# target_folder ="C:/Users/amr62/Documents/aspax_studies_small/aspax_studies_small"
-# xray_id = '27513'
-# date =       '1998'
-# x = find_bone_annotations(target_folder,'27513','1998')
+
 
 if __name__=='__main__':
     score          = 1

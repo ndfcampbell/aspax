@@ -3,11 +3,11 @@ import os.path
 from PyQt5.QtWidgets import *
 
 
-from Profiles import *
+from profiles import *
 import shutil
 import numpy as np
 import cv2
-from DataUtils import find_bone_annotations, find_joint_annotations
+from data_utils import find_bone_annotations, find_joint_annotations
 
 
 # Global variables to flag what tab needs to be navigated back to after creating new scoring sheet
@@ -26,12 +26,12 @@ xray_image = 0
 
 
 
-from MenuWidgets import area_menu_widget,score_menu_widget, \
-    xray_selection_menu, XrayDataCreationDialog,  XRayCreationWindow, XrayData, NameSignature,output_annotation_name,\
+from menu_widgets import AreaMenuWidget,ScoreMenuWidget, \
+    XRaySelectionMenu, XrayDataCreationDialog,  XRayCreationWindow, XrayData, NameSignature,output_annotation_name,\
     save_csv, load_csv
 from PyQt5.QtGui import QFont, QFontMetrics
-from ImagingWidgets import ImageHandler
-from DiagnosticWidgets import PlotWindow
+from imaging_widgets import ImageHandler
+from diagnostic_widgets import PlotWindow
 
 
 class InspectXRays(QMainWindow):
@@ -86,11 +86,11 @@ class InspectXRays(QMainWindow):
 
     def initialise_left_panel(self):
         layout = QVBoxLayout()
-        self.xray_selection_menu = xray_selection_menu()
+        self.xray_selection_menu = XRaySelectionMenu()
         self.xray_selection_menu.setMinimumWidth(500)
         self.xray_selection_menu.setMaximumWidth(500)
-        # self.xray_selection_menu.setMaximumHeight(280)
-        # self.xray_selection_menu.setMinimumHeight(280)
+        # self.XRaySelectionMenu.setMaximumHeight(280)
+        # self.XRaySelectionMenu.setMinimumHeight(280)
         # score_profiles = [f.split('.')[0] for f in os.listdir(self.ctx.profiles) if f.split('.')[-1]=='h5']
         score_profiles = [keys for keys,_ in self.ctx.score_profiles.items()]
         self.xray_selection_menu.score_selector.addItems(score_profiles)
@@ -107,11 +107,11 @@ class InspectXRays(QMainWindow):
         self.menu_tabs.setMinimumWidth(500)
         self.menu_tabs.setMaximumHeight(self.sizeObject.width()-self.xray_selection_menu.width())
         # self.menu_tabs.setMaximumWidth(500)
-        # self.widget_distance_menu = distance_menu_widget()
+        # self.widget_distance_menu = DistanceMenuWidget()
         height_diff = self.height() - self.sizeObject.height()
-        self.widget_area_menu     = area_menu_widget(self.ctx.joint_list)
+        self.widget_area_menu     = AreaMenuWidget(self.ctx.joint_list)
 
-        self.widget_score_menu    = score_menu_widget()
+        self.widget_score_menu    = ScoreMenuWidget()
 
         # if height_diff>0:
         #     current_table_size = self.widget_score_menu.tableView.height()
@@ -140,8 +140,8 @@ class InspectXRays(QMainWindow):
 
 
     def load_new_score_sheet(self):
-        # profile_loc = os.path.join('score_profiles',str(self.xray_selection_menu.score_selector.currentText())+'.h5')
-        # profile_loc = self.ctx.score_profiles[str(self.xray_selection_menu.score_selector.currentText())]
+        # profile_loc = os.path.join('score_profiles',str(self.XRaySelectionMenu.score_selector.currentText())+'.h5')
+        # profile_loc = self.ctx.score_profiles[str(self.XRaySelectionMenu.score_selector.currentText())]
         profile_loc = self.ctx.score_profiles[str(self.xray_selection_menu.score_selector.currentText())]
         #print("======================")
 
@@ -153,7 +153,7 @@ class InspectXRays(QMainWindow):
             profile = {}
         profile['score_technique'] = str(self.xray_selection_menu.score_selector.currentText())
         self.menu_tabs.removeTab(1)
-        self.widget_score_menu = score_menu_widget(profile=profile)
+        self.widget_score_menu = ScoreMenuWidget(profile=profile)
         height_diff = self.height()-self.sizeObject.height()
         # if height_diff>0:
         #     current_table_size = self.widget_score_menu.tableView.height()
@@ -272,7 +272,7 @@ class InspectXRays(QMainWindow):
         self.image_widget.output_loc = self.output_loc
         if not os.path.isdir(self.output_loc):
             os.makedirs(self.output_loc)
-        # self.xray_selection_menu.wd_info.setText(self.output_loc)
+        # self.XRaySelectionMenu.wd_info.setText(self.output_loc)
         self.xray_selection_menu.combobox_xrayid.clear()
         self.xray_selection_menu.combobox_studyid.clear()
         self.display_studies()
@@ -462,12 +462,12 @@ class InspectXRays(QMainWindow):
 
         self.display_studies()
         self.xray_selection_menu.wd_info.textChanged.connect(self.change_wd)
-        # self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_output_folder_selector)
-        # self.xray_selection_menu.set_wdir_button.clicked.connect(self.open_file_dialog)
-        # self.xray_selection_menu.new_study_button.clicked.connect(self.open_study_creator)
+        # self.XRaySelectionMenu.set_wdir_button.clicked.connect(self.open_output_folder_selector)
+        # self.XRaySelectionMenu.set_wdir_button.clicked.connect(self.open_file_dialog)
+        # self.XRaySelectionMenu.new_study_button.clicked.connect(self.open_study_creator)
         self.xray_selection_menu.current_study_info.textChanged.connect(self.open_study_creator)
         self.xray_selection_menu.current_file_info.textChanged.connect(self.open_xray_adder)
-        # self.xray_selection_menu.addXrayToStudy_button.clicked.connect(self.open_xray_adder)
+        # self.XRaySelectionMenu.addXrayToStudy_button.clicked.connect(self.open_xray_adder)
         self.xray_selection_menu.combobox_studyid.currentIndexChanged.connect(self.display_xrays)
         self.xray_selection_menu.combobox_xrayid.activated.connect(self.load_selected_xrays)
         self.xray_selection_menu.combobox_xrayid.currentIndexChanged.connect(self.load_selected_xrays)
@@ -557,7 +557,7 @@ class InspectXRays(QMainWindow):
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
 
-        # print(self.xray_selection_menu.combobox_xrayid.currentText())
+        # print(self.XRaySelectionMenu.combobox_xrayid.currentText())
         # print(id)
         level1_name = self.xray_record.meta_table['organ'][id[0][0]]
 
@@ -613,7 +613,7 @@ class InspectXRays(QMainWindow):
         self.populate_rectItems()#adds the polyline saved for the selected xray in the annotation_options tab
 
         # file_name = 'annotation_tracking_'+str(date)+'.csv'
-        # xray_id = self.xray_selection_menu.combobox_studyid.currentText()
+        # xray_id = self.XRaySelectionMenu.combobox_studyid.currentText()
         # file_loc = os.path.join(os.path.join(self.output_loc,xray_id),file_name)
         # df = self.widget_area_menu.tableView.model()._data
         # save_csv(df,fileName=file_loc)
@@ -646,7 +646,7 @@ class InspectXRays(QMainWindow):
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
 
-        # print(self.xray_selection_menu.combobox_xrayid.currentText())
+        # print(self.XRaySelectionMenu.combobox_xrayid.currentText())
         # print(id)
         level1_name = self.xray_record.meta_table['organ'][id[0][0]]
 
@@ -769,7 +769,7 @@ class InspectXRays(QMainWindow):
 
         id = np.where(filenames == self.xray_selection_menu.combobox_xrayid.currentText())
 
-        # print(self.xray_selection_menu.combobox_xrayid.currentText())
+        # print(self.XRaySelectionMenu.combobox_xrayid.currentText())
         # print(id)
         level1_name = self.xray_record.meta_table['organ'][id[0][0]]
 
@@ -802,8 +802,8 @@ class InspectXRays(QMainWindow):
                                                     "score" ,
                                                     QMessageBox.Ok)
         else:
-            # date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
-            # date = self.xray_selection_menu.xray_info_box_date.text()
+            # date = NameSignature(self.XRaySelectionMenu.combobox_xrayid.currentText()).year
+            # date = self.XRaySelectionMenu.xray_info_box_date.text()
             # #self.xray_record.meta_table[]
             # file_loc = os.path.join(self.xray_record.save_loc,'scores')
             # #print(file_loc)
@@ -871,7 +871,7 @@ class InspectXRays(QMainWindow):
         #
         id =np.where(file_names==self.xray_selection_menu.combobox_xrayid.currentText())
         # print(dates)
-        # print(self.xray_selection_menu.combobox_xrayid.currentText())
+        # print(self.XRaySelectionMenu.combobox_xrayid.currentText())
         # print(id)
         # image_name = self.xray_record.meta_table['file_name'][id[0][0]]#.to_numpy()[0]
         image_name = self.xray_selection_menu.combobox_xrayid.currentText()
@@ -960,7 +960,7 @@ class InspectXRays(QMainWindow):
 
     def display_all_current_annotations(self):
         im_loc = os.path.join(self.output_loc,self.xray_selection_menu.combobox_studyid.currentText())
-        # date = NameSignature(self.xray_selection_menu.combobox_xrayid.currentText()).year
+        # date = NameSignature(self.XRaySelectionMenu.combobox_xrayid.currentText()).year
         date = self.xray_selection_menu.xray_info_box_date.text()
         im_name = self.xray_selection_menu.combobox_xrayid.currentText()
         # self.xray_record.meta_table[]

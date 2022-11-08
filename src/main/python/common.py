@@ -3,8 +3,8 @@ import numpy as np
 
 
 class IDManager:
-    """
-    help keeping track of ID numbers
+    """help keeping track of ID numbers. Used by data models. Coded by phanquochuy
+
     """
     def __init__(self, start_value=0, max_value=np.iinfo(np.int64).max):
         self._start_value = start_value
@@ -43,23 +43,3 @@ class IDManager:
         if self.exists(idd):
             idx = self._ids.index(idd)
             self._ids = self._ids[:idx] + self._ids[idx+1:]
-#
-# import thread
-# import time
-#
-# idm = IDManager(0, 100)
-#
-#
-# def call_idm_next(_idm):
-#     print('this is working' + str(_idm.ids))
-#     _idm.next()
-#
-# c = 1
-#
-# while c < 10:
-#     thread.start_new_thread(call_idm_next, (idm, ))
-#     # time.sleep(1)
-#     c += 1
-#
-# idm.remove(5)
-# print idm.ids

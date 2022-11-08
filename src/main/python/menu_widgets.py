@@ -29,8 +29,7 @@ import csv
 
 
 
-class distance_menu_widget(QWidget):
-
+class DistanceMenuWidget(QWidget):
     """Base class for menu widgets to be used in the main aspax program. allows the user to process
 
     :param joint_list: list of labels to be used to annotate xrays
@@ -39,7 +38,7 @@ class distance_menu_widget(QWidget):
     :type name: string
     """
     def __init__(self,joint_list,name='Distance'):
-        super(distance_menu_widget,self).__init__()
+        super(DistanceMenuWidget,self).__init__()
         self.name = name
         self.font_header = QFont('Android Roboto', 15)
         self.font_subheader = QFont('Android Roboto', 13)
@@ -193,9 +192,9 @@ class distance_menu_widget(QWidget):
         return text
 
 
-class area_menu_widget(distance_menu_widget):
+class AreaMenuWidget(DistanceMenuWidget):
     def __init__(self,joint_list,name='Area'):
-        super(area_menu_widget,self).__init__(name=name,joint_list=joint_list)
+        super(AreaMenuWidget,self).__init__(name=name,joint_list=joint_list)
 
     def init(self):
         self.init_output() #output box for Area- has a qlineitem and aqpushbutton('Measure)
@@ -357,7 +356,7 @@ class area_menu_widget(distance_menu_widget):
 
 
 
-class score_menu_widget(distance_menu_widget):
+class ScoreMenuWidget(DistanceMenuWidget):
     def __init__(self,name='Score',profile={}):
         # print("-----------------")
         # print(profile)
@@ -377,7 +376,7 @@ class score_menu_widget(distance_menu_widget):
 
         self.damage_areas    = damage_areas
         self.damage_dict = {}
-        super(score_menu_widget,self).__init__(name=name,joint_list="")
+        super(ScoreMenuWidget,self).__init__(name=name,joint_list="")
 
 
     def init(self):
@@ -599,7 +598,7 @@ class score_menu_widget(distance_menu_widget):
 
 
 
-class track_menu_widget(distance_menu_widget):
+class track_menu_widget(DistanceMenuWidget):
     def __init__(self,name='Tracking',profile={}):
         damage_types         = profile.pop('damage_types',['Destruction','Proliferation'])
         self.damage_types    = damage_types
@@ -614,7 +613,7 @@ class track_menu_widget(distance_menu_widget):
         # well
         damage_areas         = profile.pop('damage_areas',default_areas)
         self.damage_areas    = damage_areas
-        super(score_menu_widget,self).__init__(name=name)
+        super(ScoreMenuWidget,self).__init__(name=name)
 
 
     def init(self):
@@ -710,7 +709,7 @@ class track_menu_widget(distance_menu_widget):
 
 
 
-class label_extraction_menu_widget(distance_menu_widget):
+class label_extraction_menu_widget(DistanceMenuWidget):
     def __init__(self):
         super(label_extraction_menu_widget,self).__init__()
 
@@ -974,12 +973,12 @@ class SaveButton(QPushButton):
 
 
 # class leftLayout():
-class xray_selection_menu(QWidget):
+class XRaySelectionMenu(QWidget):
     """
     class that handles the xray creation and the damage type selector
     """
     def __init__(self):
-        super(xray_selection_menu,self).__init__()
+        super(XRaySelectionMenu,self).__init__()
         self.font_header = QFont('Android Roboto', 15)
         self.font_subheader = QFont('Android Roboto', 13)
         self.font_text = QFont('Android Roboto', 10)

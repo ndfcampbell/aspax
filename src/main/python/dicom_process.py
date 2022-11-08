@@ -6,10 +6,12 @@ import numpy as np
 
 
 def find_spacing_element(dicom_file,_print=False):
-    """
-    Iterates through the elements in dicom_file to find the element corresponding to the pixe spainc element
+    """Iterates through the elements in dicom_file to find the element corresponding to the pixel spacing element
+
     :param dicom_file: a dicom file output of pydicom.readfile
+    :type dicom_file:  pydicom.dataset.FileDataset
     :return: a data element if pixel spacing data is found, none otherwise
+    :rtype: data element
     """
     pixel_elem = None
     for elements in dicom_file:
@@ -32,11 +34,14 @@ def find_spacing_element(dicom_file,_print=False):
     return pixel_elem
 
 def extract_pixel_spacing(dicom_file):
-    """
-    tries to access ImagerPixelSpacing attribute of the dicom_file: if this is not present, then runs
+    """tries to access ImagerPixelSpacing attribute of the dicom_file: if this is not present, then runs
     find_element_spacing to try to access the element corresponding the pixel imager spacing
+
     :param dicom_file: a dicom file output of pydicom.readfile
-    :return: the imager spacing data if this is found, Nonetype otherwise
+    :type dicom_file:  pydicom.dataset.FileDataset
+    :return: the imager spacing data if this is found, Nonetype otherwise, spacing is a list/tuple (xspacing,
+             yspacing)
+    :rtype: list
     """
     value = None
     try:

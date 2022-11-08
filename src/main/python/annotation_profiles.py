@@ -5,17 +5,21 @@ from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxL
 
 from PyQt5.QtGui import QColor,QPixmap, QFont
 from PyQt5.QtCore import Qt
-from GraphicsItems import PolylineItem,RectItem,BaseRectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
-from DataModels import Polyline, Rect
+from graphics_items import PolylineItem,RectItem,BaseRectItem, DEFAULT_HANDLE_SIZE, DEFAULT_EDGE_WIDTH
+from data_models import Polyline, Rect
 import numpy as np
-from MenuWidgets import load_csv, save_csv
+from menu_widgets import load_csv, save_csv
 
 
-from Utils import _NP
+from utils import _NP
 
 
 class AnnotationProfiler(object):
+    """Base class to create a set of annotation instructions for annotators to annotate
+
+    """
     def __init__(self):
+
         super(AnnotationProfiler,self).__init__()
         self.label_names=None
         self.graphics_type = None
@@ -23,6 +27,7 @@ class AnnotationProfiler(object):
     def load_model(self,save_loc):
         """
         loads the predictive model metadata from save loc which it uses to predict the loctaions of the labels.
+
         :param save_loc:
         :return:
         """
@@ -33,7 +38,13 @@ class AnnotationProfiler(object):
 
 
 class HandJointAnnotationProfiler(object):
+    """Annotation exercise for joints of the hand. It iteratively generates names of joints to annotate next once the previous one was annotated. Currently unused
+
+    :param output_loc:
+    :type output_loc:
+    """
     def __init__(self,output_loc):
+
         super(HandJointAnnotationProfiler,self).__init__()
 
         label_names = []
@@ -58,8 +69,10 @@ class HandJointAnnotationProfiler(object):
     def load_data(self):
         """
         loads the raw data on which this is made
+
         :return:
         """
+        pass
         #todo: create a predictive model that learns on the go: simpest is mean of gaussian
         pass
         # if os.path.isfile(os.path.join(self.output_loc,'raw_data.csv')):

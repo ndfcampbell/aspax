@@ -2,7 +2,7 @@ from fbs_runtime.application_context.PyQt5 import ApplicationContext, cached_pro
 
 from PyQt5.QtGui import  QIcon
 import csv
-from MainWindow import InspectXRays
+from main_window import InspectXRays
 
 
 #from Utils import *

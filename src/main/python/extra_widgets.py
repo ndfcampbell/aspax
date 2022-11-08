@@ -6,8 +6,26 @@ from PyQt5.QtCore import QRect, QPoint, Qt
 
 
 class LabeledSlider(QtWidgets.QWidget):
+    """Class that creates a labelled slider with numbers showing the current value of the slider. Not being used by main
+    program
+
+    :param minimum:
+    :type minimum: int
+    :param maximum:
+    :type maximum: int
+    :param interval:
+    :type interval: int
+    :param orientation: Qt.Horizontal or Qt.Vertical
+    :type orientation: Qt.Orientation
+    :param labels: labels for the slider values, if None, the slider values are based on the minimum, maximum and
+                   interval. Labels need to be same length as the levels of the slider values
+    :type labels: list
+    :param parent:
+    :type parent:
+    """
     def __init__(self, minimum, maximum, interval=1, orientation=Qt.Horizontal,
             labels=None, parent=None):
+
         super(LabeledSlider, self).__init__(parent=parent)
 
         levels=range(minimum, maximum+interval, interval)
