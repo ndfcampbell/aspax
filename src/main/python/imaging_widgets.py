@@ -160,7 +160,7 @@ class MyScene(QGraphicsScene):
         #print(len(control_points))
         self.annotation_length  = len(control_points)
 
-    def add_rectItem(self,x,y,w,h):
+    def add_rectItem(self,x,y,w,h,angle=0):
         """Adds a rectItem with top corner coordinate x,y and width w, h
 
         :param x: x coordinate of top corner
@@ -174,7 +174,7 @@ class MyScene(QGraphicsScene):
         :return: None
         :rtype: None
         """
-        self.rect_annotate_item = RectItem(x=x, y=y, width=w, height=h)
+        self.rect_annotate_item = RectItem(x=x, y=y, width=w, height=h,angle=angle)
         self.addItem(self.rect_annotate_item)
         self.addItem(self.rect_annotate_item.rotate_handle)
 

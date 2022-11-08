@@ -1090,10 +1090,12 @@ class InspectXRays(QMainWindow):
             w = np.max(control_points[:,0])-np.min(control_points[:,0])
             y = np.min(control_points[:,1])
             h = np.max(control_points[:,1])-np.min(control_points[:,1])
+            diff = control_points[0,:]-control_points[1,:]
+            angle = np.arctan(diff[1]/diff[0])
             if self.image_widget.rect_select_options.display_box.isChecked():
 
                 self.image_widget.image_scene.clear_poly()
-                self.image_widget.image_scene.add_rectItem(x,y,w,h)
+                self.image_widget.image_scene.add_rectItem(x,y,w,h,angle)
 
 
     def delete_selected_annotation_bone(self):

@@ -834,13 +834,16 @@ class RectItem(ControllableItem):
     :type width: float
     :param height:
     :type height: float
+    :param angle: angle of rotation, defaults to zero
+    :type angle: float
     :param kwargs: see @ControllableItem
     """
-    def __init__(self, x, y, width, height, **kwargs):
+    def __init__(self, x, y, width, height,angle=0, **kwargs):
         """
 
         """
-        model = RotateRect(x, y, width, height,angle=0)
+
+        model = RotateRect(x, y, width, height,angle=angle)
 
 
         super(RectItem, self).__init__(model=model, **kwargs)
