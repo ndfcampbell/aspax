@@ -32,4 +32,4 @@ Please visit [insert link here]
 
 
 ## Developer guide
-There is a rough user interface diagram [here](Aspax0.0.11.pdf), and some documentation on the classes [here](https://adwaye.github.io/aspax/) 
+There is a rough user interface diagram [here](Aspax0.0.11.pdf), and some documentation on the classes [here](https://adwaye.github.io/aspax/docs/index.html) 
