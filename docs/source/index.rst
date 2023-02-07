@@ -10,7 +10,7 @@ Welcome to hip_shape's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. mdinclude:: ../Readme.md
+.. mdinclude:: ../../Readme.md
 
 
 
