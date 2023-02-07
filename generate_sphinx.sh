@@ -5,3 +5,4 @@ sphinx-apidoc -o docs/source src/main/python
 cd docs
 make clean
 make html
+mv docs/build/html/* docs/
