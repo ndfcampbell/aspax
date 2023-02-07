@@ -59,21 +59,23 @@ class LabelName(object):
 
 
 class AnnotationLabel(object):
-    """"""
-    # """
-    #
-    # :param xray_name: name of the xray image on which the annotation is made
-    # :type xray_name:  string
-    # :param side_name: name of the side 'R' or 'L'
-    # :type side_name:  string
-    # :param organ_name: name of the organ example feet or hands
-    # :type organ_name:  string
-    # :param suborgan_name: name of the area within the organ being measured
-    # :type suborgan_name: string
-    # :param label_type: name of the type of label
-    # :type label_type: string
-    # """
+
+
+    """
+    
+    :param xray_name: name of the xray image on which the annotation is made
+    :type xray_name:  string
+    :param side_name: name of the side 'R' or 'L'
+    :type side_name:  string
+    :param organ_name: name of the organ example feet or hands
+    :type organ_name:  string
+    :param suborgan_name: name of the area within the organ being measured
+    :type suborgan_name: string
+    :param label_type: name of the type of label
+    :type label_type: string
+    """
     def __init__(self,xray_name,side_name,organ_name,suborgan_name,label_type):
+
 
         if side_name is not None: assert side_name=='R' or side_name=='L'
 
@@ -131,7 +133,9 @@ class PsAScoreData(object):
 
 
 class PsAScoreDataFrame(object):
-    """"""
+    """Unused
+    """
+
     def __init__(self):
         self.columns   = ['Scoring_technique','Damage_type','SubOrgan','Organ','Side','Score','XRay_id']
         self.dict      = dict.fromkeys(self.columns)

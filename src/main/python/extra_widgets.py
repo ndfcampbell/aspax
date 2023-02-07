@@ -1,3 +1,6 @@
+"""
+Module containing some additional widgets. Currently unused.
+"""
 import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPainter

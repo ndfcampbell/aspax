@@ -1,3 +1,6 @@
+"""
+Module containing the classes used for the image viewer on the right of aspax.
+"""
 import cv2
 import time, os
 from PyQt5.QtWidgets import QGraphicsView,QGraphicsScene,QWidget,QToolBar,QVBoxLayout,QAction, QButtonGroup, \
@@ -345,8 +348,23 @@ class MyScene(QGraphicsScene):
 
 # Class to handle the x-ray image - including zooming, contrasts, annotating etc.
 class ImageHandler(QWidget):
+    """Widget that encompasses all of the image manipulation options as well as the image viewer.
+
+    :param icon_library: Dictionary of key value pairs where the keys are strings in the set
+                        ["Draw Polyline","Draw Rectangle","Zoom Out","Zoom In","Undo","Redo","Clear Label"] and the
+                        values are image files that are converted to icons. These icons are used to initialise the
+                        toolbar buttons. It is important that the above keys are present otherwise one gets an error
+                        when the ImagingToolbar is initialised.
+    :type icon_library: dict
+    :param output_loc: location where one wishes to save the annotations. Note that if this folder is non-empty,
+                       then it is desirable for this to follow the aspax folder structure.
+    :type output_loc: str
+    """
 
     def __init__(self,icon_library,output_loc):
+
+
+
         super().__init__()
         self.pixel_width = np.array([0.1, 0.1])
         self.output_loc = output_loc
@@ -408,6 +426,11 @@ class ImageHandler(QWidget):
         #replace with a connect toolbar
         # Toolbar settings - guidance on https://www.learnpyqt.com/courses/start/actions-toolbars-menus/
     def activate_toolbar(self):
+        """Connects buttons in the ImagingToolbar instance to various methods.
+
+        :return:
+        :rtype:
+        """
         self.toolbar.buttons['Zoom Out'].triggered.connect(self.zoom_out)
         self.toolbar.buttons['Zoom In'].triggered.connect(self.zoom_in)
         self.toolbar.buttons['Undo'].triggered.connect(self.image_scene.undo)
@@ -439,6 +462,14 @@ class ImageHandler(QWidget):
         # self.toolbar.buttons['Draw Rect'].triggered.connect(self.image_scene.clear_poly)
 
     def trigger_annotation_mode(self):
+        """Method that allows one to set up an annotation exercise where the annotator is asked to annotate set bones
+        one after the other. Currently not being used. It initialises a new panel where one can choose to start an
+        annotation exercise that has inrtcustions on which joints to annotated. This method needs more work as it
+        crashes a lot.
+
+        :return:
+        :rtype:
+        """
         if self.toolbar.buttons['Annotate'].isChecked():
             self.joint_annotator_panel = JointAnnotatorPanel()
             # self.joint_annotator_panel.setMaximumSize(800,200)
@@ -451,15 +482,18 @@ class ImageHandler(QWidget):
             self.joint_annotator_panel.start_button.clicked.connect(self.start_annotation)
             self.joint_annotator_panel.reset_button.clicked.connect(self.reset_annotation)
         else:
-            self.tabs.removeTab(1)
+            count = self.tabs.count()
+
+            #print(f'there are {count} tabs')
+            self.tabs.removeTab(int(count-1))
 
 
 
     def load_image(self, file_name):
         """
         reads the file_name and passes it to a QPixmap object which is then used
-        sets self.pixmap
-        calls self.display_image(self.pixmap) which displays the image in the scene
+        sets self.pixmap. calls self.display_image(self.pixmap) which displays the image in the scene
+
         :param file_name: full path of file containing the image
                           if image is a regular image file, the Pixmap is created by reading it
                           if image is a dicom, the pixel_array property of the dicom gets loaded
@@ -534,6 +568,11 @@ class ImageHandler(QWidget):
         # self.load_windowing()
 
     def invert_image(self):
+        """Method to invert the color scale of the displayed image.
+
+        :return:
+        :rtype:
+        """
 
         cvImg = 255 - self.raw_data
         cv2.imwrite(self.temp_name, cvImg)
@@ -546,6 +585,11 @@ class ImageHandler(QWidget):
 
 
     def load_windowing(self):
+        """Adds the slider that allows one to perform image windowing in a different tab within the image options tabs.
+
+        :return:
+        :rtype:
+        """
 
         self.image_processor = Window_Sliders(None)
         self.tabs.addTab(self.image_processor,"Manipulate Image")
@@ -558,6 +602,12 @@ class ImageHandler(QWidget):
 
 
     def window_image(self):
+        """Uses the slider values to change the image windowing. See https://radiopaedia.org/articles/windowing-ct?lang=gb
+        for more info on this process.
+
+        :return:
+        :rtype:
+        """
         window,level = self.image_processor.get_window_levels()
         cvImg = self.raw_data.copy().astype(np.float16)
         upper_bound  = level+window
@@ -587,12 +637,26 @@ class ImageHandler(QWidget):
         self.display_image(self.pixmap)
 
     def normalise(self, image):
+        """Limits the image pixel intensity to 0-255
+
+        :param image: image to be normalised
+        :type image: np.array
+        :return:
+        :rtype:
+        """
         image = ((image - np.min(image)) / np.max(image)) * 255
         return image
 
 
     def equalise(self,image):
-        # from http://www.janeriksolem.net/histogram-equalization-with-python-and.html
+        """Performs histogram equalisation on the fed image. Method adapted from from http://www.janeriksolem.net/histogram-equalization-with-python-and.html
+
+        :param image: image to be normalised
+        :type image: np.array
+        :return:
+        :rtype:
+        """
+        #
 
         # get image histogram
         number_bins =256
@@ -607,9 +671,9 @@ class ImageHandler(QWidget):
 
 
     def load_array_from_matfile(self):
-        """
-        connects to self.matfile_select.box.accepted, creates self.pixmap from the array corresponding to the key
+        """connects to self.matfile_select.box.accepted, creates self.pixmap from the array corresponding to the key
         appearinng in the dropdown in matfile_select
+
         :return:
         """
         key = self.matfile_select.combo.currentText()
@@ -628,6 +692,13 @@ class ImageHandler(QWidget):
         #print("pixmap created")
 
     def display_image(self, img):
+        """wrapper for MyScene.display_image
+
+        :param img: Image to be displayed
+        :type img: QPixmap()
+        :return: None
+        :rtype: None
+        """
         self.image_scene.clear()
         # w = img.size[0]
         self.image_scene.display_image(img)
@@ -637,6 +708,12 @@ class ImageHandler(QWidget):
         self.image_scene.update()
 
     def update_annotation_dimensions(self):
+        """Uses values from self.annotation_options widget sliders to update the size of the graphics items dots and
+        lines.
+
+        :return:
+        :rtype:
+        """
         # size_dict = self.annotation_options.get_slider_value()
 
         # self.image_scene.handle_size = size_dict['Dot Size']
@@ -670,6 +747,18 @@ class ImageHandler(QWidget):
         return self.image_scene
 
     def toggle_action_states(self):
+        """Sets the different states of the various self.image_scene flags by checking the state of the toolbar
+        pushbuttons. The flags are
+        * draw_rect_flag : if True, then clicking and dragging creates a rectItem, cannot be true while
+        draw_rect_flag is true
+        * draw_rect_flag : if True, then clicking adds contro pouints to a PolylineItem, cannot be true while
+        draw_rect_flag is true
+        * image_quality_flag: if 0, means the quality is bad, and if 1, means the image quality is good. This value
+                             is stored in the study metatable.
+
+        :return:
+        :rtype:
+        """
         # if self.toolbar.buttons['Draw Rectangle'].isChecked():
         #     self.toolbar.buttons['Draw Polyline'].setChecked(0)
         #
@@ -707,18 +796,36 @@ class ImageHandler(QWidget):
             self.update()
 
     def start_annotation(self):
+        """Method used by the annotator_panel which is initialised by self.trigger_annotation_mode to start the 
+        annotation exercise.
+
+        :return:
+        :rtype:
+        """
         self.joint_annotator_panel.next_button.clicked.connect(self.next_annotation)
         self.joint_annotator_panel.next_button.clicked.connect(self.prev_annotation)
         self.joint_annotator_panel.joint_name_qline.setText("Click on Next to start")
 
     def reset_annotation(self):
+        """Method used by the annotator_panel which is initialised by self.trigger_annotation_mode to start the
+        annotation exercise.
+        
+        :return:
+        :rtype:
+        """
         self.joint_annotator_panel.clicked.disconnect(self.next_annotation)
         self.joint_annotator_panel.clicked.disconnect(self.prev_annotation)
         self.joint_annotator_panel.joint_name_qline.setText("")
         self.joint_annotator_panel.profiler_dicts[self.joint_annotator_panel.profile_dropdown.currentText()] = HandJointAnnotationProfiler()
-        #todo: need to remove all the rectItems and possibly reinitialise the image
+
 
     def next_annotation(self):
+        """Method used by the annotator_panel which is initialised by self.trigger_annotation_mode to start the
+        annotation exercise.
+
+        :return:
+        :rtype:
+        """
 
 
 
@@ -869,7 +976,20 @@ class ImageHandler(QWidget):
 
 
 class ImagingToolbar(QToolBar):
+    """Toolbar with buttons showing the following actions:
+    * "Draw Polyline"
+    * "Draw Rectangle"
+    * "Zoom Out"
+    * "Zoom In"
+    * "Undo"
+    * "Redo"
+    * "Clear Label"
+
+    :param icon_lib:
+    :type icon_lib:
+    """
     def __init__(self,icon_lib):
+
         super(ImagingToolbar,self).__init__()
         # self.setStyleSheet("background-color: rgb(22,204,177);")
         # action_icon_names   = [os.path.join("icons",f) for f in ["draw_poly.png","draw_rect.png","zoom_out.png",
@@ -1006,7 +1126,8 @@ class AnnotationSelectOptions(QWidget):
 
 
 class AnnotationModelOptions(QWidget):
-    """
+    """Widget that allows the user to select options for the size of the Graphics items points and lines through the
+    use of sliders. Initialising the class only initialises the sliders.
 
     :param name:
     :type name:
@@ -1032,6 +1153,11 @@ class AnnotationModelOptions(QWidget):
 
 
     def init_score_slider(self):
+        """Mthod to initialise 2 sliders, one for the line width and the other for the point size.
+
+        :return:
+        :rtype:
+        """
         self.score_slider_layout = score_sliders(score_name="Annotation Model",damage_types=["Dot Size","Line Width"],
                                             damage_ranges=[(1,10),(1,10)])
         print('These are the sliders for width')

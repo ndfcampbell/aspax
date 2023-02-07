@@ -1,0 +1,991 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="python" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>imaging_widgets module &mdash; aspax Annotator 0.0.14 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> aspax Annotator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">imaging_widgets module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">aspax Annotator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>imaging_widgets module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/imaging_widgets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-imaging_widgets">
+<span id="imaging-widgets-module"></span><h1>imaging_widgets module<a class="headerlink" href="#module-imaging_widgets" title="Permalink to this headline">¶</a></h1>
+<p>Module containing the classes used for the image viewer on the right of aspax.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationModelOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">AnnotationModelOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Score'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationModelOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationModelOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>Widget that allows the user to select options for the size of the Graphics items points and lines through the
+use of sliders. Initialising the class only initialises the sliders.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> -- </p></li>
+<li><p><strong>profile</strong> -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationModelOptions.delete_selected_poly">
+<span class="sig-name descname"><span class="pre">delete_selected_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationModelOptions.delete_selected_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationModelOptions.delete_selected_poly" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationModelOptions.delete_selected_rect">
+<span class="sig-name descname"><span class="pre">delete_selected_rect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationModelOptions.delete_selected_rect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationModelOptions.delete_selected_rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationModelOptions.get_slider_value">
+<span class="sig-name descname"><span class="pre">get_slider_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationModelOptions.get_slider_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationModelOptions.get_slider_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationModelOptions.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationModelOptions.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationModelOptions.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationModelOptions.init_score_slider">
+<span class="sig-name descname"><span class="pre">init_score_slider</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationModelOptions.init_score_slider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationModelOptions.init_score_slider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mthod to initialise 2 sliders, one for the line width and the other for the point size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationModelOptions.init_select_polylines">
+<span class="sig-name descname"><span class="pre">init_select_polylines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationModelOptions.init_select_polylines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationModelOptions.init_select_polylines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationSelectOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">AnnotationSelectOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Polyline'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationSelectOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationSelectOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>Generic Qwidget that displayes the location and name of the annotations that were saved so far.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- name of the type of annotation being displayed. Text Will appear inside a QLabel next to self.dropdown</p></li>
+<li><p><strong>profile</strong> (<em>None</em>) -- currently unused</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>layout</strong> (<em>QVBoxLayout</em>) -- Layout of the QWidget</p></li>
+<li><p><strong>dropdown</strong> (<em>QComboBox</em>) -- dropdown list containing the list of annotations saved so far</p></li>
+<li><p><strong>overwrite_button</strong> (<em>QPushButton</em>) -- Button that can be linked to an overwrite method. The overwrite method needs to save the
+data structure viewable in the parent widget of AnnotationSelectOptions under the name appearing in the
+AnnotationSelectOptions.dropdown in the location appearing in the AnnotationSelectOptions.loc_line_edit</p></li>
+<li><p><strong>delete_button</strong> (<em>QPushButton</em>) -- Button that is linked to the delete_annotation method. Clicking the button will delete the .txt
+file whose name is the current_text of AnnotationSelectOptions.dropdown and is located in
+AnnotationSelectOptions.dropdown.text()</p></li>
+<li><p><strong>loc_line_edit</strong> (<em>QLineEdit</em>) -- Provides a text area that Displays the folder where annotations have been saved. The text needs
+to be set by the parent widget when building the full UI</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationSelectOptions.delete_annotation">
+<span class="sig-name descname"><span class="pre">delete_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationSelectOptions.delete_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationSelectOptions.delete_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Deletes the file whose full path is equal to os.path.join(annotation_path, annotation_name+'.txt') where</dt><dd><p>annotation path is the text appearing in self.loc_line_edit and annotation name is the name of the annotation
+appeaing in self.dropdown</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>NOne</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.AnnotationSelectOptions.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#AnnotationSelectOptions.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.AnnotationSelectOptions.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">ImageHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">icon_library</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>Widget that encompasses all of the image manipulation options as well as the image viewer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>icon_library</strong> (<em>dict</em>) -- Dictionary of key value pairs where the keys are strings in the set
+[&quot;Draw Polyline&quot;,&quot;Draw Rectangle&quot;,&quot;Zoom Out&quot;,&quot;Zoom In&quot;,&quot;Undo&quot;,&quot;Redo&quot;,&quot;Clear Label&quot;] and the
+values are image files that are converted to icons. These icons are used to initialise the
+toolbar buttons. It is important that the above keys are present otherwise one gets an error
+when the ImagingToolbar is initialised.</p></li>
+<li><p><strong>output_loc</strong> (<em>str</em>) -- location where one wishes to save the annotations. Note that if this folder is non-empty,
+then it is desirable for this to follow the aspax folder structure.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.activate_toolbar">
+<span class="sig-name descname"><span class="pre">activate_toolbar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.activate_toolbar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.activate_toolbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connects buttons in the ImagingToolbar instance to various methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.check_overwritten">
+<span class="sig-name descname"><span class="pre">check_overwritten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.check_overwritten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.check_overwritten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a dialog that tells the user if the file with path filepath has been recently modified. Due to the
+use case, and speed at which file saving is done, it does so by checking that the difference between the current
+time and the last time the file was modified is within 1s from each other</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.display_image">
+<span class="sig-name descname"><span class="pre">display_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.display_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.display_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>wrapper for MyScene.display_image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img</strong> (<em>QPixmap</em><em>(</em><em>)</em>) -- Image to be displayed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.equalise">
+<span class="sig-name descname"><span class="pre">equalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.equalise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.equalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs histogram equalisation on the fed image. Method adapted from from <a class="reference external" href="http://www.janeriksolem.net/histogram-equalization-with-python-and.html">http://www.janeriksolem.net/histogram-equalization-with-python-and.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>np.array</em>) -- image to be normalised</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.get_image">
+<span class="sig-name descname"><span class="pre">get_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.get_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.get_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.get_image_dimensions">
+<span class="sig-name descname"><span class="pre">get_image_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.get_image_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.get_image_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.get_image_scene">
+<span class="sig-name descname"><span class="pre">get_image_scene</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.get_image_scene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.get_image_scene" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.invert_image">
+<span class="sig-name descname"><span class="pre">invert_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.invert_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.invert_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to invert the color scale of the displayed image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.load_array_from_matfile">
+<span class="sig-name descname"><span class="pre">load_array_from_matfile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.load_array_from_matfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.load_array_from_matfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>connects to self.matfile_select.box.accepted, creates self.pixmap from the array corresponding to the key
+appearinng in the dropdown in matfile_select</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.load_image">
+<span class="sig-name descname"><span class="pre">load_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.load_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.load_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads the file_name and passes it to a QPixmap object which is then used
+sets self.pixmap. calls self.display_image(self.pixmap) which displays the image in the scene</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_name</strong> -- full path of file containing the image
+if image is a regular image file, the Pixmap is created by reading it
+if image is a dicom, the pixel_array property of the dicom gets loaded
+by passing it to the correct image format
+if image is a mat file, creats a matfiledialog which allows the user to select
+the desired array that has the image data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.load_windowing">
+<span class="sig-name descname"><span class="pre">load_windowing</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.load_windowing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.load_windowing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the slider that allows one to perform image windowing in a different tab within the image options tabs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.next_annotation">
+<span class="sig-name descname"><span class="pre">next_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.next_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.next_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used by the annotator_panel which is initialised by self.trigger_annotation_mode to start the
+annotation exercise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.normalise">
+<span class="sig-name descname"><span class="pre">normalise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.normalise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limits the image pixel intensity to 0-255</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>image</strong> (<em>np.array</em>) -- image to be normalised</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.overwrite_annotation_poly">
+<span class="sig-name descname"><span class="pre">overwrite_annotation_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.overwrite_annotation_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.overwrite_annotation_poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the polyline visible in self.image_scene under the file_path given by
+os.path.join(self.poly_select_options.loc_line_edit,self.poly_select_options.dropdown+'txt'). Connected to
+self.poly_select_options.overwrite_button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.overwrite_annotation_rect">
+<span class="sig-name descname"><span class="pre">overwrite_annotation_rect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.overwrite_annotation_rect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.overwrite_annotation_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the rectItem visible in self.image_scene under the file_path given by
+os.path.join(self.rect_select_options.loc_line_edit,self.rect_select_options.dropdown+'txt'). Connected to
+self.rect_select_options.overwrite_button</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.prev_annotation">
+<span class="sig-name descname"><span class="pre">prev_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.prev_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.prev_annotation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.reset_annotation">
+<span class="sig-name descname"><span class="pre">reset_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.reset_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.reset_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used by the annotator_panel which is initialised by self.trigger_annotation_mode to start the
+annotation exercise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.start_annotation">
+<span class="sig-name descname"><span class="pre">start_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.start_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.start_annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method used by the annotator_panel which is initialised by self.trigger_annotation_mode to start the
+annotation exercise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.toggle_action_states">
+<span class="sig-name descname"><span class="pre">toggle_action_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.toggle_action_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.toggle_action_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the different states of the various self.image_scene flags by checking the state of the toolbar
+pushbuttons. The flags are
+* draw_rect_flag : if True, then clicking and dragging creates a rectItem, cannot be true while
+draw_rect_flag is true
+* draw_rect_flag : if True, then clicking adds contro pouints to a PolylineItem, cannot be true while
+draw_rect_flag is true
+* image_quality_flag: if 0, means the quality is bad, and if 1, means the image quality is good. This value</p>
+<blockquote>
+<div><p>is stored in the study metatable.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.trigger_annotation_mode">
+<span class="sig-name descname"><span class="pre">trigger_annotation_mode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.trigger_annotation_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.trigger_annotation_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that allows one to set up an annotation exercise where the annotator is asked to annotate set bones
+one after the other. Currently not being used. It initialises a new panel where one can choose to start an
+annotation exercise that has inrtcustions on which joints to annotated. This method needs more work as it
+crashes a lot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.update_annotation_dimensions">
+<span class="sig-name descname"><span class="pre">update_annotation_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.update_annotation_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.update_annotation_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses values from self.annotation_options widget sliders to update the size of the graphics items dots and
+lines.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.window_image">
+<span class="sig-name descname"><span class="pre">window_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.window_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.window_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the slider values to change the image windowing. See <a class="reference external" href="https://radiopaedia.org/articles/windowing-ct?lang=gb">https://radiopaedia.org/articles/windowing-ct?lang=gb</a>
+for more info on this process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.zoom_in">
+<span class="sig-name descname"><span class="pre">zoom_in</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.zoom_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.zoom_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImageHandler.zoom_out">
+<span class="sig-name descname"><span class="pre">zoom_out</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImageHandler.zoom_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImageHandler.zoom_out" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.ImagingToolbar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">ImagingToolbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">icon_lib</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImagingToolbar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImagingToolbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QToolBar</span></code></p>
+<p>Toolbar with buttons showing the following actions:
+* &quot;Draw Polyline&quot;
+* &quot;Draw Rectangle&quot;
+* &quot;Zoom Out&quot;
+* &quot;Zoom In&quot;
+* &quot;Undo&quot;
+* &quot;Redo&quot;
+* &quot;Clear Label&quot;</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>icon_lib</strong> -- </p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.ImagingToolbar.load_buttons">
+<span class="sig-name descname"><span class="pre">load_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#ImagingToolbar.load_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.ImagingToolbar.load_buttons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.JointAnnotatorPanel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">JointAnnotatorPanel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Score'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#JointAnnotatorPanel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.JointAnnotatorPanel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.JointAnnotatorPanel.delete_selected_poly">
+<span class="sig-name descname"><span class="pre">delete_selected_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#JointAnnotatorPanel.delete_selected_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.JointAnnotatorPanel.delete_selected_poly" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.JointAnnotatorPanel.delete_selected_rect">
+<span class="sig-name descname"><span class="pre">delete_selected_rect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#JointAnnotatorPanel.delete_selected_rect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.JointAnnotatorPanel.delete_selected_rect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.JointAnnotatorPanel.get_slider_value">
+<span class="sig-name descname"><span class="pre">get_slider_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#JointAnnotatorPanel.get_slider_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.JointAnnotatorPanel.get_slider_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.JointAnnotatorPanel.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#JointAnnotatorPanel.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.JointAnnotatorPanel.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.JointAnnotatorPanel.init_annotator_panel">
+<span class="sig-name descname"><span class="pre">init_annotator_panel</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#JointAnnotatorPanel.init_annotator_panel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.JointAnnotatorPanel.init_annotator_panel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.JointAnnotatorPanel.load_profilers">
+<span class="sig-name descname"><span class="pre">load_profilers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#JointAnnotatorPanel.load_profilers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.JointAnnotatorPanel.load_profilers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.MatfileOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">MatfileOptions</span></span><a class="reference internal" href="_modules/imaging_widgets.html#MatfileOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MatfileOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QDialog</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MatfileOptions.initialise_layout">
+<span class="sig-name descname"><span class="pre">initialise_layout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MatfileOptions.initialise_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MatfileOptions.initialise_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MatfileOptions.load_keys">
+<span class="sig-name descname"><span class="pre">load_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matfile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MatfileOptions.load_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MatfileOptions.load_keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">MyScene</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QGraphicsScene</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Variables</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>polyline_annotate_item</strong> (<em>graphics_item.PolyLineItem</em>) -- controllable item for polyline annotation, gets added when draw_poly_flag is set to True
+used to delineate bones etc</p></li>
+<li><p><strong>rect_annotate_item</strong> (<em>graphics_item.RectItem</em>) -- controllable item for polyline annotation, gets added when draw_poly_flag is set to True
+used to annotate joints with patches</p></li>
+<li><p><strong>pixmap</strong> (<em>bool</em>) -- rendered image being displayed</p></li>
+<li><p><strong>start</strong> (<em>array-like</em>) -- dummy variables used to draw the controllable items shape (1,2)</p></li>
+<li><p><strong>end</strong> (<em>array-like</em>) -- dummy variables used to draw the controllable items shape (1,2)</p></li>
+<li><p><strong>annotation_length</strong> (<em>int</em>) -- keeps track of the  number of points in the polyline_annotate_item</p></li>
+<li><p><strong>list_of_undone_points</strong> (<em>None</em>) -- unused</p></li>
+<li><p><strong>draw_poly_flag</strong> (<em>bool</em>) -- if True, clicking inside the scnee  will draw a PolyLineItem, cannot be True
+while draw_recr_flag is True</p></li>
+<li><p><strong>draw_rect_flag</strong> (<em>bool</em>) -- if True, pressing the mouse press move and release will draw a rectItem, cannot be True while
+draw_poly_flag is True</p></li>
+<li><p><strong>pressed</strong> (<em>bool</em>) -- switches to True when the mouse is pressed</p></li>
+<li><p><strong>edge_width</strong> (<em>float</em>) -- width of polyline and rect item edges</p></li>
+<li><p><strong>handle_size</strong> (<em>float</em>) -- size of the draggable ControllableItem handles</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.actual_distance_between_points">
+<span class="sig-name descname"><span class="pre">actual_distance_between_points</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#imaging_widgets.MyScene.actual_distance_between_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.add_polyline">
+<span class="sig-name descname"><span class="pre">add_polyline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.add_polyline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.add_polyline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that adds a polyline to the scene. only called when there are not polylines. Clicking when
+draw_poly_flag is True and when annotation_length=0 adds one control_point where the mouse click occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>control_points</strong> (<em>array-like</em>) -- coordinate shape (N,2) where PolyLine is added</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.add_rectItem">
+<span class="sig-name descname"><span class="pre">add_rectItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.add_rectItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.add_rectItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a rectItem with top corner coordinate x,y and width w, h</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) -- x coordinate of top corner</p></li>
+<li><p><strong>y</strong> (<em>float</em>) -- y coordinate of top corner</p></li>
+<li><p><strong>w</strong> (<em>float</em>) -- width</p></li>
+<li><p><strong>h</strong> (<em>float</em>) -- width</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.add_rectItemBase">
+<span class="sig-name descname"><span class="pre">add_rectItemBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.add_rectItemBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.add_rectItemBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a BaseRectItem (no rotation allowed) with top corner coordinate x,y and width w, h</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) -- x coordinate of top corner</p></li>
+<li><p><strong>y</strong> (<em>float</em>) -- y coordinate of top corner</p></li>
+<li><p><strong>w</strong> (<em>float</em>) -- width</p></li>
+<li><p><strong>h</strong> (<em>float</em>) -- width</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.clear_poly">
+<span class="sig-name descname"><span class="pre">clear_poly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.clear_poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.clear_poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes any controllable item still present in the scene</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.display_image">
+<span class="sig-name descname"><span class="pre">display_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.display_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.display_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the image img as a pixmap item</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>img</strong> (<em>QPixmap</em><em>(</em><em>)</em>) -- Image to be displayed</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_view</span> <span class="o">=</span> <span class="n">MyView</span><span class="p">()</span>
+<span class="n">my_scene</span> <span class="o">=</span> <span class="n">QGraphicsScene</span><span class="p">()</span>
+<span class="n">my_view</span><span class="o">.</span><span class="n">setScene</span><span class="p">()</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;img/image.png&#39;</span>
+<span class="n">pixmap</span> <span class="o">=</span> <span class="n">QPixMap</span><span class="p">()</span>
+<span class="n">pixmap</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+<span class="n">my_scene</span><span class="o">.</span><span class="n">display_image</span><span class="p">(</span><span class="n">pixmap</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.mouseMoveEvent">
+<span class="sig-name descname"><span class="pre">mouseMoveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.mouseMoveEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles mouse move events. Mostly hanldes the dragging of the rectItem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the behaviour of a mousePressEvent. If draw_poly_flag is True, a PolyLineItem is added if not present already.
+If a polyline is present while draw_poly_flag is true, then the control_points are appended with new control_points
+having the same coordinates as the mouse press. Pressing control while clicking does not add any new
+GraphicsItem but allows the user to drag GraphicItem handles. If draw_rect_flag is True, then the scene waits for a drag release event to draw a recItem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.mouseReleaseEvent">
+<span class="sig-name descname"><span class="pre">mouseReleaseEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.mouseReleaseEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.mouseReleaseEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a mouse release event. See Mouse press event for more information on functionality</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyScene.undo">
+<span class="sig-name descname"><span class="pre">undo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyScene.undo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyScene.undo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.MyView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">MyView</span></span><a class="reference internal" href="_modules/imaging_widgets.html#MyView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QGraphicsView</span></code></p>
+<p>QGraphicsView to display the image being annotated. It defines the mouse behaviour within itself.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_view</span> <span class="o">=</span> <span class="n">MyView</span><span class="p">()</span>
+<span class="n">my_scene</span> <span class="o">=</span> <span class="n">QGraphicsScene</span><span class="p">()</span>
+<span class="n">my_view</span><span class="o">.</span><span class="n">setScene</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyView.mouseMoveEvent">
+<span class="sig-name descname"><span class="pre">mouseMoveEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyView.mouseMoveEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyView.mouseMoveEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the mouse move events. MOveing the mouse while pressing the right button pans the view</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>mouseMoveEvent</em>) -- mouse move event</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.MyView.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">event</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#MyView.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.MyView.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the mouse press events.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>event</strong> (<em>mousePressEvent</em>) -- mouse press event</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="imaging_widgets.Window_Sliders">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">Window_Sliders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixel_array</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#Window_Sliders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.Window_Sliders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.Window_Sliders.get_window_levels">
+<span class="sig-name descname"><span class="pre">get_window_levels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#Window_Sliders.get_window_levels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.Window_Sliders.get_window_levels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imaging_widgets.Window_Sliders.initialise">
+<span class="sig-name descname"><span class="pre">initialise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixel_array</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#Window_Sliders.initialise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.Window_Sliders.initialise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="imaging_widgets.main">
+<span class="sig-prename descclassname"><span class="pre">imaging_widgets.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imaging_widgets.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imaging_widgets.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Adwaye Rambojun.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1114 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="python" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>menu_widgets module &mdash; aspax Annotator 0.0.14 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> aspax Annotator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">menu_widgets module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">aspax Annotator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>menu_widgets module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/menu_widgets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-menu_widgets">
+<span id="menu-widgets-module"></span><h1>menu_widgets module<a class="headerlink" href="#module-menu_widgets" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">AreaMenuWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Area'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#menu_widgets.DistanceMenuWidget" title="menu_widgets.DistanceMenuWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">menu_widgets.DistanceMenuWidget</span></code></a></p>
+<p>Widget containing the tabs for selecting the label of annotations being drawn. The widget allows the user to
+select the type of anatomical structure being annotated, the name of the annotation and the side of the body
+where this structure is found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_list</strong> -- list of joints to be passed to the dropdown containing the choice of joints to annotate</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- name of the widget, not much importance</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.create_table_view">
+<span class="sig-name descname"><span class="pre">create_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">my_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.create_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.create_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.get_label_name">
+<span class="sig-name descname"><span class="pre">get_label_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.get_label_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.get_label_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the layout of the widget</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.init_annotation_type">
+<span class="sig-name descname"><span class="pre">init_annotation_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.init_annotation_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.init_annotation_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises buttons that allow to choose between Joint bone tissue other
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.init_save_discard">
+<span class="sig-name descname"><span class="pre">init_save_discard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.init_save_discard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.init_save_discard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the Qpushbutton for save and discarding</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.init_table_view">
+<span class="sig-name descname"><span class="pre">init_table_view</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.init_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.init_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.load_table_view">
+<span class="sig-name descname"><span class="pre">load_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.load_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.load_table_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the information stored in the dictionary given by dataframe and displays it in the tableView</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.save_table_view">
+<span class="sig-name descname"><span class="pre">save_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.save_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.save_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.AreaMenuWidget.update_table_view">
+<span class="sig-name descname"><span class="pre">update_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signal</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#AreaMenuWidget.update_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.AreaMenuWidget.update_table_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>signal needs to be save or unsure and is handled by the main class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>row_name</strong> -- Name of the bone being annotated</p></li>
+<li><p><strong>signal</strong> -- Should be wither 'Completed', 'Not Completed', 'Unsure', name of the column to be assigned the value of 1</p></li>
+</ul>
+</dd>
+</dl>
+<p>:save_loc
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.BoxDistanceArea">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">BoxDistanceArea</span></span><a class="reference internal" href="_modules/menu_widgets.html#BoxDistanceArea"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.BoxDistanceArea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QLabel</span></code></p>
+<p>Unused</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.BoxDistanceArea.add_to_layout">
+<span class="sig-name descname"><span class="pre">add_to_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#BoxDistanceArea.add_to_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.BoxDistanceArea.add_to_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.BoxDistanceArea.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#BoxDistanceArea.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.BoxDistanceArea.initUI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.BoxDistanceArea.update_area_box">
+<span class="sig-name descname"><span class="pre">update_area_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#BoxDistanceArea.update_area_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.BoxDistanceArea.update_area_box" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.BoxDistanceArea.update_distance_box">
+<span class="sig-name descname"><span class="pre">update_distance_box</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scene</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#BoxDistanceArea.update_distance_box"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.BoxDistanceArea.update_distance_box" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.DictionaryTableModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">DictionaryTableModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DictionaryTableModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DictionaryTableModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QAbstractTableModel</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DictionaryTableModel.columnCount">
+<span class="sig-name descname"><span class="pre">columnCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/menu_widgets.html#DictionaryTableModel.columnCount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DictionaryTableModel.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DictionaryTableModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/menu_widgets.html#DictionaryTableModel.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DictionaryTableModel.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DictionaryTableModel.headerData">
+<span class="sig-name descname"><span class="pre">headerData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Qt.Orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/menu_widgets.html#DictionaryTableModel.headerData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DictionaryTableModel.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DictionaryTableModel.rowCount">
+<span class="sig-name descname"><span class="pre">rowCount</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QModelIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">QModelIndex()</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/menu_widgets.html#DictionaryTableModel.rowCount"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DictionaryTableModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.DistanceMenuWidget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">DistanceMenuWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Distance'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DistanceMenuWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DistanceMenuWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>Base class for menu widgets to be used in the main aspax program. allows the user to process</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_list</strong> (<em>list</em>) -- list of labels to be used to annotate xrays</p></li>
+<li><p><strong>name</strong> (<em>string</em>) -- name of the object.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DistanceMenuWidget.get_text">
+<span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buttons</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DistanceMenuWidget.get_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DistanceMenuWidget.get_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text on the button that is checked from a list of autoexclusive qpushbuttons</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>buttons</strong> -- Autoexlusive buttons</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DistanceMenuWidget.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DistanceMenuWidget.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DistanceMenuWidget.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the layout of the widget</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DistanceMenuWidget.init_label_selection">
+<span class="sig-name descname"><span class="pre">init_label_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DistanceMenuWidget.init_label_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DistanceMenuWidget.init_label_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises a qlineedit containing the choices for the area being delineated
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DistanceMenuWidget.init_output">
+<span class="sig-name descname"><span class="pre">init_output</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DistanceMenuWidget.init_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DistanceMenuWidget.init_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a Qwidget that has a box and a qpushbutton('Measure)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DistanceMenuWidget.init_save_discard">
+<span class="sig-name descname"><span class="pre">init_save_discard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DistanceMenuWidget.init_save_discard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DistanceMenuWidget.init_save_discard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the Qpushbutton for save and discarding</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.DistanceMenuWidget.init_side_buttons">
+<span class="sig-name descname"><span class="pre">init_side_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#DistanceMenuWidget.init_side_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.DistanceMenuWidget.init_side_buttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a widget with buttons R L N/A</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.NameSignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">NameSignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#NameSignature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.NameSignature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that retrives the year, patient id and organ from a filename which follows a particular naming convention.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fileName</strong> -- <dl>
+<dt>filename of the file. Needs to follow a particular naming convention. Currently supported are:</dt><dd><ul class="simple">
+<li><p><strong>XPSA</strong>: Concatenation of XPSA (X can be any alphabet), a 4 digit long patient id, either 'h'</p></li>
+</ul>
+<p>or 'f', followed by the year. Example: CPSA0003h2020. The information is extracted from the
+filename</p>
+</dd>
+</dl>
+<ul class="simple">
+<li><p><strong>id-year-organ</strong>: [id]_[year]_[organ] where organ is hands or feet. Extracts the info from the filename</p></li>
+<li><p><strong>.dcm</strong>: Extrats the info from the dcm metadata</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.NameSignature.verify">
+<span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#NameSignature.verify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.NameSignature.verify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.SaveButton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">SaveButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Save'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SaveButton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SaveButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QPushButton</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.SaveButton.add_to_layout">
+<span class="sig-name descname"><span class="pre">add_to_layout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layout</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SaveButton.add_to_layout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SaveButton.add_to_layout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.SaveButton.initUI">
+<span class="sig-name descname"><span class="pre">initUI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SaveButton.initUI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SaveButton.initUI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.SaveButton.restore_save_button">
+<span class="sig-name descname"><span class="pre">restore_save_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SaveButton.restore_save_button"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SaveButton.restore_save_button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.SaveButton.restore_save_button_score">
+<span class="sig-name descname"><span class="pre">restore_save_button_score</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SaveButton.restore_save_button_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SaveButton.restore_save_button_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.SaveButton.set_to_saved">
+<span class="sig-name descname"><span class="pre">set_to_saved</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SaveButton.set_to_saved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SaveButton.set_to_saved" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">ScoreMenuWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Score'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#menu_widgets.DistanceMenuWidget" title="menu_widgets.DistanceMenuWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">menu_widgets.DistanceMenuWidget</span></code></a></p>
+<p>Widget containing the sliders to assign scores to different anatomical structures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>profile</strong> -- dictionary having keys 'damage_types', 'damage_scores' and damage areas which contains</p>
+</dd>
+</dl>
+<p>information on the
+type of
+damage and the score range of each type of damage. This determines the name and range attached to each slider in
+as well as the anatomical features present in the dropdown menu.
+the class. The
+:type profile: dictionary
+:param name: name of the widget, not much importance
+:type name: str</p>
+<p><strong>Example</strong>:
+&gt;&gt;&gt; my_profile = {'damage_types':['Destruction','Proliferation'],'damage_scores':[(0,5),(0,5)],'damage_areas':['IP,DIP']}
+&gt;&gt;&gt; score_menu = ScoreMenuWidget(profile=my_profile)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.connect_buttons">
+<span class="sig-name descname"><span class="pre">connect_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.connect_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.connect_buttons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.create_table_view">
+<span class="sig-name descname"><span class="pre">create_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">my_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.create_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.create_table_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a dictionary that will hold the score values and calls self.load_table_view to display this table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>my_dict</strong> -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the layout of the widget</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.init_label_selection">
+<span class="sig-name descname"><span class="pre">init_label_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.init_label_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.init_label_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises a qlineedit containing the choices for the area being delineated
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.init_score_slider">
+<span class="sig-name descname"><span class="pre">init_score_slider</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.init_score_slider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.init_score_slider" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.init_table_view">
+<span class="sig-name descname"><span class="pre">init_table_view</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.init_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.init_table_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the layout holding the table that summarises the features scored so far. Calls
+self.create_table_view to populate the layout with a table of score values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.load_slider_value">
+<span class="sig-name descname"><span class="pre">load_slider_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.load_slider_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.load_slider_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.load_table_view">
+<span class="sig-name descname"><span class="pre">load_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">my_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.load_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.load_table_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a table_view from the dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>my_dict</strong> -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.save_slider_value">
+<span class="sig-name descname"><span class="pre">save_slider_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.save_slider_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.save_slider_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.save_table_view">
+<span class="sig-name descname"><span class="pre">save_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.save_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.save_table_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the scores in a csv file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_loc</strong> -- </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.store_slider_value">
+<span class="sig-name descname"><span class="pre">store_slider_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.store_slider_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.store_slider_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds slider values to the tableview</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.update_sliders">
+<span class="sig-name descname"><span class="pre">update_sliders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.update_sliders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.update_sliders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.ScoreMenuWidget.update_table">
+<span class="sig-name descname"><span class="pre">update_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#ScoreMenuWidget.update_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.ScoreMenuWidget.update_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>updates the table with the values on the sliders</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.Slider">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">Slider</span></span><a class="reference internal" href="_modules/menu_widgets.html#Slider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.Slider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QSlider</span></code></p>
+<p>Unused . Reference code below in this class: <a class="reference external" href="https://stackoverflow.com/questions/52689047/moving-qslider-to-mouse">https://stackoverflow.com/questions/52689047/moving-qslider-to-mouse</a>
+-click-position</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.Slider.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#Slider.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.Slider.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.Slider.pixelPosToRangeValue">
+<span class="sig-name descname"><span class="pre">pixelPosToRangeValue</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#Slider.pixelPosToRangeValue"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.Slider.pixelPosToRangeValue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.StatusTableModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">StatusTableModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#StatusTableModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.StatusTableModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#menu_widgets.DictionaryTableModel" title="menu_widgets.DictionaryTableModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">menu_widgets.DictionaryTableModel</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.StatusTableModel.data">
+<span class="sig-name descname"><span class="pre">data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QModelIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">role</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Qt.ItemDataRole.DisplayRole</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/menu_widgets.html#StatusTableModel.data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.StatusTableModel.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.Switch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">Switch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#Switch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.Switch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QAbstractButton</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.Switch.paintEvent">
+<span class="sig-name descname"><span class="pre">paintEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPaintEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#Switch.paintEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.Switch.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.Switch.resizeEvent">
+<span class="sig-name descname"><span class="pre">resizeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QResizeEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#Switch.resizeEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.Switch.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.Switch.sizeHint">
+<span class="sig-name descname"><span class="pre">sizeHint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QSize</span></span></span><a class="reference internal" href="_modules/menu_widgets.html#Switch.sizeHint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.Switch.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.SwitchPrivate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">SwitchPrivate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SwitchPrivate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SwitchPrivate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtCore.QObject</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.SwitchPrivate.animate">
+<span class="sig-name descname"><span class="pre">animate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checked</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SwitchPrivate.animate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SwitchPrivate.animate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.SwitchPrivate.draw">
+<span class="sig-name descname"><span class="pre">draw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">painter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#SwitchPrivate.draw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.SwitchPrivate.draw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="menu_widgets.SwitchPrivate.position">
+<span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#menu_widgets.SwitchPrivate.position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.XRayCreationWindow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">XRayCreationWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRayCreationWindow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRayCreationWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QMainWindow</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">XRaySelectionMenu</span></span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<p>class that handles the xray creation and the damage type selector</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.add_xray_to_study">
+<span class="sig-name descname"><span class="pre">add_xray_to_study</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.add_xray_to_study"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.add_xray_to_study" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.change_wd">
+<span class="sig-name descname"><span class="pre">change_wd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.change_wd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.change_wd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.connect_buttons">
+<span class="sig-name descname"><span class="pre">connect_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.connect_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.connect_buttons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.create_new_study">
+<span class="sig-name descname"><span class="pre">create_new_study</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.create_new_study"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.create_new_study" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.getDirectory">
+<span class="sig-name descname"><span class="pre">getDirectory</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.getDirectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.getDirectory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.getFiles">
+<span class="sig-name descname"><span class="pre">getFiles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.getFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.getFiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.init_damage_selector">
+<span class="sig-name descname"><span class="pre">init_damage_selector</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.init_damage_selector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.init_damage_selector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XRaySelectionMenu.init_xray_creation_options">
+<span class="sig-name descname"><span class="pre">init_xray_creation_options</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XRaySelectionMenu.init_xray_creation_options"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XRaySelectionMenu.init_xray_creation_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.XrayData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">XrayData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xray_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acquisition_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'saved_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organ_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hand'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.add_xray">
+<span class="sig-name descname"><span class="pre">add_xray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xray_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acquisition_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'saved_data'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">organ_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hand'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.add_xray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.add_xray" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.init_from_meta">
+<span class="sig-name descname"><span class="pre">init_from_meta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">meta_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.init_from_meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.init_from_meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>meta_loc</strong> -- location pointing to the metadata.csv</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.load_outlines">
+<span class="sig-name descname"><span class="pre">load_outlines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.load_outlines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.load_outlines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.load_patches">
+<span class="sig-name descname"><span class="pre">load_patches</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.load_patches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.load_patches" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.output_confirmation">
+<span class="sig-name descname"><span class="pre">output_confirmation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">organ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.output_confirmation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.output_confirmation" title="Permalink to this definition">¶</a></dt>
+<dd><p>this is the method called when a file has been sucessfully saved,
+it should output the text in a message box</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>organ</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>filename</strong> (<em>str</em>) -- filename pointing to where an anotation was saved</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.save_bone_outline">
+<span class="sig-name descname"><span class="pre">save_bone_outline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plineItem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.save_bone_outline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.save_bone_outline" title="Permalink to this definition">¶</a></dt>
+<dd><p>method to save the bone_outline
+:param bone_id:
+:param date:
+:param plineItem:
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.save_landmark">
+<span class="sig-name descname"><span class="pre">save_landmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">landmark_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plineItem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.save_landmark"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.save_landmark" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.save_metadata">
+<span class="sig-name descname"><span class="pre">save_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.save_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.save_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.save_patch">
+<span class="sig-name descname"><span class="pre">save_patch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rectItem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.save_patch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.save_patch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.save_phantom_outline">
+<span class="sig-name descname"><span class="pre">save_phantom_outline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plineItem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.save_phantom_outline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.save_phantom_outline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayData.save_tissue_outline">
+<span class="sig-name descname"><span class="pre">save_tissue_outline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bone_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plineItem</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayData.save_tissue_outline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayData.save_tissue_outline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.XrayDataCreationDialog">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">XrayDataCreationDialog</span></span><a class="reference internal" href="_modules/menu_widgets.html#XrayDataCreationDialog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayDataCreationDialog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QMessageBox</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.XrayDataCreationOptions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">XrayDataCreationOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Xray</span> <span class="pre">Annotation</span> <span class="pre">Creation'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayDataCreationOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayDataCreationOptions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QWidget</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayDataCreationOptions.get_text">
+<span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buttons</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayDataCreationOptions.get_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayDataCreationOptions.get_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the text on the button that is checked from a list of autoexclusive qpushbuttons
+:param buttons: Autoexlusive buttons
+:type buttons:
+:return:
+:rtype:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayDataCreationOptions.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayDataCreationOptions.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayDataCreationOptions.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayDataCreationOptions.init_save_discard">
+<span class="sig-name descname"><span class="pre">init_save_discard</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayDataCreationOptions.init_save_discard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayDataCreationOptions.init_save_discard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the Qpushbutton for save and discarding
+:return:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.XrayStudy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">XrayStudy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'saved_data'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayStudy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayStudy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that loads up xrays corresponding to the same id from multiple locaytions and copies it to one aspax projects</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayStudy.load_xrays_from_list">
+<span class="sig-name descname"><span class="pre">load_xrays_from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayStudy.load_xrays_from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayStudy.load_xrays_from_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayStudy.load_xrays_from_loc">
+<span class="sig-name descname"><span class="pre">load_xrays_from_loc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayStudy.load_xrays_from_loc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayStudy.load_xrays_from_loc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.XrayStudy.save_metadata">
+<span class="sig-name descname"><span class="pre">save_metadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#XrayStudy.save_metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.XrayStudy.save_metadata" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.find_unique_ids">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">find_unique_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#find_unique_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.find_unique_ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.label_extraction_menu_widget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">label_extraction_menu_widget</span></span><a class="reference internal" href="_modules/menu_widgets.html#label_extraction_menu_widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.label_extraction_menu_widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#menu_widgets.DistanceMenuWidget" title="menu_widgets.DistanceMenuWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">menu_widgets.DistanceMenuWidget</span></code></a></p>
+<p>Not in use</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.label_extraction_menu_widget.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#label_extraction_menu_widget.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.label_extraction_menu_widget.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the layout of the widget</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.label_extraction_menu_widget.init_extraction_buttons">
+<span class="sig-name descname"><span class="pre">init_extraction_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#label_extraction_menu_widget.init_extraction_buttons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.label_extraction_menu_widget.init_extraction_buttons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.label_extraction_menu_widget.init_label_selection">
+<span class="sig-name descname"><span class="pre">init_label_selection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#label_extraction_menu_widget.init_label_selection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.label_extraction_menu_widget.init_label_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises a qlineedit containing the choices for the area being delineated
+:return:
+:rtype:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.load_csv">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">load_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#load_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.load_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.make_buttons_from_list">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">make_buttons_from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">titles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['L',</span> <span class="pre">'R',</span> <span class="pre">'N/A']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#make_buttons_from_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.make_buttons_from_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.make_buttons_from_list_old">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">make_buttons_from_list_old</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">titles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['L',</span> <span class="pre">'R',</span> <span class="pre">'N/A']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#make_buttons_from_list_old"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.make_buttons_from_list_old" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.output_annotation_name">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">output_annotation_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level1_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hand'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level2_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'R'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level3_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCP1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#output_annotation_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.output_annotation_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.print_slider_values">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">print_slider_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sliders</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#print_slider_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.print_slider_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.save_csv">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">save_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mydict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileName</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#save_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.save_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.score_sliders">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">score_sliders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Ratingen'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damage_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['Destruction',</span> <span class="pre">'Proliferation']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damage_ranges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[(0,</span> <span class="pre">5),</span> <span class="pre">(0,</span> <span class="pre">5)]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#score_sliders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.score_sliders" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QVBoxLayout</span></code></p>
+<p>Initialises sliders for setting damage scores</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>score_name</strong> (<em>str</em>) -- the name of the score, which will appear on top of the score widget</p></li>
+<li><p><strong>damage_types</strong> (<em>list of str</em>) -- list of types of damage</p></li>
+<li><p><strong>damage_ranges</strong> -- list of tuples [(min1,max1),..,(minN,maxN)] where the first element of each tuples is the min</p></li>
+</ul>
+</dd>
+</dl>
+<p>value of
+the
+damage,
+and the secon element is the max value. Each element must be an int
+:type damage_ranges: list
+:param opt_kwargs: optional arguments for the formatting with keys 'label_minimum_width','tick_spacing','slider_gap'</p>
+<blockquote>
+<div><p>whose values are all ints</p>
+</div></blockquote>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.score_sliders.get_slider_values">
+<span class="sig-name descname"><span class="pre">get_slider_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#score_sliders.get_slider_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.score_sliders.get_slider_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.score_sliders.init_sliders">
+<span class="sig-name descname"><span class="pre">init_sliders</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#score_sliders.init_sliders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.score_sliders.init_sliders" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.score_sliders.print_slider_values">
+<span class="sig-name descname"><span class="pre">print_slider_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#score_sliders.print_slider_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.score_sliders.print_slider_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.score_sliders.reinit_values">
+<span class="sig-name descname"><span class="pre">reinit_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#score_sliders.reinit_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.score_sliders.reinit_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="menu_widgets.track_menu_widget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">track_menu_widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Tracking'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">profile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#track_menu_widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.track_menu_widget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#menu_widgets.DistanceMenuWidget" title="menu_widgets.DistanceMenuWidget"><code class="xref py py-class docutils literal notranslate"><span class="pre">menu_widgets.DistanceMenuWidget</span></code></a></p>
+<p>Not currently in use</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.track_menu_widget.create_table_view">
+<span class="sig-name descname"><span class="pre">create_table_view</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#track_menu_widget.create_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.track_menu_widget.create_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.track_menu_widget.init">
+<span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#track_menu_widget.init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.track_menu_widget.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialises the layout of the widget</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.track_menu_widget.init_table_view">
+<span class="sig-name descname"><span class="pre">init_table_view</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#track_menu_widget.init_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.track_menu_widget.init_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.track_menu_widget.load_table_view">
+<span class="sig-name descname"><span class="pre">load_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#track_menu_widget.load_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.track_menu_widget.load_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.track_menu_widget.save_slider_value">
+<span class="sig-name descname"><span class="pre">save_slider_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#track_menu_widget.save_slider_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.track_menu_widget.save_slider_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="menu_widgets.track_menu_widget.save_table_view">
+<span class="sig-name descname"><span class="pre">save_table_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_loc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#track_menu_widget.save_table_view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.track_menu_widget.save_table_view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="menu_widgets.update_dir">
+<span class="sig-prename descclassname"><span class="pre">menu_widgets.</span></span><span class="sig-name descname"><span class="pre">update_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nameInit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu_widgets.html#update_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#menu_widgets.update_dir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Adwaye Rambojun.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

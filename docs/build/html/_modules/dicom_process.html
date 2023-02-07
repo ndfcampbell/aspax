@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="python" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>dicom_process &mdash; aspax Annotator 0.0.14 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> aspax Annotator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">aspax Annotator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>dicom_process</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dicom_process</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">pydicom</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+
+<div class="viewcode-block" id="find_spacing_element"><a class="viewcode-back" href="../dicom_process.html#dicom_process.find_spacing_element">[docs]</a><span class="k">def</span> <span class="nf">find_spacing_element</span><span class="p">(</span><span class="n">dicom_file</span><span class="p">,</span><span class="n">_print</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterates through the elements in dicom_file to find the element corresponding to the pixel spacing element</span>
+
+<span class="sd">    :param dicom_file: a dicom file output of pydicom.readfile</span>
+<span class="sd">    :type dicom_file:  pydicom.dataset.FileDataset</span>
+<span class="sd">    :return: a data element if pixel spacing data is found, none otherwise</span>
+<span class="sd">    :rtype: data element</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pixel_elem</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">elements</span> <span class="ow">in</span> <span class="n">dicom_file</span><span class="p">:</span>
+        <span class="n">vr</span> <span class="o">=</span> <span class="n">elements</span><span class="o">.</span><span class="n">VR</span>
+        <span class="k">if</span> <span class="n">_print</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span><span class="n">elements</span><span class="o">.</span><span class="n">name</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;Spacing&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">pixel_elem</span> <span class="o">=</span> <span class="n">elements</span>
+        <span class="k">elif</span> <span class="s2">&quot;PixelSpacing&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">pixel_elem</span> <span class="o">=</span> <span class="n">elements</span>
+        <span class="k">elif</span> <span class="s2">&quot;ImagerPixelSpacing&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">pixel_elem</span> <span class="o">=</span> <span class="n">elements</span>
+
+
+    <span class="k">if</span> <span class="n">pixel_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pixel_elem</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;no matches found for file&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pixel_elem</span></div>
+
+<div class="viewcode-block" id="extract_pixel_spacing"><a class="viewcode-back" href="../dicom_process.html#dicom_process.extract_pixel_spacing">[docs]</a><span class="k">def</span> <span class="nf">extract_pixel_spacing</span><span class="p">(</span><span class="n">dicom_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;tries to access ImagerPixelSpacing attribute of the dicom_file: if this is not present, then runs</span>
+<span class="sd">    find_element_spacing to try to access the element corresponding the pixel imager spacing</span>
+
+<span class="sd">    :param dicom_file: a dicom file output of pydicom.readfile</span>
+<span class="sd">    :type dicom_file:  pydicom.dataset.FileDataset</span>
+<span class="sd">    :return: the imager spacing data if this is found, Nonetype otherwise, spacing is a list/tuple (xspacing,</span>
+<span class="sd">             yspacing)</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">dicom_file</span><span class="o">.</span><span class="n">ImagerPixelSpacing</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;imager spacing worked&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">pixel_elem</span> <span class="o">=</span> <span class="n">find_spacing_element</span><span class="p">(</span><span class="n">dicom_file</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pixel_elem</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pixel_elem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">pixel_elem</span><span class="o">.</span><span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+
+
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">top_loc</span> <span class="o">=</span> <span class="s1">&#39;C:/Users/amr62/Documents/Monitor_aspax/&#39;</span>
+    <span class="n">folders</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">top_loc</span><span class="p">,</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">top_loc</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;dcm&#39;</span><span class="p">:</span>
+                    <span class="n">dicom_file</span> <span class="o">=</span> <span class="n">pydicom</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span><span class="n">f</span><span class="p">))</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----------------------------------------&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                    <span class="n">value</span> <span class="o">=</span> <span class="n">extract_pixel_spacing</span><span class="p">(</span><span class="n">dicom_file</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="c1"># filename = &#39;C:/Users/amr62/Documents/Monitor_aspax/10001/Hand-DX-9300-42.dcm&#39;</span>
+    <span class="c1"># dicom_file = pydicom.read_file(filename)</span>
+    <span class="c1"># elem = find_spacing_element(dicom_file)</span>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Adwaye Rambojun.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

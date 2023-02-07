@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="python" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>graphics_items module &mdash; aspax Annotator 0.0.14 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/style.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> aspax Annotator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">graphics_items module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">aspax Annotator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>graphics_items module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/graphics_items.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <section id="module-graphics_items">
+<span id="graphics-items-module"></span><h1>graphics_items module<a class="headerlink" href="#module-graphics_items" title="Permalink to this headline">¶</a></h1>
+<p>Created on Tue Sep  8 07:32:13 2015</p>
+<p>&#64;author classes: phanquochuy</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphics_items.ControllableItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphics_items.</span></span><span class="sig-name descname"><span class="pre">ControllableItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color=&lt;PyQt5.QtGui.QColor</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label=''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_size=4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_color=8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_color=2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_width=1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw_flag=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drag_flag=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#ControllableItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.ControllableItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyQt5.QtWidgets.QGraphicsItem</span></code></p>
+<p>A controllable graphics item has handles</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>data_model.Geometry</em>) -- must be a subclass of DataModels.Geometry</p></li>
+<li><p><strong>color</strong> (<em>QColor</em>) -- fill color</p></li>
+<li><p><strong>parent</strong> (<em>QWidget</em>) -- parent object, defaults to None</p></li>
+<li><p><strong>label</strong> (<em>str</em>) -- a label for this item</p></li>
+<li><p><strong>handle_size</strong> (<em>int</em>) -- size of the handls</p></li>
+<li><p><strong>handle_color</strong> (<em>QColor</em>) -- color of the handles</p></li>
+<li><p><strong>edge_color</strong> (<em>QColor</em>) -- color of the edges</p></li>
+<li><p><strong>edge_width</strong> -- width of the edges</p></li>
+</ul>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.ControllableItem.boundingRect">
+<span class="sig-name descname"><span class="pre">boundingRect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QRectF</span></span></span><a class="reference internal" href="_modules/graphics_items.html#ControllableItem.boundingRect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.ControllableItem.boundingRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="graphics_items.ControllableItem.control_points">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">control_points</span></span><a class="headerlink" href="#graphics_items.ControllableItem.control_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>control points from self._controls</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>return</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.ControllableItem.itemChange">
+<span class="sig-name descname"><span class="pre">itemChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#ControllableItem.itemChange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.ControllableItem.itemChange" title="Permalink to this definition">¶</a></dt>
+<dd><p>tell the inner model to update itself with new control points, also notifies other Items sharing this model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>change</strong> -- </p></li>
+<li><p><strong>value</strong> -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">ControllableItem.moveBy(self,</span> <span class="pre">float,</span> <span class="pre">float)</span></span><a class="reference internal" href="_modules/graphics_items.html#ControllableItem.moveBy"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.ControllableItem.paint">
+<span class="sig-name descname"><span class="pre">paint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QPainter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QStyleOptionGraphicsItem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">widget</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QWidget</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#ControllableItem.paint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.ControllableItem.paint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphics_items.PolylineItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphics_items.</span></span><span class="sig-name descname"><span class="pre">PolylineItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#PolylineItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.PolylineItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphics_items.ControllableItem" title="graphics_items.ControllableItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">graphics_items.ControllableItem</span></code></a></p>
+<p>Controllable graphics item used to annotate bones and free form areas</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>data_models.PolyLine</em>) -- data model to be used</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) -- additional parameters</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.PolylineItem.boundingRect">
+<span class="sig-name descname"><span class="pre">boundingRect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">QRectF</span></span></span><a class="reference internal" href="_modules/graphics_items.html#PolylineItem.boundingRect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.PolylineItem.boundingRect" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.PolylineItem.measure_area">
+<span class="sig-name descname"><span class="pre">measure_area</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#PolylineItem.measure_area"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.PolylineItem.measure_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>measures the bounding area of the polyline. Need to re-implement</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>area</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.PolylineItem.measure_circumference">
+<span class="sig-name descname"><span class="pre">measure_circumference</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#PolylineItem.measure_circumference"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.PolylineItem.measure_circumference" title="Permalink to this definition">¶</a></dt>
+<dd><p>measures the perimeter of the polyline</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>perimeter</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.PolylineItem.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#PolylineItem.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.PolylineItem.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the behaviour of polyline.
+1. Clicking while holding control points while _drag_flag is set to true
+shifst the polylines
+2. Clicking inside the bounding rect adds a control points
+3. Holding ctr allows one to drag a control point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>e</strong> (<em>QEvent</em>) -- mouse event</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphics_items.RectItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphics_items.</span></span><span class="sig-name descname"><span class="pre">RectItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#RectItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.RectItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphics_items.ControllableItem" title="graphics_items.ControllableItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">graphics_items.ControllableItem</span></code></a></p>
+<p>Controllable item used to place patches on images. Used for joint annotation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) -- top-left corner</p></li>
+<li><p><strong>y</strong> (<em>float</em>) -- bottom-right corner</p></li>
+<li><p><strong>width</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>height</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>angle</strong> (<em>float</em>) -- angle of rotation, defaults to zero</p></li>
+<li><p><strong>kwargs</strong> -- see &#64;ControllableItem</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphics_items.RectItem.mousePressEvent">
+<span class="sig-name descname"><span class="pre">mousePressEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QGraphicsSceneMouseEvent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphics_items.html#RectItem.mousePressEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphics_items.RectItem.mousePressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, Adwaye Rambojun.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

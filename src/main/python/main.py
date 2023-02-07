@@ -12,6 +12,11 @@ config_folder = "config"
 
 
 class AppContext(ApplicationContext):
+    """Main application. Please refer to https://build-system.fman.io/manual/ for more information on fbs
+    ApplicationContext. The ApplicationContext allows one to execute the main program as well as link any external
+    files to it.
+
+    """
     def run(self):
         self.main_window.setStyleSheet(open(self.stylesheet,"r").read())
         self.main_window.show()

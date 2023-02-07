@@ -1,4 +1,11 @@
+"""
+Created on Tue Sep  8 07:32:13 2015
 
+@author classes: phanquochuy
+
+Module that contains underlying data models for the graphics items used as annotation landmarks. The only two that
+are used are RotateRect and Polyline.
+"""
 from abc import abstractmethod
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.Qt import QPolygonF, QPointF
@@ -78,8 +85,8 @@ class Geometry(QObject):
     @control_points.setter
     @abstractmethod
     def control_points(self, points):
-        """
-        set control points, remember to call self.update
+        """set control points, remember to call self.update
+
         :param points:
         :return:
         """

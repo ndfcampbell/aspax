@@ -101,8 +101,8 @@ class DistanceMenuWidget(QWidget):
         self.layout.addWidget(self.output_box_widget)
 
     def init_side_buttons(self):
-        """
-        Creates a widget with buttons R L N/A
+        """Creates a widget with buttons R L N/A
+
         :return:
         :rtype:
         """
@@ -148,8 +148,8 @@ class DistanceMenuWidget(QWidget):
         self.layout.addWidget(self.line_edit_labels)
 
     def init_save_discard(self):
-        """
-        Initialises the Qpushbutton for save and discarding
+        """Initialises the Qpushbutton for save and discarding
+
         :return:
         :rtype:
         """
@@ -178,8 +178,8 @@ class DistanceMenuWidget(QWidget):
         self.layout.addWidget(self.save_discard_widget)
 
     def get_text(self,buttons):
-        """
-        Returns the text on the button that is checked from a list of autoexclusive qpushbuttons
+        """Returns the text on the button that is checked from a list of autoexclusive qpushbuttons
+
         :param buttons: Autoexlusive buttons
         :type buttons:
         :return:
@@ -193,7 +193,19 @@ class DistanceMenuWidget(QWidget):
 
 
 class AreaMenuWidget(DistanceMenuWidget):
+    """Widget containing the tabs for selecting the label of annotations being drawn. The widget allows the user to
+    select the type of anatomical structure being annotated, the name of the annotation and the side of the body
+    where this structure is found.
+
+    :param joint_list: list of joints to be passed to the dropdown containing the choice of joints to annotate
+    :type joint_list:
+    :param name: name of the widget, not much importance
+    :type name: str
+
+    """
     def __init__(self,joint_list,name='Area'):
+
+
         super(AreaMenuWidget,self).__init__(name=name,joint_list=joint_list)
 
     def init(self):
@@ -308,8 +320,8 @@ class AreaMenuWidget(DistanceMenuWidget):
 
 
     def load_table_view(self,dataframe):
-        """
-        Displays the information stored in the dictionary given by dataframe and displays it in the tableView
+        """Displays the information stored in the dictionary given by dataframe and displays it in the tableView
+
         """
         # model = DataFrameModel(dataframe)
         model = StatusTableModel(dataframe)
@@ -325,8 +337,8 @@ class AreaMenuWidget(DistanceMenuWidget):
 
 
     def update_table_view(self,row_name,signal,save_loc=None):
-        """
-        signal needs to be save or unsure and is handled by the main class
+        """signal needs to be save or unsure and is handled by the main class
+
         :param row_name: Name of the bone being annotated
         :param signal:   Should be wither 'Completed', 'Not Completed', 'Unsure', name of the column to be assigned the value of 1
         :save_loc
@@ -357,6 +369,23 @@ class AreaMenuWidget(DistanceMenuWidget):
 
 
 class ScoreMenuWidget(DistanceMenuWidget):
+    """Widget containing the sliders to assign scores to different anatomical structures.
+
+    :param profile: dictionary having keys 'damage_types', 'damage_scores' and damage areas which contains
+    information on the
+    type of
+    damage and the score range of each type of damage. This determines the name and range attached to each slider in
+    as well as the anatomical features present in the dropdown menu.
+    the class. The
+    :type profile: dictionary
+    :param name: name of the widget, not much importance
+    :type name: str
+
+    **Example**:
+    >>> my_profile = {'damage_types':['Destruction','Proliferation'],'damage_scores':[(0,5),(0,5)],'damage_areas':['IP,DIP']}
+    >>> score_menu = ScoreMenuWidget(profile=my_profile)
+
+    """
     def __init__(self,name='Score',profile={}):
         # print("-----------------")
         # print(profile)
@@ -424,6 +453,12 @@ class ScoreMenuWidget(DistanceMenuWidget):
         self.layout.addWidget(label_widget)
 
     def init_table_view(self):
+        """Initialises the layout holding the table that summarises the features scored so far. Calls
+        self.create_table_view to populate the layout with a table of score values.
+
+        :return:
+        :rtype:
+        """
         table_layout = QVBoxLayout()
         self.tableView = QTableView()
         self.tableView.setObjectName("tableView")
@@ -443,6 +478,13 @@ class ScoreMenuWidget(DistanceMenuWidget):
         # self.tableView.setModel(model)
 
     def create_table_view(self,my_dict=None):
+        """Creates a dictionary that will hold the score values and calls self.load_table_view to display this table
+
+        :param my_dict:
+        :type my_dict:
+        :return:
+        :rtype:
+        """
         if my_dict is None:
             row_index = [f+'_'+side for side in ['L','R'] for f in
                          self.damage_areas]
@@ -458,6 +500,13 @@ class ScoreMenuWidget(DistanceMenuWidget):
 
 
     def load_table_view(self,my_dict):
+        """Creates a table_view from the dictionary
+
+        :param my_dict:
+        :type my_dict:
+        :return:
+        :rtype:
+        """
         # output
         # model = DataFrameModel(dataframe)
         for key, val in my_dict.items():
@@ -470,10 +519,22 @@ class ScoreMenuWidget(DistanceMenuWidget):
 
 
     def save_table_view(self,file_loc):
+        """Saves the scores in a csv file.
+
+        :param file_loc:
+        :type file_loc:
+        :return:
+        :rtype:
+        """
         dataframe = self.tableView.model()._data
         save_csv(dataframe,fileName=file_loc)
 
     def store_slider_value(self):
+        """Adds slider values to the tableview
+
+        :return:
+        :rtype:
+        """
         scores = []
         for key,val in self.score_sliders.items():
             scores += [int(val.value())]
@@ -501,6 +562,11 @@ class ScoreMenuWidget(DistanceMenuWidget):
 
 
     def update_table(self):
+        """updates the table with the values on the sliders
+
+        :return:
+        :rtype:
+        """
         scores = []
         for key,val in self.score_sliders.items():
             scores += [int(val.value())]
@@ -536,6 +602,7 @@ class ScoreMenuWidget(DistanceMenuWidget):
 
 
     def save_slider_value(self):
+
         scores = []
         for key,val in self.score_sliders.items():
             scores += [int(val.value())]
@@ -599,6 +666,9 @@ class ScoreMenuWidget(DistanceMenuWidget):
 
 
 class track_menu_widget(DistanceMenuWidget):
+    """Not currently in use
+
+    """
     def __init__(self,name='Tracking',profile={}):
         damage_types         = profile.pop('damage_types',['Destruction','Proliferation'])
         self.damage_types    = damage_types
@@ -710,6 +780,9 @@ class track_menu_widget(DistanceMenuWidget):
 
 
 class label_extraction_menu_widget(DistanceMenuWidget):
+    """Not in use
+
+    """
     def __init__(self):
         super(label_extraction_menu_widget,self).__init__()
 
@@ -768,7 +841,11 @@ class label_extraction_menu_widget(DistanceMenuWidget):
 
 
 class Slider(QtWidgets.QSlider): # Class creating a changed slider
-    # Reference code below in this class: https://stackoverflow.com/questions/52689047/moving-qslider-to-mouse-click-position
+    """Unused . Reference code below in this class: https://stackoverflow.com/questions/52689047/moving-qslider-to-mouse
+    -click-position
+    
+    """
+    #
     def mousePressEvent(self, event):
         super(Slider, self).mousePressEvent(event)
         # if event.button() == Qt.LeftButton:
@@ -798,11 +875,25 @@ class Slider(QtWidgets.QSlider): # Class creating a changed slider
 
 
 class score_sliders(QVBoxLayout):
-    """
-    For discrete scores
+    """Initialises sliders for setting damage scores
+
+    :param score_name: the name of the score, which will appear on top of the score widget
+    :type score_name:  str
+    :param damage_types: list of types of damage
+    :type damage_types: list of str
+    :param damage_ranges: list of tuples [(min1,max1),..,(minN,maxN)] where the first element of each tuples is the min
+    value of
+    the
+    damage,
+    and the secon element is the max value. Each element must be an int
+    :type damage_ranges: list
+    :param opt_kwargs: optional arguments for the formatting with keys 'label_minimum_width','tick_spacing','slider_gap'
+                        whose values are all ints
+    :type opt_kwargs: dict
     """
     def __init__(self,score_name='Ratingen',damage_types=['Destruction','Proliferation'],damage_ranges=[(0,5),(0,5)],
                  opt_kwargs={}):
+
         super(score_sliders,self).__init__()
         self.opt_kwargs = opt_kwargs
         self.font_header = QFont('Android Roboto', 15)
@@ -900,6 +991,9 @@ def make_buttons_from_list_old(titles=['L','R','N/A']):
 
 
 class BoxDistanceArea(QLabel):
+    """Unused
+
+    """
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -1303,8 +1397,23 @@ def update_dir(nameInit):
     return output_directory
 
 #Class that loads the latest data stored in the csv file into a python array
-class   XrayData(object):
+class XrayData(object):
     def __init__(self,image_name,xray_id,acquisition_date,save_loc='saved_data',organ_name='hand',meta_loc=None):
+        """Main class
+
+        :param image_name:
+        :type image_name:
+        :param xray_id:
+        :type xray_id:
+        :param acquisition_date:
+        :type acquisition_date:
+        :param save_loc:
+        :type save_loc:
+        :param organ_name:
+        :type organ_name:
+        :param meta_loc:
+        :type meta_loc:
+        """
 
 
         if meta_loc is None:
@@ -1438,11 +1547,15 @@ class   XrayData(object):
         # self.meta_table = self.meta_table.to_dict()
 
     def output_confirmation(self,organ,filename):
-        """
-        this is the method called when a file has been sucessfully saved,
+        """this is the method called when a file has been sucessfully saved,
         it should output the text in a message box
-        :param text:
+
+        :param organ:
+        :type organ: str
+        :param filename: filename pointing to where an anotation was saved
+        :type filename: str
         :return:
+        :rtype:
         """
         if os.path.isfile(filename):
             self.msg = QMessageBox()
@@ -1460,7 +1573,19 @@ class   XrayData(object):
 
 #extracts year,id and organ information from a saved filename
 class NameSignature(object):
+    """Class that retrives the year, patient id and organ from a filename which follows a particular naming convention.
+
+    :param fileName: filename of the file. Needs to follow a particular naming convention. Currently supported are:
+                     * **XPSA**: Concatenation of XPSA (X can be any alphabet), a 4 digit long patient id, either 'h'
+                     or 'f', followed by the year. Example: CPSA0003h2020. The information is extracted from the
+                     filename
+                    * **id-year-organ**: [id]_[year]_[organ] where organ is hands or feet. Extracts the info from the filename
+                    * **.dcm**: Extracts the info from the dcm metadata
+
+    :type fileName:
+    """
     def __init__(self,fileName):
+
 
         self.year  = ''
         self.organ = ''

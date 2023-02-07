@@ -35,6 +35,7 @@ from diagnostic_widgets import PlotWindow
 
 
 class InspectXRays(QMainWindow):
+
     """Main class for aspax annotator
 
     :param ctx: fbs Application Context for fbs compilation
@@ -85,6 +86,11 @@ class InspectXRays(QMainWindow):
 
 
     def initialise_left_panel(self):
+        """Initialises the left panel which relates to
+
+        :return:
+        :rtype:
+        """
         layout = QVBoxLayout()
         self.xray_selection_menu = XRaySelectionMenu()
         self.xray_selection_menu.setMinimumWidth(500)
@@ -140,6 +146,11 @@ class InspectXRays(QMainWindow):
 
 
     def load_new_score_sheet(self):
+        """Loads a new score sheet based on the dropdown selection in self.score_selector
+
+        :return:
+        :rtype:
+        """
         # profile_loc = os.path.join('score_profiles',str(self.XRaySelectionMenu.score_selector.currentText())+'.h5')
         # profile_loc = self.ctx.score_profiles[str(self.XRaySelectionMenu.score_selector.currentText())]
         profile_loc = self.ctx.score_profiles[str(self.xray_selection_menu.score_selector.currentText())]
@@ -203,6 +214,11 @@ class InspectXRays(QMainWindow):
 
 
     def initialise_right_panel(self):
+        """Creates the image handling widget
+
+        :return:
+        :rtype:
+        """
 
         # Creating toolbar
 
@@ -215,6 +231,11 @@ class InspectXRays(QMainWindow):
 
 
     def open_output_folder_selector_old(self):
+        """deprecated
+
+        :return:
+        :rtype:
+        """
         #print("yes man")
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.Directory)
@@ -232,6 +253,7 @@ class InspectXRays(QMainWindow):
 
 
     def getDirectory(self):
+
         response = QFileDialog.getExistingDirectory(
             self,
             caption='Select a folder'
@@ -268,6 +290,13 @@ class InspectXRays(QMainWindow):
             #self.display_xrays()
 
     def change_wd(self):
+        """Method that allows one to change the working directory. Will open a dialogue for the user to interact with
+        and sets the working directory name in self.xray_selection_menu.wd_info. Connected to
+        self.xray_selection_menu.set_wdir_button
+
+        :return:
+        :rtype:
+        """
         self.output_loc = self.xray_selection_menu.wd_info.text()
         self.image_widget.output_loc = self.output_loc
         if not os.path.isdir(self.output_loc):
@@ -279,6 +308,12 @@ class InspectXRays(QMainWindow):
 
 
     def open_study_creator(self):
+        """Opens a dialogue that allows one to create a new study by loading up an xray. Connected to
+        self.xray_selection_menu.new_study_button
+
+        :return:
+        :rtype:
+        """
         #print('function triggered')
         filename = self.xray_selection_menu.temp_name
         #print('filename fed to mainwindow is ')
@@ -307,6 +342,11 @@ class InspectXRays(QMainWindow):
             lambda:self.create_xray_window.close())
 
     def open_study_creator_old(self):
+        """deprecated
+
+        :return:
+        :rtype:
+        """
         #print('function triggered')
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.AnyFile)
@@ -340,6 +380,12 @@ class InspectXRays(QMainWindow):
                     lambda:self.create_xray_window.close())
 
     def open_xray_adder(self):
+        """opens up a file dialog that allows the
+        Connected to self.xray_selection_menu.addXrayToStudy_button
+
+        :return:
+        :rtype:
+        """
         #print('function triggered')
 
         filename = self.xray_selection_menu.temp_name
@@ -372,6 +418,9 @@ class InspectXRays(QMainWindow):
             lambda:self.create_xray_window.close())
 
     def open_xray_adder_old(self):
+        """deprecated
+
+        """
         #print('function triggered')
         dlg = QFileDialog()
         dlg.setFileMode(QFileDialog.AnyFile)
@@ -412,6 +461,14 @@ class InspectXRays(QMainWindow):
 
 
     def create_xray_data(self,filename):
+        """Gets called when a new study is created. It creates a metadata table containing info about the xray. See
+        menu_widgets.XrayData for information on how this is done.
+
+        :param filename: path to the image corresponding to the xray being added to a study
+        :type filename: str
+        :return:
+        :rtype:
+        """
         # self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date','Xray id','Xray Location']
         # self.name_sig = NameSignature(fileName=filenames[0].split('/')[-1])
 
@@ -442,6 +499,13 @@ class InspectXRays(QMainWindow):
 
 
     def add_xray_to_study(self,filename):
+        """
+
+        :param filename:
+        :type filename:
+        :return:
+        :rtype:
+        """
         acquisition_date = self.create_xray_window.xray_creation_options.qline_edits['Acquisition Date'].text()
         Xray_id          = self.create_xray_window.xray_creation_options.qline_edits['Study id'].text()
         organ_name       = self.create_xray_window.xray_creation_options.qline_edits['Body Part'].text()
