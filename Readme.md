@@ -5,7 +5,7 @@
 This was built using python 3.6. The package versions might only work for python 3.6, as some of them might not be available for newer verions (eg python 3.9). To install all the requirements simply run 
 
 ```console
-foo@bar:~$ whoami
+foo@bar:~$ pip install -r requirements
 foo
 ```
 
@@ -21,7 +21,8 @@ foo@bar:~$ fbs run
 ## Building installer
 
 ```console
-foo@bar:~$ fbs run
+foo@bar:~$ fbs freeze
+foo@bar:~$ fbs installer
 ```
 
 For any issues please visit https://build-system.fman.io/manual
